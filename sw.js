@@ -1,5 +1,5 @@
 // Keeps Deal Room English usable offline once it has been opened.
-const CACHE = "dre-app-v1";
+const CACHE = "dre-app-v2";
 const CORE = ["./", "./index.html", "./manifest.webmanifest", "./icon-180.png", "./icon-192.png", "./icon-512.png"];
 
 self.addEventListener("install", e => {

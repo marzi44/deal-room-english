@@ -8,254 +8,465 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Deal Room">
-<meta name="theme-color" content="#0D6A62">
+<meta name="theme-color" content="#F6F7F5" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0C1413" media="(prefers-color-scheme: dark)">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="icon" type="image/png" href="icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Figtree:wght@400;500;600;700;800&display=swap">
 <style>
-/* Layout: sticky header with stats + tabs; one centered column. Lessons run in a full-screen overlay with a bottom feedback sheet. */
+/* Layout: iOS-style app shell. Sticky blurred top bar with stat pills, one content column, fixed bottom tab bar
+   (floating pill on wide screens). Lessons, sheets and onboarding are full-screen layers above the shell. */
 :root{
-  --bg:#F2F4F3; --surface:#FFFFFF; --ink:#13201E; --muted:#566966; --line:#D5DDDB; --line-deep:#BCC8C5;
-  --accent:#0D6A62; --accent-deep:#094A44; --accent-ink:#FFFFFF; --soft:#E1EEEB;
-  --signal:#B85A17; --signal-soft:#F7E9DD; --gold:#C98A0B; --gold-soft:#FBF0D6;
-  --good:#2C7A4C; --good-deep:#1E5A37; --good-soft:#DDF0E3; --bad:#B0281F; --bad-deep:#86190F; --bad-soft:#F8E1DF;
-  --u0:#0D6A62; --u0d:#094A44; --u1:#3F57A6; --u1d:#2C3F7E; --u2:#B85A17; --u2d:#8A410E; --u3:#7D4486; --u3d:#5C2F63;
-  --f-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
-  --f-body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
-  --f-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
-  --r:12px; color-scheme:light;
+  --bg:#F6F7F5; --surface:#FFFFFF; --surface-2:#EEF2F0; --ink:#102321; --ink-2:#3D504D; --muted:#6B7D7A;
+  --line:#E1E7E5; --line-2:#CBD5D2;
+  --accent:#0F7A6E; --accent-2:#0A5A51; --accent-soft:#DDF1EC; --on-accent:#FFFFFF;
+  --gold:#E8A317; --gold-2:#B97F0A; --gold-soft:#FDF3DC;
+  --orange:#EA6A1F; --orange-soft:#FDEBDF;
+  --coral:#E5484D; --coral-soft:#FDE7E7;
+  --good:#1F9D63; --good-2:#167548; --good-soft:#E0F5EA;
+  --bad:#E5484D; --bad-2:#B4282D; --bad-soft:#FDE8E8;
+  --blue:#3E63DD; --blue-2:#2B48A8;
+  --u0:#0F7A6E; --u0d:#0A5A51; --u1:#3E63DD; --u1d:#2B48A8; --u2:#E0712B; --u2d:#AE5217; --u3:#8E4EC6; --u3d:#6A3497;
+  --scrim:rgba(6,18,16,.45);
+  --shadow:0 1px 2px rgba(16,35,33,.05),0 6px 20px rgba(16,35,33,.06);
+  --f-display:"Bricolage Grotesque","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --f-body:"Figtree",-apple-system,"Segoe UI",system-ui,sans-serif;
+  --r-sm:12px; --r:18px; --r-lg:24px; --tab-h:64px;
+  color-scheme:light;
 }
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
-  --bg:#0E1514; --surface:#162120; --ink:#E4EDEB; --muted:#93A6A2; --line:#283735; --line-deep:#1A2524;
-  --accent:#3FA89C; --accent-deep:#24685F; --accent-ink:#04201C; --soft:#1B2F2C;
-  --signal:#E8975A; --signal-soft:#33241A; --gold:#E8B341; --gold-soft:#332A14;
-  --good:#5CC28A; --good-deep:#2F7A50; --good-soft:#15291D; --bad:#F28279; --bad-deep:#A3443C; --bad-soft:#331A18; color-scheme:dark }}
+  --bg:#0C1413; --surface:#142120; --surface-2:#1B2B29; --ink:#E9F1EF; --ink-2:#B9C8C5; --muted:#869B97;
+  --line:#213331; --line-2:#2E4441;
+  --accent:#2BB3A3; --accent-2:#1A7D71; --accent-soft:#143A35; --on-accent:#03201C;
+  --gold:#F2B637; --gold-2:#B98515; --gold-soft:#3A2E12; --orange:#FF8A4C; --orange-soft:#3A2214;
+  --coral:#FF6B6F; --coral-soft:#3A1A1B; --good:#3DD68C; --good-2:#1F9D63; --good-soft:#12301F;
+  --bad:#FF6B6F; --bad-2:#C2393E; --bad-soft:#3A1A1B; --blue:#7090FF; --blue-2:#3E58C9;
+  --scrim:rgba(0,0,0,.6); --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.25); color-scheme:dark }}
 :root[data-theme="dark"]{
-  --bg:#0E1514; --surface:#162120; --ink:#E4EDEB; --muted:#93A6A2; --line:#283735; --line-deep:#1A2524;
-  --accent:#3FA89C; --accent-deep:#24685F; --accent-ink:#04201C; --soft:#1B2F2C;
-  --signal:#E8975A; --signal-soft:#33241A; --gold:#E8B341; --gold-soft:#332A14;
-  --good:#5CC28A; --good-deep:#2F7A50; --good-soft:#15291D; --bad:#F28279; --bad-deep:#A3443C; --bad-soft:#331A18; color-scheme:dark }
+  --bg:#0C1413; --surface:#142120; --surface-2:#1B2B29; --ink:#E9F1EF; --ink-2:#B9C8C5; --muted:#869B97;
+  --line:#213331; --line-2:#2E4441;
+  --accent:#2BB3A3; --accent-2:#1A7D71; --accent-soft:#143A35; --on-accent:#03201C;
+  --gold:#F2B637; --gold-2:#B98515; --gold-soft:#3A2E12; --orange:#FF8A4C; --orange-soft:#3A2214;
+  --coral:#FF6B6F; --coral-soft:#3A1A1B; --good:#3DD68C; --good-2:#1F9D63; --good-soft:#12301F;
+  --bad:#FF6B6F; --bad-2:#C2393E; --bad-soft:#3A1A1B; --blue:#7090FF; --blue-2:#3E58C9;
+  --scrim:rgba(0,0,0,.6); --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.25); color-scheme:dark }
 
 *{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
 html,body{margin:0}
-:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55}
+body{background:var(--bg);color:var(--ink);font:16px/1.5 var(--f-body);-webkit-font-smoothing:antialiased;min-height:100vh}
+body.lock{overflow:hidden}
 button,input,textarea,select{font:inherit;color:inherit}
-:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+:focus-visible{outline:3px solid color-mix(in srgb,var(--accent) 55%,transparent);outline-offset:2px}
 [hidden]{display:none!important}
-h1,h2,h3{font-family:var(--f-display);font-weight:700;text-wrap:balance;margin:0;line-height:1.15}
+h1,h2,h3{font-family:var(--f-display);font-weight:800;letter-spacing:-.02em;margin:0;line-height:1.12;text-wrap:balance}
 p{margin:0}
-.wrap{max-width:860px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-svg.i{width:18px;height:18px;flex:none}
+svg{flex:none}
+.wrap{width:100%;max-width:680px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+.stack{display:grid;gap:12px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 
-/* Header */
-header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
-body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
-button,.tile,.opt,.node{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
-@media (hover:none){input[type=text],input[type=password],input[type=search],textarea,select{font-size:16px}}
-.bar{display:flex;align-items:center;gap:10px;padding-block:12px 4px;flex-wrap:wrap}
-.brand h1{font-size:21px;letter-spacing:-.01em}
-.brand span{display:block;font-family:var(--f-mono);font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
-.hstats{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap}
-.hs{display:flex;align-items:center;gap:5px;font-weight:700;font-variant-numeric:tabular-nums;padding:4px 10px;border-radius:999px;font-size:14px}
-.hs.streak{color:var(--signal);background:var(--signal-soft)}
-.hs.xp{color:var(--gold);background:var(--gold-soft)}
-.hs.heart{color:var(--bad);background:var(--bad-soft)}
-.tabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;margin:0 -4px}
-.tabs::-webkit-scrollbar{display:none}
-.tab{background:none;border:0;padding:10px 12px;border-bottom:3px solid transparent;color:var(--muted);cursor:pointer;white-space:nowrap;font-weight:600}
-.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
-main{padding-block:24px 80px}
-.view{display:grid;gap:20px}
-.eyebrow{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-.lead{color:var(--muted);max-width:62ch}
-.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px}
-.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.note{font-size:13px;color:var(--muted)}
-.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
-.grid2>*{min-width:0}
+/* Top bar */
+.topbar{position:sticky;top:0;z-index:20;background:var(--bg);background:color-mix(in srgb,var(--bg) 82%,transparent);-webkit-backdrop-filter:saturate(1.6) blur(16px);backdrop-filter:saturate(1.6) blur(16px);padding-top:env(safe-area-inset-top,0px);border-bottom:1px solid transparent;transition:border-color .2s}
+.topbar.scrolled{border-bottom-color:var(--line)}
+.topin{display:flex;align-items:center;gap:10px;height:58px}
+.logo{display:flex;align-items:center;gap:9px;font-family:var(--f-display);font-weight:800;font-size:19px;letter-spacing:-.02em;white-space:nowrap}
+.logo svg{width:30px;height:30px}
+.pills{margin-left:auto;display:flex;gap:6px}
+.pill{display:inline-flex;align-items:center;gap:4px;height:34px;padding:0 10px;border-radius:999px;background:var(--surface);border:1px solid var(--line);font-weight:800;font-size:15px;font-variant-numeric:tabular-nums;cursor:pointer}
+.pill svg{width:18px;height:18px}
+.pill.fl{color:var(--orange)} .pill.fl.off{color:var(--muted)} .pill.xp{color:var(--gold)} .pill.ht{color:var(--coral)}
 
-/* Buttons: chunky press style */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:2px solid var(--line);border-bottom-width:4px;background:var(--surface);padding:8px 16px;border-radius:12px;cursor:pointer;font-weight:700;letter-spacing:.01em}
-.btn:active:not(:disabled){transform:translateY(2px);border-bottom-width:2px;margin-bottom:2px}
-.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent-deep)}
-.btn.good{background:var(--good);color:#fff;border-color:var(--good-deep)}
-.btn.bad{background:var(--bad);color:#fff;border-color:var(--bad-deep)}
-.btn.big{padding:12px 24px;font-size:16px;text-transform:uppercase;letter-spacing:.04em}
-.btn.ghost{border:0;background:none;color:var(--muted);padding:6px 8px}
-.btn.ghost:hover{color:var(--ink)}
-.btn:disabled{opacity:.45;cursor:default}
-.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 12px;cursor:pointer;font-size:13px}
-.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
-input[type=text],input[type=password],input[type=search],textarea,select{border:2px solid var(--line);background:var(--surface);border-radius:10px;padding:9px 12px;width:100%}
-textarea{resize:vertical;min-height:80px}
-select{width:auto}
+/* Bottom tab bar */
+main{padding-top:8px;padding-bottom:calc(var(--tab-h) + env(safe-area-inset-bottom,0px) + 32px)}
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--surface);background:color-mix(in srgb,var(--surface) 92%,transparent);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-top:1px solid var(--line);padding:0 env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px)}
+.tabbar .in{display:flex;max-width:560px;margin:0 auto;height:var(--tab-h)}
+.tb{flex:1;display:grid;justify-items:center;align-content:center;gap:2px;border:0;background:none;color:var(--muted);font-size:11.5px;font-weight:700;cursor:pointer;padding:0}
+.tb .ic{width:52px;height:30px;border-radius:999px;display:grid;place-items:center;transition:background .2s,color .2s}
+.tb svg{width:24px;height:24px}
+.tb[aria-current="page"]{color:var(--accent)}
+.tb[aria-current="page"] .ic{background:var(--accent-soft)}
+@media (min-width:900px){
+  .tabbar{left:50%;right:auto;bottom:18px;transform:translateX(-50%);width:440px;border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);padding:0}
+  main{padding-bottom:120px}
+}
 
-/* Path */
-.today{display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center}
-@media (max-width:560px){.today{grid-template-columns:auto 1fr}.today .btn{grid-column:1 / -1}}
-.ring{width:64px;height:64px}
+/* Buttons */
+.btn{--b:var(--surface);--bs:var(--line-2);--c:var(--ink);display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:0 20px;border:0;border-radius:16px;background:var(--b);color:var(--c);font-weight:800;font-size:16px;letter-spacing:.01em;box-shadow:inset 0 0 0 2px var(--bs),0 4px 0 var(--bs);margin-bottom:4px;cursor:pointer;transition:transform .07s ease,box-shadow .07s ease;text-decoration:none}
+.btn svg{width:20px;height:20px}
+.btn:active:not(:disabled){transform:translateY(4px);box-shadow:inset 0 0 0 2px var(--bs),0 0 0 var(--bs)}
+.btn.primary{--b:var(--accent);--bs:var(--accent-2);--c:var(--on-accent);box-shadow:0 4px 0 var(--bs)}
+.btn.good{--b:var(--good);--bs:var(--good-2);--c:#fff;box-shadow:0 4px 0 var(--bs)}
+.btn.bad{--b:var(--bad);--bs:var(--bad-2);--c:#fff;box-shadow:0 4px 0 var(--bs)}
+.btn.white{--b:#fff;--bs:rgba(0,0,0,.2);--c:var(--uc,var(--accent));box-shadow:0 4px 0 var(--bs)}
+.btn.primary:active:not(:disabled),.btn.good:active,.btn.bad:active,.btn.white:active{box-shadow:0 0 0 var(--bs)}
+.btn.block{width:100%}
+.btn.sm{min-height:40px;padding:0 14px;font-size:14px;border-radius:12px}
+.btn.ghost{background:none;box-shadow:none;color:var(--accent);min-height:44px;padding:0 12px;margin:0}
+.btn.ghost:active{transform:none;opacity:.6}
+.btn:disabled{--b:var(--surface-2);--bs:var(--line);--c:var(--muted);box-shadow:0 4px 0 var(--line);cursor:default}
+.iconbtn{width:44px;height:44px;border-radius:12px;border:0;background:none;color:var(--muted);display:grid;place-items:center;cursor:pointer}
+.iconbtn svg{width:24px;height:24px}
+.iconbtn:active{background:var(--surface-2)}
+.say{width:38px;height:38px;border-radius:50%;border:0;background:var(--accent-soft);color:var(--accent);display:inline-grid;place-items:center;cursor:pointer;flex:none}
+.say svg{width:20px;height:20px}
+.say:active{transform:scale(.92)}
+
+/* Cards & sections */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.sect{display:grid;gap:14px;margin-top:26px}
+.sect>h2{font-size:22px}
+.kicker{font-size:12.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.page-h{display:grid;gap:4px;padding-top:6px}
+.page-h h1{font-size:30px}
+.bar{height:10px;background:var(--surface-2);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:99px;background:var(--accent);transition:width .5s cubic-bezier(.2,.8,.2,1)}
+
+/* Learn: hero */
+.greet{display:grid;gap:2px;padding:6px 0 14px}
+.greet h1{font-size:28px}
+.hero{position:relative;overflow:hidden;border-radius:var(--r-lg);padding:20px;color:#fff;background:var(--uc);box-shadow:0 6px 0 var(--ud);display:grid;gap:12px}
+.hero::before{content:"";position:absolute;right:-60px;top:-70px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.09)}
+.hero::after{content:"";position:absolute;right:30px;bottom:-90px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,.07)}
+.hero>*{position:relative;z-index:1}
+.hero .kicker{color:#fff;opacity:.85}
+.hero h2{font-size:28px}
+.hero p{opacity:.9;font-size:15px}
+.hero .bar{background:rgba(255,255,255,.25)} .hero .bar i{background:#fff}
+.today{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center;margin-top:14px}
+.ring{width:66px;height:66px;position:relative}
+.ring svg{width:66px;height:66px;transform:rotate(-90deg)}
 .ring circle{fill:none;stroke-width:7}
-.banner{border:2px dashed var(--line);border-radius:var(--r);padding:12px 16px;font-size:14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-.unit{display:grid;gap:18px}
-.uhead{border-radius:var(--r);padding:16px 18px;color:#fff;display:grid;grid-template-columns:1fr auto;gap:4px 12px;align-items:center;box-shadow:0 4px 0 var(--ud)}
-.uhead .eyebrow{color:#fff;opacity:.75}
-.uhead h2{font-size:22px}
-.uhead p{opacity:.9;font-size:14px;grid-column:1}
-.uhead .btn{grid-row:1 / span 3;grid-column:2;background:rgba(255,255,255,.15);color:#fff;border-color:rgba(0,0,0,.25)}
-@media (max-width:520px){.uhead{grid-template-columns:1fr}.uhead .btn{grid-row:auto;grid-column:1;justify-self:start}}
-.nodes{display:grid;justify-items:center;gap:30px;padding-block:30px 6px}
-.node{position:relative;width:70px;height:64px;border-radius:50%;border:0;cursor:pointer;background:var(--uc);color:#fff;box-shadow:0 6px 0 var(--ud);display:grid;place-items:center;transition:transform .1s}
-.node:active:not(:disabled){transform:translateY(4px);box-shadow:0 2px 0 var(--ud)}
-.node svg{width:28px;height:28px}
-.node.lock{background:var(--line);color:var(--muted);box-shadow:0 6px 0 var(--line-deep);cursor:default}
-.node.done{background:var(--gold);box-shadow:0 6px 0 #8F6206}
-.node.cur::after{content:"";position:absolute;inset:-9px;border-radius:50%;border:4px solid var(--uc);opacity:.35}
-.node .tip{position:absolute;bottom:calc(100% + 14px);left:50%;transform:translateX(-50%);background:var(--surface);color:var(--uc);border:2px solid var(--line);font-weight:800;font-size:13px;letter-spacing:.06em;padding:5px 12px;border-radius:10px;white-space:nowrap;animation:bob 1.6s ease-in-out infinite}
-@keyframes bob{50%{transform:translate(-50%,-4px)}}
-.endless{justify-self:center}
+.ring b{position:absolute;inset:0;display:grid;place-items:center;color:var(--gold)}
+.ring b svg{width:24px;height:24px;transform:none}
+.week{display:flex;gap:6px;margin-top:8px}
+.day{display:grid;justify-items:center;gap:3px;font-size:11px;font-weight:700;color:var(--muted)}
+.day i{width:26px;height:26px;border-radius:50%;background:var(--surface-2);display:grid;place-items:center;color:#fff}
+.day i svg{width:15px;height:15px}
+.day.on i{background:var(--orange)}
+.day.goal i{background:var(--gold)}
+.day.now span{color:var(--ink)}
+.quick{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.qt{display:grid;gap:8px;align-content:start;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;cursor:pointer;box-shadow:0 3px 0 var(--line)}
+.qt:active:not(:disabled){transform:translateY(3px);box-shadow:none}
+.qt:disabled{cursor:default;opacity:.6}
+.qt .qi{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;color:#fff}
+.qt .qi svg{width:22px;height:22px}
+.qt b{font-size:16px;line-height:1.25}
+.qt span{font-size:13.5px;color:var(--muted);line-height:1.35}
+.notice{display:flex;gap:12px;align-items:center;background:var(--gold-soft);border-radius:var(--r);padding:14px 16px;margin-top:14px}
+.notice svg{width:22px;height:22px;color:var(--gold-2)}
+.notice div{flex:1;font-size:14.5px}
 
-/* Lesson overlay */
-.lesson{position:fixed;inset:0;z-index:30;background:var(--bg);display:grid;grid-template-rows:auto 1fr auto;padding-top:env(safe-area-inset-top,0px)}
-.lbar{display:flex;align-items:center;gap:14px;padding-block:14px;width:100%}
-.lprog{flex:1;height:16px;background:var(--line);border-radius:999px;overflow:hidden}
-.lprog i{display:block;height:100%;background:var(--good);border-radius:999px;transition:width .35s;box-shadow:inset 0 -4px 0 rgba(0,0,0,.12)}
-.lhearts{display:flex;align-items:center;gap:4px;color:var(--bad);font-weight:800;font-variant-numeric:tabular-nums}
-.lbody{overflow-y:auto}
-.lbody .wrap{padding-block:12px 32px;display:grid;gap:22px;max-width:640px}
-.combo{font-family:var(--f-mono);font-size:12px;color:var(--signal);font-weight:500;letter-spacing:.05em;text-transform:uppercase}
-.qtitle{font-family:var(--f-display);font-size:24px;font-weight:700;line-height:1.25}
-.qtext{font-size:18px;padding:14px 16px;border:2px solid var(--line);border-radius:var(--r);background:var(--surface)}
-.qtext .gap{display:inline-block;min-width:90px;border-bottom:3px solid var(--accent);margin:0 4px}
+/* Learn: path */
+.unit{margin-top:34px}
+.uhead{border-radius:var(--r);padding:16px 16px 16px 18px;color:#fff;background:var(--uc);box-shadow:0 5px 0 var(--ud);display:flex;gap:12px;align-items:center}
+.uhead div{flex:1;min-width:0}
+.uhead .kicker{color:#fff;opacity:.8;font-size:11.5px}
+.uhead h2{font-size:21px;margin-top:2px}
+.uhead p{font-size:14px;opacity:.9;margin-top:2px}
+.uhead .btn{--b:rgba(255,255,255,.16);--bs:rgba(0,0,0,.22);--c:#fff;box-shadow:inset 0 0 0 2px rgba(255,255,255,.25),0 4px 0 var(--bs)}
+.nodes{display:grid;justify-items:center;gap:22px;padding:58px 0 6px}
+.node{position:relative;width:76px;height:70px;border-radius:50%;border:0;padding:0;cursor:pointer;background:var(--uc);color:#fff;box-shadow:0 7px 0 var(--ud);display:grid;place-items:center;transition:transform .08s}
+.node svg{width:32px;height:32px}
+.node:active:not(.lock){transform:translateY(5px);box-shadow:0 2px 0 var(--ud)}
+.node.done{background:var(--gold);box-shadow:0 7px 0 var(--gold-2)}
+.node.done:active{box-shadow:0 2px 0 var(--gold-2)}
+.node.lock{background:var(--surface-2);color:var(--line-2);box-shadow:0 7px 0 var(--line);cursor:pointer}
+.node.cur::before{content:"";position:absolute;inset:-10px -10px -14px;border-radius:50%;border:5px solid var(--uc);opacity:.22}
+.node .tip{position:absolute;bottom:calc(100% + 16px);left:50%;transform:translateX(-50%);background:var(--surface);color:var(--uc);border:2px solid var(--line);font:800 13px/1 var(--f-body);letter-spacing:.08em;padding:9px 13px;border-radius:12px;white-space:nowrap;animation:bob 1.8s ease-in-out infinite;box-shadow:0 3px 0 var(--line)}
+.node .tip::after{content:"";position:absolute;top:100%;left:50%;margin-left:-7px;border:7px solid transparent;border-top-color:var(--surface)}
+.node.trophy{width:84px;height:76px;border-radius:24px;background:var(--surface-2);color:var(--line-2);box-shadow:0 7px 0 var(--line)}
+.node.trophy.won{background:var(--gold);color:#fff;box-shadow:0 7px 0 var(--gold-2)}
+.node.trophy svg{width:38px;height:38px}
+@keyframes bob{50%{transform:translate(-50%,-5px)}}
+
+/* Sheet */
+.sheet{position:fixed;inset:0;z-index:70;display:grid;align-items:end}
+.sheet .bd{position:absolute;inset:0;background:var(--scrim);animation:fade .2s ease}
+.sheet .pn{position:relative;width:100%;max-width:560px;margin:0 auto;background:var(--surface);border-radius:26px 26px 0 0;padding:10px max(20px,env(safe-area-inset-right,0px)) calc(22px + env(safe-area-inset-bottom,0px)) max(20px,env(safe-area-inset-left,0px));display:grid;gap:14px;max-height:88vh;overflow:auto;animation:sheetUp .32s cubic-bezier(.2,.9,.25,1.05)}
+.sheet .grab{width:40px;height:5px;border-radius:9px;background:var(--line-2);justify-self:center;margin-bottom:4px}
+.sheet h2{font-size:24px}
+.sheet .sic{width:56px;height:56px;border-radius:18px;display:grid;place-items:center;color:#fff}
+.sheet .sic svg{width:30px;height:30px}
+.facts{display:flex;gap:8px;flex-wrap:wrap}
+.fact{display:inline-flex;align-items:center;gap:6px;background:var(--surface-2);border-radius:999px;padding:6px 12px;font-size:14px;font-weight:700;color:var(--ink-2)}
+.fact svg{width:16px;height:16px}
+@media (min-width:700px){.sheet{align-items:center}.sheet .pn{border-radius:26px;padding-bottom:22px}}
+@keyframes sheetUp{from{transform:translateY(100%)}to{transform:none}}
+@keyframes fade{from{opacity:0}}
+
+/* Lesson */
+.lesson{position:fixed;inset:0;z-index:50;background:var(--bg);display:grid;grid-template-rows:auto 1fr auto;padding-top:env(safe-area-inset-top,0px)}
+.lhead{display:flex;align-items:center;gap:12px;width:100%;max-width:680px;margin:0 auto;padding:10px max(12px,env(safe-area-inset-right,0px)) 6px max(8px,env(safe-area-inset-left,0px))}
+.lprog{flex:1;height:16px;background:var(--surface-2);border-radius:99px;overflow:hidden}
+.lprog i{display:block;height:100%;border-radius:99px;background:var(--good);position:relative;transition:width .45s cubic-bezier(.2,.8,.2,1)}
+.lprog i::after{content:"";position:absolute;left:8px;right:8px;top:4px;height:4px;border-radius:9px;background:rgba(255,255,255,.35)}
+.lhearts{display:flex;align-items:center;gap:4px;color:var(--coral);font-weight:800;font-size:17px;font-variant-numeric:tabular-nums;min-width:44px}
+.lhearts svg{width:24px;height:24px}
+.lhearts.xp{color:var(--gold)}
+.lbody{overflow-y:auto;-webkit-overflow-scrolling:touch}
+.lwrap{max-width:620px;margin:0 auto;padding:14px max(18px,env(safe-area-inset-right,0px)) 28px max(18px,env(safe-area-inset-left,0px));display:grid;gap:20px}
+.lwrap.enter{animation:slideIn .3s cubic-bezier(.2,.8,.2,1)}
+@keyframes slideIn{from{opacity:0;transform:translateX(24px)}}
+.etype{display:inline-flex;align-items:center;gap:6px;justify-self:start;font-size:13px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--et,var(--accent))}
+.etype svg{width:18px;height:18px}
+.streakchip{display:inline-flex;align-items:center;gap:4px;color:var(--orange);font-size:13px;font-weight:800;margin-left:8px;animation:pop .35s}
+.streakchip svg{width:15px;height:15px}
+.qtitle{font-family:var(--f-display);font-size:25px;font-weight:800;line-height:1.2;letter-spacing:-.015em}
+.qtext{display:flex;gap:12px;align-items:center;font-size:19px;line-height:1.45;padding:16px;border:2px solid var(--line);border-radius:var(--r);background:var(--surface)}
+.qtext span{flex:1}
+.gap{display:inline-block;min-width:84px;height:1.1em;border-bottom:3px solid var(--accent);margin:0 3px;vertical-align:-2px}
 .opts{display:grid;gap:10px}
-.opt{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center;text-align:left;border:2px solid var(--line);border-bottom-width:4px;background:var(--surface);padding:12px 14px;border-radius:12px;cursor:pointer;font-size:16px}
-.opt .k{width:26px;height:26px;border:2px solid var(--line);border-radius:7px;display:grid;place-items:center;font-size:12px;color:var(--muted);font-family:var(--f-mono)}
-.opt[aria-pressed="true"]{border-color:var(--accent);background:var(--soft)}
+.opt{display:flex;gap:12px;align-items:center;text-align:left;min-height:58px;border:2px solid var(--line);background:var(--surface);padding:12px 16px;border-radius:var(--r);box-shadow:0 4px 0 var(--line);cursor:pointer;font-size:17px;line-height:1.35;transition:transform .07s,background .15s,border-color .15s;margin-bottom:4px}
+.opt:active:not(:disabled){transform:translateY(3px);box-shadow:0 1px 0 var(--line)}
+.opt .k{display:none;width:28px;height:28px;flex:none;border:2px solid var(--line);border-radius:9px;place-items:center;font-size:13px;font-weight:800;color:var(--muted)}
+@media (hover:hover){.opt .k{display:grid}}
+.opt[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);box-shadow:0 4px 0 var(--accent)}
 .opt[aria-pressed="true"] .k{border-color:var(--accent);color:var(--accent)}
-.opt.ok{border-color:var(--good);background:var(--good-soft)}
-.opt.no{border-color:var(--bad);background:var(--bad-soft)}
+.opt.ok{border-color:var(--good);background:var(--good-soft);box-shadow:0 4px 0 var(--good);animation:pop .3s}
+.opt.no{border-color:var(--bad);background:var(--bad-soft);box-shadow:0 4px 0 var(--bad);animation:shake .4s}
 .opt:disabled{cursor:default}
-.speaker{display:flex;gap:12px;align-items:center}
-.sbtn{width:92px;height:84px;border-radius:18px;border:0;background:var(--u1);color:#fff;box-shadow:0 6px 0 var(--u1d);cursor:pointer;display:grid;place-items:center}
-.sbtn svg{width:40px;height:40px}
-.sbtn.slow{width:60px;height:56px;border-radius:14px}
-.sbtn.slow svg{width:24px;height:24px}
-.sbtn:active{transform:translateY(4px);box-shadow:0 2px 0 var(--u1d)}
-.tiles{display:flex;flex-wrap:wrap;gap:8px}
-.answerline{min-height:64px;border-bottom:2px solid var(--line);padding-bottom:10px;align-content:flex-start}
-.tile{border:2px solid var(--line);border-bottom-width:4px;background:var(--surface);padding:8px 14px;border-radius:12px;cursor:pointer;font-size:16px}
-.tile.ghost{visibility:hidden}
+@keyframes pop{40%{transform:scale(1.04)}}
+@keyframes shake{20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+.listen{display:flex;gap:14px;align-items:flex-end;justify-content:center;padding:6px 0}
+.lbtn{width:96px;height:96px;border-radius:28px;border:0;background:var(--blue);color:#fff;box-shadow:0 7px 0 var(--blue-2);cursor:pointer;display:grid;place-items:center}
+.lbtn svg{width:46px;height:46px}
+.lbtn:active{transform:translateY(5px);box-shadow:0 2px 0 var(--blue-2)}
+.lbtn.slow{width:auto;height:46px;border-radius:14px;padding:0 14px;font-weight:800;font-size:14px;display:flex;gap:6px}
+.lbtn.slow svg{width:20px;height:20px}
+.answerline{display:flex;flex-wrap:wrap;gap:8px;align-content:flex-start;min-height:118px;padding:10px 0;background:repeating-linear-gradient(transparent 0 56px,var(--line) 56px 58px)}
+.bank{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.tile{min-height:46px;border:2px solid var(--line);background:var(--surface);padding:8px 14px;border-radius:14px;box-shadow:0 4px 0 var(--line);cursor:pointer;font-size:17px;margin-bottom:4px;animation:pop .2s}
+.tile:active{transform:translateY(3px);box-shadow:0 1px 0 var(--line)}
+.tile.ghost{background:var(--surface-2);border-color:var(--surface-2);box-shadow:none;color:transparent;animation:none;cursor:default}
 .match{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .match .col{display:grid;gap:10px;align-content:start}
-.match .tile{width:100%;text-align:center}
-.match .tile.sel{border-color:var(--accent);background:var(--soft)}
-.match .tile.gone{opacity:.35;cursor:default;border-color:var(--good)}
-.match .tile.wrong{border-color:var(--bad);background:var(--bad-soft)}
-.lfoot{border-top:2px solid var(--line);background:var(--bg);padding-bottom:env(safe-area-inset-bottom,0px)}
+.match .tile{width:100%;text-align:center;font-size:15.5px;line-height:1.3;min-height:58px;animation:none}
+.match .tile.sel{border-color:var(--blue);background:color-mix(in srgb,var(--blue) 12%,var(--surface));box-shadow:0 4px 0 var(--blue)}
+.match .tile.gone{opacity:.35;cursor:default;border-color:var(--good);box-shadow:none}
+.match .tile.wrong{border-color:var(--bad);background:var(--bad-soft);animation:shake .4s}
+input.field,textarea.field,select.field{width:100%;border:2px solid var(--line);background:var(--surface);border-radius:var(--r-sm);padding:12px 14px;font-size:17px}
+input.field:focus,textarea.field:focus{border-color:var(--accent);outline:none}
+textarea.field{resize:vertical;min-height:110px;line-height:1.45}
+.lfoot{border-top:2px solid var(--line);background:var(--bg);padding:16px max(18px,env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px));transition:background .2s}
 .lfoot.ok{background:var(--good-soft);border-top-color:transparent}
 .lfoot.no{background:var(--bad-soft);border-top-color:transparent}
-.lfoot .wrap{max-width:640px;display:flex;gap:14px;align-items:center;justify-content:space-between;padding-block:18px;flex-wrap:wrap}
-.fb{display:grid;gap:2px;min-width:0;flex:1}
-.fb b{font-family:var(--f-display);font-size:20px}
-.lfoot.ok .fb b{color:var(--good)} .lfoot.no .fb b{color:var(--bad)}
-.fb span{font-size:14px;overflow-wrap:anywhere}
-.center{display:grid;justify-items:center;text-align:center;gap:16px;padding-block:40px}
-.bigicon{width:96px;height:96px;border-radius:28px;display:grid;place-items:center;color:#fff}
-.bigicon svg{width:52px;height:52px}
-.resgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;width:100%;max-width:440px}
-.res{border:2px solid var(--c);border-radius:14px;overflow:hidden}
-.res b{display:block;background:var(--c);color:#fff;font-size:12px;letter-spacing:.06em;text-transform:uppercase;padding:4px}
-.res span{display:block;font-family:var(--f-display);font-size:24px;font-weight:700;padding:8px 4px;color:var(--c);font-variant-numeric:tabular-nums}
-.spin{width:44px;height:44px;border:5px solid var(--line);border-top-color:var(--accent);border-radius:50%;animation:sp 1s linear infinite}
-@keyframes sp{to{transform:rotate(360deg)}}
-.newterms{display:grid;gap:6px;text-align:left;width:100%;max-width:440px}
-.newterms div{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:8px 12px;font-size:14px}
+.lfin{max-width:620px;margin:0 auto;display:flex;gap:12px;align-items:center}
+.lfin .grow{flex:1}
+.fb{display:grid;gap:14px;animation:fbUp .28s cubic-bezier(.2,.9,.25,1.05)}
+@keyframes fbUp{from{transform:translateY(30px);opacity:0}}
+.fbhead{display:flex;gap:12px;align-items:flex-start}
+.fbi{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;color:#fff;flex:none;background:var(--good)}
+.fbi svg{width:24px;height:24px}
+.no .fbi{background:var(--bad)}
+.fbt{flex:1;display:grid;gap:3px;min-width:0}
+.fbt b{font-family:var(--f-display);font-size:21px;color:var(--good-2)}
+.no .fbt b{color:var(--bad-2)}
+.fbt p{font-size:15px;overflow-wrap:anywhere}
+.fbt .ans{color:var(--bad-2);font-weight:700}
+.fbt .why{color:var(--ink-2)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .fbt b{color:var(--good)} :root:not([data-theme="light"]) .no .fbt b,:root:not([data-theme="light"]) .fbt .ans{color:var(--bad)}}
+:root[data-theme="dark"] .fbt b{color:var(--good)} :root[data-theme="dark"] .no .fbt b,:root[data-theme="dark"] .fbt .ans{color:var(--bad)}
+@media (min-width:700px){.fb{grid-template-columns:1fr auto;align-items:center}.fb .btn{min-width:180px}}
+.center{max-width:460px;margin:0 auto;padding:28px max(20px,env(safe-area-inset-right,0px)) 32px max(20px,env(safe-area-inset-left,0px));display:grid;justify-items:center;text-align:center;gap:16px;align-content:center;min-height:100%}
+.badge{width:112px;height:112px;border-radius:34px;display:grid;place-items:center;color:#fff;animation:badge .6s cubic-bezier(.2,1.4,.4,1)}
+.badge svg{width:60px;height:60px}
+@keyframes badge{from{transform:scale(.3) rotate(-12deg);opacity:0}}
+.center h1{font-size:30px}
+.tiles3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%}
+.st{border:2px solid var(--c);border-radius:16px;overflow:hidden;background:var(--surface)}
+.st b{display:block;background:var(--c);color:#fff;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:5px 4px}
+.st span{display:flex;align-items:center;justify-content:center;gap:4px;font-family:var(--f-display);font-size:24px;font-weight:800;padding:10px 4px;color:var(--c);font-variant-numeric:tabular-nums}
+.st span svg{width:20px;height:20px}
+.newwords{width:100%;display:grid;gap:8px;text-align:left}
+.nw{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 14px;display:grid;gap:2px}
+.nw b{font-size:16px} .nw span{font-size:14px;color:var(--muted)}
+.dots{display:flex;gap:8px}
+.dots i{width:12px;height:12px;border-radius:50%;background:var(--accent);animation:dot 1.2s infinite ease-in-out}
+.dots i:nth-child(2){animation-delay:.15s}.dots i:nth-child(3){animation-delay:.3s}
+@keyframes dot{0%,80%,100%{transform:scale(.5);opacity:.4}40%{transform:none;opacity:1}}
 
-/* Vocab */
-.flash{width:100%;max-width:600px;justify-self:center;min-height:240px;background:var(--surface);border:2px solid var(--line);border-bottom-width:5px;border-radius:16px;padding:26px;display:grid;align-content:center;gap:12px;text-align:center;cursor:pointer;position:relative}
-.flash .cat{position:absolute;top:12px;left:16px}
-.flash .boxes{position:absolute;top:14px;right:16px;display:flex;gap:3px}
-.flash .boxes i{width:8px;height:8px;border-radius:2px;background:var(--line)}
-.flash .boxes i.on{background:var(--accent)}
-.flash h2{font-size:clamp(24px,5vw,34px)}
-.flash .back{display:grid;gap:8px;text-align:left;border-top:1px dashed var(--line);padding-top:12px}
-.de{font-family:var(--f-mono);font-size:13px;color:var(--signal)}
-.ex{font-style:italic;color:var(--muted)}
-.vlist{border:1px solid var(--line);border-radius:var(--r);background:var(--surface);overflow:hidden}
-.vitem{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:14px;padding:12px 16px;border-top:1px solid var(--line)}
-.vitem:first-child{border-top:0}
-.vitem>*{min-width:0}
-.tag{font-family:var(--f-mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;background:var(--gold-soft);color:var(--gold);padding:1px 6px;border-radius:4px;margin-left:6px}
-@media (max-width:560px){.vitem{grid-template-columns:1fr;gap:4px}}
+/* Words */
+.seg{display:inline-flex;background:var(--surface-2);border-radius:14px;padding:4px;gap:2px}
+.seg button{border:0;background:none;padding:8px 16px;border-radius:11px;font-weight:700;font-size:15px;color:var(--muted);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:2px 0 4px}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:8px 14px;cursor:pointer;font-size:14px;font-weight:700;color:var(--ink-2)}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.flip{perspective:1400px;width:100%;height:330px;cursor:pointer}
+.flip .in{position:relative;width:100%;height:100%;transition:transform .55s cubic-bezier(.3,.7,.25,1);transform-style:preserve-3d}
+.flip.on .in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;-webkit-backface-visibility:hidden;backface-visibility:hidden;border-radius:var(--r-lg);background:var(--surface);border:2px solid var(--line);box-shadow:0 6px 0 var(--line);display:grid;align-content:center;justify-items:center;gap:12px;padding:24px;text-align:center}
+.face.back{transform:rotateY(180deg);text-align:left;justify-items:stretch;align-content:start;overflow:auto;gap:10px}
+.face h2{font-size:clamp(28px,8vw,38px)}
+.face .ftop{position:absolute;top:14px;left:16px;right:16px;display:flex;justify-content:space-between;align-items:center}
+.lvl{display:flex;gap:3px}
+.lvl i{width:16px;height:6px;border-radius:3px;background:var(--line)}
+.lvl i.on{background:var(--accent)}
+.de{color:var(--orange);font-weight:700}
+.ex{font-style:italic;color:var(--ink-2)}
+.tag{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--gold-2);background:var(--gold-soft);padding:2px 7px;border-radius:6px}
+.cardacts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px}
+.searchbox{position:relative}
+.searchbox svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:20px;height:20px;color:var(--muted)}
+.searchbox input{padding-left:44px}
+.list{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.list details{border-top:1px solid var(--line)}
+.list details:first-child{border-top:0}
+.list summary{list-style:none;display:flex;gap:12px;align-items:center;padding:14px 16px;cursor:pointer}
+.list summary::-webkit-details-marker{display:none}
+.list summary div{flex:1;min-width:0}
+.list summary b{display:block}
+.list summary .chv{width:20px;height:20px;color:var(--muted);transition:transform .2s}
+.list details[open] .chv{transform:rotate(90deg)}
+.list .body{padding:0 16px 16px;display:grid;gap:8px}
 
-/* Roleplay / write */
-.scen{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
-.sc{text-align:left;background:var(--surface);border:2px solid var(--line);border-bottom-width:4px;border-radius:var(--r);padding:14px;cursor:pointer;display:grid;gap:6px;align-content:start}
-.sc:hover{border-color:var(--accent)}
-.sc h3{font-size:17px}
-.sc .who{font-family:var(--f-mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--signal)}
-.sc p{font-size:14px;color:var(--muted)}
-.brief{background:var(--soft);border-radius:var(--r);padding:12px 16px;font-size:14px;display:grid;gap:4px}
-.msgs{display:grid;gap:12px}
-.msg{max-width:min(600px,90%);display:grid;gap:6px}
+/* Coach */
+.scen{display:grid;gap:10px}
+.sc{display:flex;gap:14px;align-items:center;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;cursor:pointer;box-shadow:0 3px 0 var(--line)}
+.sc:active{transform:translateY(3px);box-shadow:none}
+.av{width:46px;height:46px;border-radius:15px;display:grid;place-items:center;color:#fff;font-weight:800;font-size:16px;flex:none}
+.sc div{flex:1;min-width:0;display:grid;gap:2px}
+.sc .who{font-size:12.5px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.sc b{font-size:17px}
+.sc span{font-size:14px;color:var(--muted);line-height:1.35}
+.sc .chv{width:20px;height:20px;color:var(--muted)}
+.locked{display:grid;gap:14px;justify-items:start;background:linear-gradient(160deg,var(--accent-soft),var(--surface) 70%);border:1px solid var(--line);border-radius:var(--r-lg);padding:22px}
+.locked .sic{width:52px;height:52px;border-radius:16px;background:var(--accent);color:var(--on-accent);display:grid;place-items:center}
+.locked .sic svg{width:28px;height:28px}
+.locked ul{margin:0;padding-left:20px;display:grid;gap:6px;color:var(--ink-2)}
+.brief{display:flex;gap:12px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px}
+.brief div{flex:1;min-width:0;font-size:14px}
+.msgs{display:grid;gap:14px;padding:6px 0}
+.msg{max-width:min(560px,88%);display:grid;gap:6px;animation:fbUp .25s}
 .msg.me{justify-self:end}
-.msg .who{font-family:var(--f-mono);font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
-.msg.me .who{text-align:right}
-.bubble{background:var(--surface);border:1px solid var(--line);padding:12px 14px;border-radius:14px 14px 14px 4px;white-space:pre-wrap;overflow-wrap:anywhere}
-.msg.me .bubble{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);border-radius:14px 14px 4px 14px}
-.coach{background:var(--signal-soft);border-radius:10px;padding:10px 12px;font-size:13.5px;display:grid;gap:4px}
-.coach .eyebrow{color:var(--signal)}
-.md{display:grid;gap:8px;font-size:14.5px}
-.md h4{font-family:var(--f-display);font-size:16px;margin:6px 0 0}
+.bubble{background:var(--surface);border:1px solid var(--line);padding:12px 15px;border-radius:20px 20px 20px 6px;white-space:pre-wrap;overflow-wrap:anywhere;font-size:16px}
+.msg.me .bubble{background:var(--accent);color:var(--on-accent);border-color:var(--accent);border-radius:20px 20px 6px 20px}
+.mmeta{display:flex;gap:8px;align-items:center}
+.coachnote{background:var(--gold-soft);border-radius:14px;padding:10px 14px;font-size:14.5px}
+.coachnote summary{cursor:pointer;font-weight:800;color:var(--gold-2);list-style:none;display:flex;align-items:center;gap:6px}
+.coachnote summary::-webkit-details-marker{display:none}
+.coachnote summary svg{width:16px;height:16px}
+.md{display:grid;gap:8px;font-size:15px;margin-top:8px}
+.md h4{font-family:var(--f-display);font-size:17px;margin:6px 0 0}
 .md ul{margin:0;padding-left:20px;display:grid;gap:4px}
-.composer{display:grid;gap:8px;position:sticky;bottom:0;background:var(--bg);padding-block:10px calc(10px + env(safe-area-inset-bottom,0px))}
-.out{white-space:pre-wrap;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;overflow-wrap:anywhere}
-.err{color:var(--bad);font-size:14px}
-.set{display:grid;gap:8px}
-.set label{font-weight:600}
-.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(24px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:8px 16px;border-radius:999px;font-size:13px;z-index:50}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.composer{position:sticky;bottom:calc(var(--tab-h) + env(safe-area-inset-bottom,0px));background:var(--bg);padding:10px 0 12px;display:grid;gap:8px}
+@media (min-width:900px){.composer{bottom:96px}}
+.composer .row{flex-wrap:nowrap}
+.composer textarea{min-height:52px;max-height:160px}
+.out{white-space:pre-wrap;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;overflow-wrap:anywhere;font-size:16px}
+.err{color:var(--bad);font-size:15px;font-weight:600}
+
+/* Profile */
+.prof{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center}
+.flamebig{width:76px;height:76px;border-radius:24px;background:var(--orange-soft);color:var(--orange);display:grid;place-items:center}
+.flamebig svg{width:44px;height:44px}
+.statgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sg{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;display:grid;gap:2px}
+.sg b{font-family:var(--f-display);font-size:26px;font-variant-numeric:tabular-nums;display:flex;align-items:center;gap:6px}
+.sg b svg{width:22px;height:22px}
+.sg span{font-size:14px;color:var(--muted)}
+.group{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.gt{font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:22px 4px 8px}
+.it{display:flex;align-items:center;gap:12px;padding:12px 16px;min-height:58px;border-top:1px solid var(--line);width:100%;background:none;border-left:0;border-right:0;border-bottom:0;text-align:left;cursor:default}
+.group>.it:first-child{border-top:0}
+button.it{cursor:pointer}
+button.it:active{background:var(--surface-2)}
+.it .ii{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;color:#fff;flex:none}
+.it .ii svg{width:20px;height:20px}
+.it .lb{flex:1;min-width:0;display:grid}
+.it .lb b{font-weight:600;font-size:16px}
+.it .lb span{font-size:13.5px;color:var(--muted)}
+.it .val{color:var(--muted);font-size:15px}
+.it .chv{width:20px;height:20px;color:var(--line-2)}
+.it select{border:0;background:none;color:var(--accent);font-weight:700;font-size:16px;text-align:right;max-width:52%;cursor:pointer;padding:6px 0}
+.it input[type=range]{width:140px;accent-color:var(--accent)}
+.sw{appearance:none;-webkit-appearance:none;width:51px;height:31px;border-radius:99px;background:var(--line-2);position:relative;cursor:pointer;transition:background .2s;flex:none;margin:0}
+.sw::after{content:"";position:absolute;top:2px;left:2px;width:27px;height:27px;border-radius:50%;background:#fff;box-shadow:0 2px 5px rgba(0,0,0,.25);transition:transform .22s cubic-bezier(.3,.7,.3,1.2)}
+.sw:checked{background:var(--good)}
+.sw:checked::after{transform:translateX(20px)}
+.foot{text-align:center;font-size:13px;color:var(--muted);margin-top:22px}
+
+/* Onboarding */
+.onb{position:fixed;inset:0;z-index:80;background:var(--bg);overflow-y:auto;padding-top:env(safe-area-inset-top,0px)}
+.onb .center{min-height:calc(100vh - env(safe-area-inset-top,0px));align-content:center}
+.onb .hlogo{width:96px;height:96px}
+.onb h1{font-size:32px}
+.onb p.lead{font-size:17px;color:var(--ink-2);max-width:34ch}
+.choice{display:grid;gap:10px;width:100%;text-align:left}
+.ch{display:flex;gap:14px;align-items:center;border:2px solid var(--line);background:var(--surface);border-radius:var(--r);padding:14px 16px;box-shadow:0 4px 0 var(--line);cursor:pointer;margin-bottom:4px}
+.ch[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);box-shadow:0 4px 0 var(--accent)}
+.ch div{flex:1;display:grid;gap:2px}
+.ch b{font-size:17px} .ch span{font-size:14px;color:var(--muted)}
+.ch .big{font-family:var(--f-display);font-size:22px;font-weight:800;width:52px;text-align:center;color:var(--accent)}
+.steps{display:flex;gap:6px}
+.steps i{width:26px;height:6px;border-radius:9px;background:var(--line)}
+.steps i.on{background:var(--accent)}
+
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(var(--tab-h) + 18px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:999px;font-size:14.5px;font-weight:600;z-index:90;max-width:calc(100% - 32px);text-align:center;animation:fbUp .25s}
+#confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:85}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
-<header class="top">
-  <div class="wrap">
-    <div class="bar">
-      <div class="brand"><h1>Deal Room English</h1><span>Cloud &amp; AI · Solution Area Specialist</span></div>
-      <div class="hstats" id="hstats"></div>
-    </div>
-    <nav class="tabs" id="tabs">
-      <button class="tab" data-v="pfad">Lernpfad</button>
-      <button class="tab" data-v="wortschatz">Wortschatz</button>
-      <button class="tab" data-v="rollenspiel">Rollenspiel</button>
-      <button class="tab" data-v="textcheck">Textcheck</button>
-      <button class="tab" data-v="einstellungen">Einstellungen</button>
-    </nav>
-  </div>
-</header>
+<div class="topbar" id="topbar"><div class="wrap topin">
+  <div class="logo"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="var(--accent)"/><path d="M8.5 8.5h15a3 3 0 0 1 3 3v7a3 3 0 0 1-3 3h-8.2L10.5 25v-3.5h-2a3 3 0 0 1-3-3v-7a3 3 0 0 1 3-3z" fill="#fff"/><text x="16" y="18.3" text-anchor="middle" font-family="Bricolage Grotesque,Segoe UI,sans-serif" font-weight="800" font-size="8.2" fill="#0F7A6E">EN</text></svg>Deal Room</div>
+  <div class="pills" id="pills"></div>
+</div></div>
 <main class="wrap" id="main"></main>
+<nav class="tabbar" aria-label="Hauptnavigation"><div class="in" id="tabs"></div></nav>
 <div class="lesson" id="lesson" hidden></div>
-<div class="toast" id="toast" hidden></div>
+<div class="sheet" id="sheet" hidden></div>
+<div class="onb" id="onb" hidden></div>
+<canvas id="confetti" hidden></canvas>
+<div class="toast" id="toast" role="status" hidden></div>
 
 <script>
 /* ================= Icons ================= */
-const IC = {
-  flame:'<svg class="i" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c1 3.5-1.5 5-1.5 7.5 0 1.4 1 2.5 2.3 2.5 1.5 0 2.2-1.2 2.2-2.8 2.3 1.8 3.5 4.3 3.5 6.6C18.5 19.5 15.6 22 12 22s-6.5-2.5-6.5-6.2C5.5 10.6 11 8 12 2z"/></svg>',
-  bolt:'<svg class="i" viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 2 4 14h6.5L9.5 22 20 9.5h-6.6z"/></svg>',
-  heart:'<svg class="i" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-8-5.1-8-11.2C4 6.6 6.4 4.5 9 4.5c1.4 0 2.4.6 3 1.5.6-.9 1.6-1.5 3-1.5 2.6 0 5 2.1 5 5.3C20 15.9 12 21 12 21z"/></svg>',
-  star:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.2 6.1 20.5l1.3-6.6L2.5 9.3l6.6-.8z"/></svg>',
-  check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>',
-  lock:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 10V8a5 5 0 0 1 10 0v2h1a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1zm2 0h6V8a3 3 0 0 0-6 0z"/></svg>',
-  spark:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.2 6.3L20.5 10l-6.3 2.2L12 18.5l-2.2-6.3L3.5 10l6.3-1.7zM19 15l1 2.6 2.5 1-2.5 1L19 22l-1-2.4-2.5-1 2.5-1z"/></svg>',
-  sound:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 9h4l5-4v14l-5-4H4zM16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" stroke="currentColor" stroke-width="2" fill-rule="evenodd" stroke-linecap="round"/></svg>',
-  slow:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 16c0-4 3.6-7 8-7s7 2.5 7 5.5V16h2v2H5a1 1 0 0 1-1-1zm4 3h2v2H8zm6 0h2v2h-2zM17 7a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"/></svg>',
-  x:'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>',
-  mic:'<svg class="i" viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm6-3a6 6 0 0 1-5 5.9V21h-2v-3.1A6 6 0 0 1 6 12h2a4 4 0 0 0 8 0z"/></svg>',
-  trophy:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 3h10v2h3v3a4 4 0 0 1-4 4h-.3A5 5 0 0 1 13 14.9V18h3v3H8v-3h3v-3.1A5 5 0 0 1 8.3 12H8a4 4 0 0 1-4-4V5h3zm0 4H6v1a2 2 0 0 0 1 1.7zm10 0v2.7A2 2 0 0 0 18 8V7z"/></svg>'
+const svg=(p,o={})=>`<svg viewBox="0 0 24 24" fill="${o.fill?"currentColor":"none"}" stroke="${o.fill?"none":"currentColor"}" stroke-width="${o.sw||2.2}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
+const IC={
+  flame:svg('<path d="M12 2.5c.9 3.2-1.4 4.6-1.4 6.9 0 1.3.9 2.3 2.1 2.3 1.4 0 2-1.1 2-2.6 2.1 1.7 3.3 3.9 3.3 6.1 0 3.6-2.7 6.3-6 6.3s-6-2.6-6-6.1C6 10.7 11.1 8.2 12 2.5z"/>',{fill:1}),
+  bolt:svg('<path d="M13.4 2.5 4.6 13.6h6.1l-1.1 7.9 9.8-11.6h-6.2z"/>',{fill:1}),
+  heart:svg('<path d="M12 20.5s-7.6-4.8-7.6-10.6c0-3 2.3-5 4.7-5 1.4 0 2.3.6 2.9 1.5.6-.9 1.5-1.5 2.9-1.5 2.4 0 4.7 2 4.7 5 0 5.8-7.6 10.6-7.6 10.6z"/>',{fill:1}),
+  path:svg('<path d="M7 20.5c0-3 2.5-4.5 5-4.5s5-1.5 5-4-2.5-4-5-4-5-1.5-5-4.5"/><circle cx="7" cy="3.5" r="1.8" fill="currentColor" stroke="none"/><circle cx="7" cy="20.5" r="1.8" fill="currentColor" stroke="none"/>'),
+  cards:svg('<rect x="3.5" y="6.5" width="12.5" height="14.5" rx="2.5"/><path d="M8 3.5h9.5A2.5 2.5 0 0 1 20 6v11"/>'),
+  chat:svg('<path d="M20.5 11.5c0 4.1-3.8 7.5-8.5 7.5-1.2 0-2.3-.2-3.4-.6L4 20l1.2-3.6C4.1 15 3.5 13.3 3.5 11.5 3.5 7.4 7.3 4 12 4s8.5 3.4 8.5 7.5z"/>'),
+  user:svg('<circle cx="12" cy="8" r="4"/><path d="M4.5 20.5c1.2-3.6 4.1-5.5 7.5-5.5s6.3 1.9 7.5 5.5"/>'),
+  check:svg('<path d="m5 12.5 4.5 4.5L19 7.5"/>',{sw:3.2}),
+  x:svg('<path d="M6 6l12 12M18 6 6 18"/>',{sw:2.6}),
+  lock:svg('<rect x="5" y="10.5" width="14" height="10" rx="3"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/>',{sw:2.6}),
+  star:svg('<path d="m12 3 2.7 5.6 6.1.8-4.5 4.2 1.2 6.1L12 16.8l-5.5 2.9 1.2-6.1-4.5-4.2 6.1-.8z"/>',{fill:1}),
+  trophy:svg('<path d="M7.5 3.5h9V9a4.5 4.5 0 0 1-9 0zM7.5 5.5h-3v1.5a3.5 3.5 0 0 0 3.5 3.5M16.5 5.5h3v1.5a3.5 3.5 0 0 1-3.5 3.5M12 13.5v3.5M8 20.5h8M9.5 17h5"/>'),
+  speaker:svg('<path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/>'),
+  snail:svg('<path d="M3 18h13.5a4.5 4.5 0 0 0 0-9 4.5 4.5 0 0 0-4.5 4.5c0 1.4 1.1 2.5 2.5 2.5S17 14.9 17 13.5"/><path d="M3 18c0-2 1-3.5 3-3.5M19 9l1.5-3M16.5 8.5 16.5 5"/>'),
+  mic:svg('<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/>'),
+  search:svg('<circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/>'),
+  chev:svg('<path d="m9 6 6 6-6 6"/>'),
+  back:svg('<path d="m15 6-6 6 6 6"/>'),
+  spark:svg('<path d="M12 3.5l1.9 5.2 5.1 1.8-5.1 1.8L12 17.5l-1.9-5.2L5 10.5l5.1-1.8zM18.5 15.5l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/>',{fill:1}),
+  replay:svg('<path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3M4.5 4.5v4h4"/>'),
+  play:svg('<path d="M8 5.5v13l10.5-6.5z"/>',{fill:1}),
+  target:svg('<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1" fill="currentColor"/>'),
+  share:svg('<path d="M12 15V3.5M7.5 8 12 3.5 16.5 8M5 12.5V19a1.5 1.5 0 0 0 1.5 1.5h11A1.5 1.5 0 0 0 19 19v-6.5"/>'),
+  download:svg('<path d="M12 3.5V15M7.5 10.5 12 15l4.5-4.5M5 17v2a1.5 1.5 0 0 0 1.5 1.5h11A1.5 1.5 0 0 0 19 19v-2"/>'),
+  key:svg('<circle cx="8" cy="15" r="4"/><path d="m11 12 8.5-8.5M16 7l2.5 2.5M14 9l2 2"/>'),
+  wave:svg('<path d="M3 12h2M7 8v8M11 5v14M15 8v8M19 10.5v3"/>'),
+  copy:svg('<rect x="8.5" y="8.5" width="11.5" height="11.5" rx="2.5"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v7.5a2 2 0 0 0 2 2h2.5"/>'),
+  pen:svg('<path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/><path d="m13.5 6.5 4 4"/>'),
+  trash:svg('<path d="M4.5 7h15M9.5 7V4.5h5V7M6.5 7l1 13h9l1-13"/>'),
+  gauge:svg('<path d="M4 16a8 8 0 1 1 16 0"/><path d="m12 16 4-5"/>'),
+  sound:svg('<path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor"/><path d="M15.5 9a4 4 0 0 1 0 6"/>'),
+  globe:svg('<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.5 2.5 3.5 5.5 3.5 8.5s-1 6-3.5 8.5c-2.5-2.5-3.5-5.5-3.5-8.5s1-6 3.5-8.5z"/>')
 };
+const LOGO=`<svg class="hlogo" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="var(--accent)"/><path d="M8.5 8.5h15a3 3 0 0 1 3 3v7a3 3 0 0 1-3 3h-8.2L10.5 25v-3.5h-2a3 3 0 0 1-3-3v-7a3 3 0 0 1 3-3z" fill="#fff"/><text x="16" y="18.3" text-anchor="middle" font-family="Bricolage Grotesque,Segoe UI,sans-serif" font-weight="800" font-size="8.2" fill="#0F7A6E">EN</text></svg>`;
 
 /* ================= Built-in content ================= */
 const VOCAB = [
@@ -351,68 +562,41 @@ const UNITS = [
 ];
 const LESSONS_PER_UNIT = 5;
 const SCENARIOS = [
- {id:"ciso",who:"CISO · Bank, Wien",title:"Datenhoheit & DORA",desc:"Die CISO einer Wiener Bank ist skeptisch, Kerndaten in die Cloud zu bringen.",role:"Dr. Katharina Steiner, CISO of a mid-sized Austrian bank in Vienna. Sceptical, precise, regulation-focused (GDPR, DORA, FMA supervision). Worried about data residency, concentration risk, exit strategy and who can access the data.",goal:"Verstehe ihre Bedenken und vereinbare einen Workshop mit dem Security-Team."},
- {id:"cfo",who:"CFO · Industrie, Oberösterreich",title:"Kosten planbar machen",desc:"Der CFO eines Maschinenbauers fürchtet unkontrollierte Cloud-Kosten.",role:"Thomas Gruber, CFO of a machinery manufacturer in Upper Austria with 2,000 employees. Numbers-driven, impatient with buzzwords, afraid of runaway cloud bills, wants predictable costs and a clear ROI.",goal:"Baue einen Business Case auf und erkläre, wie Kosten steuerbar bleiben."},
- {id:"ai",who:"Head of Innovation · Versicherung",title:"Vom PoC in die Produktion",desc:"Ein GenAI-Pilot war erfolgreich, steckt aber fest.",role:"Lisa Hofer, Head of Innovation at an Austrian insurance company. Enthusiastic about GenAI but frustrated: the claims-assistant pilot worked, yet the works council, compliance and IT operations are blocking the rollout.",goal:"Finde die echten Blocker und schlage einen Weg zur Produktion vor."},
- {id:"public",who:"IT-Leiter · Verwaltung",title:"Souveränität & Lock-in",desc:"Ein IT-Leiter im öffentlichen Sektor sorgt sich um Abhängigkeit.",role:"Mag. Andreas Berger, head of IT at a regional public administration in Austria. Cautious, politically aware, worried about vendor lock-in, digital sovereignty and public procurement rules.",goal:"Gehe auf Lock-in-Bedenken ein und kläre den nächsten Schritt."},
- {id:"partner",who:"Partner · Systemintegrator",title:"Co-Sell-Planung",desc:"Mit einem Partner planst du gemeinsame Kunden-Accounts.",role:"Markus Wagner, practice lead at an Austrian systems integrator partner. Friendly but commercially sharp; wants clarity on who owns the customer relationship, funding for workshops and how leads are shared.",goal:"Vereinbare drei Ziel-Accounts und klare Verantwortlichkeiten."},
- {id:"manager",who:"Deine Managerin · intern",title:"Forecast-Call",desc:"Deine Managerin will wissen, welche Deals diesen Monat abschließen.",role:"Sarah, the learner's manager in the Austrian Cloud & AI team. Direct, supportive, but pushes hard on forecast accuracy: commit vs upside, risks, next steps and what help is needed.",goal:"Gib einen klaren, ehrlichen Forecast mit Risiken und Hilfebedarf."}
+ {id:"ciso",c:0,ini:"KS",who:"CISO · Bank, Wien",title:"Datenhoheit & DORA",desc:"Die CISO einer Wiener Bank ist skeptisch, Kerndaten in die Cloud zu bringen.",role:"Dr. Katharina Steiner, CISO of a mid-sized Austrian bank in Vienna. Sceptical, precise, regulation-focused (GDPR, DORA, FMA supervision). Worried about data residency, concentration risk, exit strategy and who can access the data.",goal:"Verstehe ihre Bedenken und vereinbare einen Workshop mit dem Security-Team."},
+ {id:"cfo",c:2,ini:"TG",who:"CFO · Industrie, Oberösterreich",title:"Kosten planbar machen",desc:"Der CFO eines Maschinenbauers fürchtet unkontrollierte Cloud-Kosten.",role:"Thomas Gruber, CFO of a machinery manufacturer in Upper Austria with 2,000 employees. Numbers-driven, impatient with buzzwords, afraid of runaway cloud bills, wants predictable costs and a clear ROI.",goal:"Baue einen Business Case auf und erkläre, wie Kosten steuerbar bleiben."},
+ {id:"ai",c:3,ini:"LH",who:"Head of Innovation · Versicherung",title:"Vom PoC in die Produktion",desc:"Ein GenAI-Pilot war erfolgreich, steckt aber fest.",role:"Lisa Hofer, Head of Innovation at an Austrian insurance company. Enthusiastic about GenAI but frustrated: the claims-assistant pilot worked, yet the works council, compliance and IT operations are blocking the rollout.",goal:"Finde die echten Blocker und schlage einen Weg zur Produktion vor."},
+ {id:"public",c:1,ini:"AB",who:"IT-Leiter · Verwaltung",title:"Souveränität & Lock-in",desc:"Ein IT-Leiter im öffentlichen Sektor sorgt sich um Abhängigkeit.",role:"Mag. Andreas Berger, head of IT at a regional public administration in Austria. Cautious, politically aware, worried about vendor lock-in, digital sovereignty and public procurement rules.",goal:"Gehe auf Lock-in-Bedenken ein und kläre den nächsten Schritt."},
+ {id:"partner",c:0,ini:"MW",who:"Partner · Systemintegrator",title:"Co-Sell-Planung",desc:"Mit einem Partner planst du gemeinsame Kunden-Accounts.",role:"Markus Wagner, practice lead at an Austrian systems integrator partner. Friendly but commercially sharp; wants clarity on who owns the customer relationship, funding for workshops and how leads are shared.",goal:"Vereinbare drei Ziel-Accounts und klare Verantwortlichkeiten."},
+ {id:"manager",c:2,ini:"S",who:"Deine Managerin · intern",title:"Forecast-Call",desc:"Deine Managerin will wissen, welche Deals diesen Monat abschließen.",role:"Sarah, the learner's manager in the Austrian Cloud & AI team. Direct, supportive, but pushes hard on forecast accuracy: commit vs upside, risks, next steps and what help is needed.",goal:"Gib einen klaren, ehrlichen Forecast mit Risiken und Hilfebedarf."}
 ];
 const UNIT_ANGLES = ["an Austrian bank","a manufacturer in Upper Austria","a retail chain","an insurance company","a hospital group","a public administration","a logistics company","an energy provider","a software start-up in Vienna","a partner meeting","an internal team meeting","a Teams call with a CIO"];
+const LEVELS={B2:["B2","Ich verstehe viel, suche aber oft nach Worten"],C1:["C1","Ich arbeite sicher auf Englisch, will natürlicher klingen"],C2:["C2","Fast muttersprachlich, es geht um Feinheiten"]};
+const GOALS=[[20,"5 Minuten","Locker"],[30,"10 Minuten","Normal"],[50,"15 Minuten","Ernsthaft"],[80,"20 Minuten","Intensiv"]];
 
 /* ================= Storage ================= */
 const KEY="dre-v2";
 const blank=()=>({cfg:{key:"",model:"claude-opus-5-5",voice:"",rate:1,sound:true,goal:30,hearts:true,level:"C1",autoSpeak:true},
-  hearts:{n:5,t:Date.now(),day:""},xp:{},days:[],units:{},box:{},lib:[],mistakes:[],
+  onboarded:false,lastBackup:0,hearts:{n:5,t:Date.now(),day:""},xp:{},days:[],units:{},box:{},lib:[],mistakes:[],
   stats:{lessons:0,perfect:0,turns:0,texts:0,ai:0},updated:0});
 function fromSaved(o,key){const s=Object.assign(blank(),o);s.cfg=Object.assign(blank().cfg,o.cfg||{});if(key!==undefined)s.cfg.key=key;s.stats=Object.assign(blank().stats,o.stats||{});delete s.pre;return s;}
 let S=blank();
 try{
   const raw=localStorage.getItem(KEY);
-  if(raw){ S=fromSaved(JSON.parse(raw)); }
-  else { const old=localStorage.getItem("dre-v1"); if(old){ const o=JSON.parse(old); if(o.box) S.box=o.box; if(o.days) S.days=o.days; } }
+  if(raw)S=fromSaved(JSON.parse(raw));
+  else{const old=localStorage.getItem("dre-v1");if(old){const o=JSON.parse(old);if(o.box)S.box=o.box;if(o.days)S.days=o.days;}}
 }catch(e){}
-/* Prefetched AI lessons stay on this device only */
+if(!S.onboarded&&(S.stats.lessons>0||S.days.length))S.onboarded=true;
 let PRE={};try{PRE=JSON.parse(localStorage.getItem(KEY+"-pre")||"{}")||{};}catch(e){}
 function savePre(){try{localStorage.setItem(KEY+"-pre",JSON.stringify(PRE));}catch(e){}}
 function save(){
   S.updated=Date.now();S.lib=S.lib.slice(-600);S.mistakes=S.mistakes.slice(-60);
-  try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(e){ if(!IN_CLAUDE) toast("Speichern fehlgeschlagen. Ist der Browser-Speicher voll oder gesperrt?"); }
-  pushSoon();
+  try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){toast("Speichern fehlgeschlagen. Ist der Speicher voll?");}
 }
-
-/* ================= claude.ai mode: Claude via `sample`, progress synced via `db` ================= */
-const IN_CLAUDE=!!(window.claude&&typeof window.claude.use==="function");
-let sampleFn=null,progRef=null,syncState=IN_CLAUDE?"connecting":"off",firstSnap=true;
-let pushTimer=null,pushing=false,pushAgain=false;
-function pushSoon(){if(!progRef)return;clearTimeout(pushTimer);pushTimer=setTimeout(push,1500);}
-async function push(){
-  if(!progRef)return;if(pushing){pushAgain=true;return;}pushing=true;clearTimeout(pushTimer);
-  try{const d=JSON.parse(JSON.stringify(S));d.cfg.key="";await progRef.set(d);syncState="on";}
-  catch(e){syncState="error";}
-  pushing=false;if(pushAgain){pushAgain=false;push();}
-}
-document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden"&&pushTimer)push();});
-async function initClaude(){
-  if(!IN_CLAUDE)return;
-  try{sampleFn=await window.claude.use("sample");}catch(e){sampleFn=null;}
-  let uid=null,dbNs=null;
-  try{const u=await window.claude.use("user");uid=u?await u.id():null;if(uid)dbNs=await window.claude.use("db");}catch(e){}
-  if(!dbNs||!uid){syncState="off";if(appReady)render();return;}
-  progRef=dbNs.doc("data/users/"+uid+"/progress");
-  progRef.onSnapshot(snap=>{
-    syncState="on";
-    if(snap.metadata.hasPendingWrites)return;
-    const r=snap.exists?snap.data():null;
-    if(r&&(r.updated||0)>(S.updated||0)){S=fromSaved(JSON.parse(JSON.stringify(r)),S.cfg.key);try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}if(!L)render();else renderHeader();}
-    else if(firstSnap&&(!r||(r.updated||0)<(S.updated||0))&&S.updated){pushSoon();}
-    firstSnap=false;
-  },()=>{syncState="error";if(appReady&&current==="einstellungen")render();});
-  if(appReady)render();
-}
+try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist().catch(()=>{});}catch(e){}
 
 /* ================= Helpers ================= */
 const $=s=>document.querySelector(s);
+const $$=s=>document.querySelectorAll(s);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
 const pick=(a,n)=>shuffle(a).slice(0,n);
@@ -420,7 +604,7 @@ const dkey=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+Str
 const today=()=>dkey(new Date());
 const norm=s=>String(s).toLowerCase().replace(/[’‘`]/g,"'").replace(/[^a-z0-9'äöüß ]+/g," ").replace(/\s+/g," ").trim();
 function lev(a,b){const m=a.length,n=b.length;if(!m)return n;if(!n)return m;let p=Array.from({length:n+1},(_,i)=>i);for(let i=1;i<=m;i++){const c=[i];for(let j=1;j<=n;j++)c[j]=Math.min(p[j]+1,c[j-1]+1,p[j-1]+(a[i-1]===b[j-1]?0:1));p=c;}return p[n];}
-function toast(msg){const t=$("#toast");t.textContent=msg;t.hidden=false;clearTimeout(toast._t);toast._t=setTimeout(()=>t.hidden=true,2200);}
+function toast(msg){const t=$("#toast");t.textContent=msg;t.hidden=false;clearTimeout(toast._t);toast._t=setTimeout(()=>t.hidden=true,2600);}
 function md(src){
   const lines=String(src).trim().split(/\n/);let html="",inList=false;
   const inline=s=>esc(s).replace(/\*\*(.+?)\*\*/g,"<b>$1</b>");
@@ -432,74 +616,99 @@ function md(src){
   if(inList)html+="</ul>";return html;
 }
 function copy(text){try{navigator.clipboard.writeText(text).then(()=>toast("Kopiert"),()=>toast("Kopieren nicht möglich"));}catch(e){toast("Kopieren nicht möglich");}}
-const unitColor=u=>`--uc:var(--u${UNITS[u].c});--ud:var(--u${UNITS[u].c}d)`;
+const ucol=c=>`--uc:var(--u${c});--ud:var(--u${c}d)`;
+const unitColor=u=>ucol(UNITS[u].c);
+const plural=(n,one,many)=>n+" "+(n===1?one:many);
 
 /* ================= Day, XP, hearts ================= */
-function xpToday(){return S.xp[today()]||0;}
+const xpOn=k=>S.xp[k]||0;
+function xpToday(){return xpOn(today());}
 function addXP(n){S.xp[today()]=xpToday()+n;const keys=Object.keys(S.xp).sort();while(keys.length>120)delete S.xp[keys.shift()];markActive();}
-function markActive(){const t=today();if(!S.days.includes(t)){S.days.push(t);S.days=S.days.slice(-500);}save();renderHeader();}
+function markActive(){const t=today();if(!S.days.includes(t)){S.days.push(t);S.days=S.days.slice(-500);}save();renderTop();}
 function streak(){const set=new Set(S.days);let n=0;const d=new Date();if(!set.has(today()))d.setDate(d.getDate()-1);while(set.has(dkey(d))){n++;d.setDate(d.getDate()-1);}return n;}
 const HEART_MAX=5,HEART_MS=30*60e3;
 function refillHearts(){const h=S.hearts;if(h.day!==today()){h.n=HEART_MAX;h.day=today();h.t=Date.now();}
-  while(h.n<HEART_MAX&&Date.now()-h.t>=HEART_MS){h.n++;h.t+=HEART_MS;} if(h.n>=HEART_MAX)h.t=Date.now();}
-function heartsOn(){return S.cfg.hearts;}
-function renderHeader(){
-  refillHearts();
-  $("#hstats").innerHTML=`<span class="hs streak" title="Tage in Folge">${IC.flame}${streak()}</span>
-   <span class="hs xp" title="XP heute / Tagesziel">${IC.bolt}${xpToday()}/${S.cfg.goal}</span>
-   ${heartsOn()?`<span class="hs heart" title="Herzen">${IC.heart}${S.hearts.n}</span>`:""}`;
+  while(h.n<HEART_MAX&&Date.now()-h.t>=HEART_MS){h.n++;h.t+=HEART_MS;}if(h.n>=HEART_MAX)h.t=Date.now();}
+const heartsOn=()=>S.cfg.hearts;
+const totalXP=()=>Object.values(S.xp).reduce((a,b)=>a+b,0);
+function weekHtml(){
+  const L=["S","M","D","M","D","F","S"];let h="";const set=new Set(S.days);
+  for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const k=dkey(d);const on=set.has(k),goal=xpOn(k)>=S.cfg.goal;
+    h+=`<div class="day ${on?"on":""} ${goal?"goal":""} ${i===0?"now":""}"><i>${goal?IC.check:on?IC.flame:""}</i><span>${L[d.getDay()]}</span></div>`;}
+  return `<div class="week">${h}</div>`;
 }
-setInterval(()=>{const n=S.hearts.n;refillHearts();if(n!==S.hearts.n){save();renderHeader();}},60e3);
+function renderTop(){
+  refillHearts();const st=streak(),act=S.days.includes(today());
+  $("#pills").innerHTML=`<button class="pill fl ${act?"":"off"}" data-pill="streak" aria-label="Serie: ${st} Tage">${IC.flame}${st}</button>
+   <button class="pill xp" data-pill="xp" aria-label="XP heute">${IC.bolt}${xpToday()}</button>
+   ${heartsOn()?`<button class="pill ht" data-pill="hearts" aria-label="Herzen">${IC.heart}${S.hearts.n}</button>`:""}`;
+  $$("[data-pill]").forEach(b=>b.onclick=()=>pillSheet(b.dataset.pill));
+}
+setInterval(()=>{const n=S.hearts.n;refillHearts();if(n!==S.hearts.n){save();renderTop();}},60e3);
+addEventListener("scroll",()=>$("#topbar").classList.toggle("scrolled",scrollY>4),{passive:true});
 
 /* ================= Voice ================= */
 const canSpeak="speechSynthesis" in window;
-let voices=[];
-function loadVoices(){if(!canSpeak)return;voices=speechSynthesis.getVoices().filter(v=>/^en([-_]|$)/i.test(v.lang));if(appReady&&current==="einstellungen")render();}
-let appReady=false;
-if(canSpeak){loadVoices();speechSynthesis.onvoiceschanged=loadVoices;}
+let voices=[],appReady=false;
 const IS_IOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
 const NOVELTY=/Albert|Bad News|Bahh|Bells|Boing|Bubbles|Cellos|Good News|Jester|Organ|Superstar|Trinoids|Whisper|Wobble|Zarvox|Fred|Junior|Kathy|Ralph|Grandma|Grandpa|Eddy|Flo|Reed|Rocko|Sandy|Shelley/i;
+function loadVoices(){if(!canSpeak)return;voices=speechSynthesis.getVoices().filter(v=>/^en([-_]|$)/i.test(v.lang));if(appReady&&current==="profil"&&$("#sheet").hidden&&!L)render();}
+if(canSpeak){loadVoices();speechSynthesis.onvoiceschanged=loadVoices;}
 function voiceScore(v){let s=0;const n=v.name;
-  if(/premium/i.test(n))s+=75; if(/enhanced|erweitert/i.test(n))s+=60;
-  if(/natural|neural/i.test(n))s+=60; if(/online/i.test(n))s+=15; if(/google/i.test(n))s+=20;
+  if(/premium/i.test(n))s+=75;if(/enhanced|erweitert/i.test(n))s+=60;if(/natural|neural/i.test(n))s+=60;if(/online/i.test(n))s+=15;if(/google/i.test(n))s+=20;
   if(/Sonia|Libby|Ryan|Maisie|Thomas|Aria|Jenny|Guy|Emma|Brian|Ava|Andrew|Natasha|William|Daniel|Arthur|Serena|Martha|Samantha|Karen|Moira|Kate|Oliver|Stephanie/i.test(n))s+=10;
-  if(/en-GB/i.test(v.lang))s+=4; if(/en-US/i.test(v.lang))s+=3; if(/desktop|zira|david|mark|hazel|george|susan/i.test(n))s-=10;
-  if(NOVELTY.test(n))s-=200; return s;}
-/* iOS only lets audio and speech start from a tap: unlock both on the first touch */
-let audioUnlocked=false;
+  if(/en-GB/i.test(v.lang))s+=4;if(/en-US/i.test(v.lang))s+=3;if(/desktop|zira|david|mark|hazel|george|susan/i.test(n))s-=10;if(NOVELTY.test(n))s-=200;return s;}
+function bestVoice(){if(S.cfg.voice){const v=voices.find(v=>v.name===S.cfg.voice);if(v)return v;}return voices.slice().sort((a,b)=>voiceScore(b)-voiceScore(a))[0]||null;}
+function speak(text,slow){if(!canSpeak||!text)return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);const v=bestVoice();if(v){u.voice=v;u.lang=v.lang;}else u.lang="en-GB";u.rate=(S.cfg.rate||1)*(slow?.7:1);speechSynthesis.speak(u);}catch(e){}}
+const sayBtn=t=>canSpeak?`<button class="say" data-say="${esc(t)}" aria-label="Anhören">${IC.sound}</button>`:"";
+document.addEventListener("click",e=>{const s=e.target.closest("[data-say]");if(s){e.stopPropagation();speak(s.dataset.say,s.dataset.slow==="1");return;}const c=e.target.closest("[data-copy]");if(c)copy(c.dataset.copy);},true);
+
+/* ================= Sound effects ================= */
+let actx=null,audioUnlocked=false;
 document.addEventListener("pointerdown",()=>{if(audioUnlocked)return;audioUnlocked=true;
   try{if(canSpeak){const u=new SpeechSynthesisUtterance(" ");u.volume=0;speechSynthesis.speak(u);}}catch(e){}
   try{actx=actx||new(window.AudioContext||window.webkitAudioContext)();if(actx.state==="suspended")actx.resume();}catch(e){}},{capture:true});
-function bestVoice(){if(S.cfg.voice){const v=voices.find(v=>v.name===S.cfg.voice);if(v)return v;}return voices.slice().sort((a,b)=>voiceScore(b)-voiceScore(a))[0]||null;}
-function speak(text,slow){if(!canSpeak||!text)return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);const v=bestVoice();if(v){u.voice=v;u.lang=v.lang;}else u.lang="en-GB";u.rate=(S.cfg.rate||1)*(slow?.7:1);speechSynthesis.speak(u);}catch(e){}}
-document.addEventListener("click",e=>{const s=e.target.closest("[data-say]");if(s){speak(s.dataset.say,s.dataset.slow==="1");return;}const c=e.target.closest("[data-copy]");if(c)copy(c.dataset.copy);});
-const sayBtn=t=>canSpeak?`<button class="btn ghost" data-say="${esc(t)}" title="Anhören" aria-label="Anhören">▶</button>`:"";
-
-/* ================= Sound effects ================= */
-let actx=null;
 function tones(seq){if(!S.cfg.sound)return;try{actx=actx||new(window.AudioContext||window.webkitAudioContext)();const t0=actx.currentTime+.02;
   for(const [f,d,st,type,vol] of seq){const o=actx.createOscillator(),g=actx.createGain();o.type=type||"sine";o.frequency.value=f;
     g.gain.setValueAtTime(0,t0+st);g.gain.linearRampToValueAtTime(vol||.16,t0+st+.012);g.gain.exponentialRampToValueAtTime(.0008,t0+st+d);
     o.connect(g).connect(actx.destination);o.start(t0+st);o.stop(t0+st+d+.05);}}catch(e){}}
 const SND={ok:()=>tones([[740,.12,0],[1110,.22,.09]]),no:()=>tones([[196,.28,0,"triangle",.22],[147,.34,.13,"triangle",.2]]),
   done:()=>tones([[523,.16,0],[659,.16,.12],[784,.16,.24],[1047,.45,.36]]),tap:()=>tones([[880,.05,0,"sine",.05]])};
+function confetti(){
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+  const c=$("#confetti"),x=c.getContext("2d"),dpr=devicePixelRatio||1,W=innerWidth,H=innerHeight;c.width=W*dpr;c.height=H*dpr;c.hidden=false;
+  const cs=getComputedStyle(document.documentElement),cols=["--gold","--accent","--coral","--blue","--orange","--good"].map(v=>cs.getPropertyValue(v).trim());
+  const P=Array.from({length:130},()=>({x:W/2+(Math.random()-.5)*80,y:H*.38,vx:(Math.random()-.5)*14,vy:-Math.random()*13-5,r:Math.random()*6,vr:(Math.random()-.5)*.35,w:6+Math.random()*6,h:9+Math.random()*7,c:cols[Math.floor(Math.random()*cols.length)]}));
+  let t=0;(function f(){x.setTransform(dpr,0,0,dpr,0,0);x.clearRect(0,0,W,H);
+    for(const p of P){p.vy+=.38;p.vx*=.99;p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;x.save();x.translate(p.x,p.y);x.rotate(p.r);x.fillStyle=p.c;x.fillRect(-p.w/2,-p.h/2,p.w,p.h*Math.abs(Math.cos(p.r*2)));x.restore();}
+    if(++t<150)requestAnimationFrame(f);else{x.clearRect(0,0,W,H);c.hidden=true;}})();
+}
 
-/* ================= Claude API ================= */
-const MODELS=[["claude-opus-5-5","Claude Opus 5.5 (beste Qualität)"],["claude-sonnet-5-5","Claude Sonnet 5.5 (schneller, günstiger)"],["claude-haiku-5-5","Claude Haiku 5.5 (am schnellsten, sehr günstig)"]];
-const hasAI=()=>IN_CLAUDE?!!sampleFn:!!S.cfg.key;
-/* One entry point for both modes: claude.ai viewer (sample) or local file (own API key) */
-async function aiText({system,messages,signal,effort="low",maxTokens=6000}){
-  if(IN_CLAUDE){
-    if(!sampleFn)throw{code:"not_granted"};
-    const input=system?[{role:"user",content:system},...messages]:messages;
-    const {text}=await sampleFn(input,{cache:false,modelTier:"default",signal});return text;
-  }
-  return callClaude({system,messages,signal,effort,maxTokens});
+/* ================= Sheet ================= */
+function openSheet(html,mount){const s=$("#sheet");s.innerHTML=`<div class="bd"></div><div class="pn" role="dialog" aria-modal="true"><div class="grab"></div>${html}</div>`;s.hidden=false;
+  s.querySelector(".bd").onclick=closeSheet;s.querySelectorAll("[data-close]").forEach(b=>b.onclick=closeSheet);if(mount)mount(s);}
+function closeSheet(){const s=$("#sheet");s.hidden=true;s.innerHTML="";}
+addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("#sheet").hidden)closeSheet();});
+function pillSheet(kind){
+  if(kind==="streak"){const st=streak(),act=S.days.includes(today());
+    openSheet(`<div class="sic" style="background:var(--orange)">${IC.flame}</div><h2>${plural(st,"Tag","Tage")} in Folge</h2>
+      <p class="muted">${act?"Heute hast du schon gelernt. Komm morgen wieder, um deine Serie zu verlängern.":"Mach heute eine Lektion, damit deine Serie weiterläuft."}</p>${weekHtml()}
+      <button class="btn primary block" data-close>${act?"Alles klar":"Okay"}</button>`);}
+  if(kind==="xp"){const x=xpToday(),g=S.cfg.goal;
+    openSheet(`<div class="sic" style="background:var(--gold)">${IC.bolt}</div><h2>${x} von ${g} XP heute</h2>
+      <div class="bar"><i style="width:${Math.min(100,x/g*100)}%;background:var(--gold)"></i></div>
+      <p class="muted">Eine Lektion bringt 10 bis 17 XP. Fehlerfrei gibt es 5 XP extra. Insgesamt hast du ${totalXP()} XP gesammelt.</p>
+      <button class="btn primary block" data-close>Weiter</button>`);}
+  if(kind==="hearts"){refillHearts();const n=S.hearts.n,mins=Math.ceil((HEART_MS-(Date.now()-S.hearts.t))/60e3);
+    openSheet(`<div class="sic" style="background:var(--coral)">${IC.heart}</div><h2>${plural(n,"Herz","Herzen")}</h2>
+      <p class="muted">Jeder Fehler in einer Lektion kostet ein Herz. ${n<HEART_MAX?`Das nächste Herz kommt in etwa ${mins} Minuten.`:"Du hast alle Herzen."} Jeden Tag sind sie wieder voll, und jede Fehler-Wiederholung bringt eines zurück.</p>
+      ${S.mistakes.length?`<button class="btn primary block" id="sRev">${IC.replay} Fehler wiederholen</button>`:""}<button class="btn block" data-close>Schließen</button>`,
+      s=>{const r=s.querySelector("#sRev");if(r)r.onclick=()=>{closeSheet();startLesson(null,"review");};});}
 }
-async function aiJSON(prompt,schema){
-  if(IN_CLAUDE){if(!sampleFn)throw{code:"not_granted"};return await sampleFn.json(prompt,{cache:false,modelTier:"default"});}
-  return callClaude({messages:[{role:"user",content:prompt}],schema,maxTokens:12000,effort:"low"});
-}
+
+/* ================= Claude API (optional, own key) ================= */
+const MODELS=[["claude-opus-5-5","Opus 5.5","beste Qualität"],["claude-sonnet-5-5","Sonnet 5.5","schneller, günstiger"],["claude-haiku-5-5","Haiku 5.5","am schnellsten, sehr günstig"]];
+const hasAI=()=>!!S.cfg.key;
 async function callClaude(opts){
   const {system,messages,schema,maxTokens=8000,effort="low",signal}=opts;
   if(!S.cfg.key)throw{code:"nokey"};
@@ -522,36 +731,33 @@ async function callClaude(opts){
   if(schema){try{return JSON.parse(text);}catch(e){throw{code:"json"};}}
   return text;
 }
-function aiErr(e){const c=e&&e.code;return({nokey:"Kein API-Key hinterlegt. Trage ihn in den Einstellungen ein.",auth:"Der API-Key wurde abgelehnt. Prüfe ihn in den Einstellungen.",
-  rate:"Zu viele Anfragen oder Guthaben aufgebraucht. Bitte kurz warten oder Guthaben in der Claude Console prüfen.",server:"Claude ist gerade überlastet. Bitte gleich nochmal versuchen.",
-  network:"Keine Verbindung zur Claude API. Bist du online?",refusal:"Claude hat diese Anfrage abgelehnt. Formuliere sie bitte anders.",json:"Die Antwort war unvollständig. Bitte nochmal versuchen.",
-  cancelled:"",bad:"Die Anfrage war ungültig"+(e&&e.message?": "+e.message:"."),
-  not_granted:"Claude ist für diese Seite nicht freigegeben. Erlaube Claude beim nächsten Versuch.",sampling_disabled:"Claude ist für dieses Konto nicht verfügbar.",
-  rate_limited:"Gerade zu viele Anfragen oder dein Claude-Limit ist erreicht. Bitte später nochmal versuchen.",session_expired:"Bitte neu bei Claude anmelden.",
-  refused:"Claude hat diese Anfrage abgelehnt. Formuliere sie bitte anders.",invalid_json:"Die Antwort war unvollständig. Bitte nochmal versuchen.",
-  empty_completion:"Claude hat nichts geantwortet. Bitte nochmal versuchen.",upstream_error:"Verbindung unterbrochen. Bitte nochmal versuchen."})[c]||"Unbekannter Fehler.";}
+const aiText=o=>callClaude(o);
+const aiJSON=(prompt,schema)=>callClaude({messages:[{role:"user",content:prompt}],schema,maxTokens:12000,effort:"low"});
+function aiErr(e){const c=e&&e.code;return({nokey:"Kein API-Key hinterlegt.",auth:"Der API-Key wurde abgelehnt. Prüfe ihn im Profil.",
+  rate:"Zu viele Anfragen oder Guthaben aufgebraucht. Bitte kurz warten.",server:"Claude ist gerade überlastet. Bitte gleich nochmal versuchen.",
+  network:"Keine Internetverbindung.",refusal:"Diese Anfrage wurde abgelehnt. Formuliere sie bitte anders.",json:"Die Antwort war unvollständig. Bitte nochmal versuchen.",
+  cancelled:"",bad:"Die Anfrage war ungültig"+(e&&e.message?": "+e.message:".")})[c]||"Unbekannter Fehler.";}
 
-/* ================= Exercise model =================
-   {type, prompt, text, options[], answer, pairs[], explanation, say?}
-   types: mc, fill, correct_sentence, listen_choose, listen_type, build, match */
+/* ================= Exercises ================= */
 const EX_TYPES=["mc","fill","correct_sentence","listen_choose","listen_type","build","match"];
+const EX_META={mc:["Auswahl","var(--accent)",IC.target],fill:["Lückentext","var(--u2)",IC.pen],correct_sentence:["Fehler finden","var(--coral)",IC.search],
+  listen_choose:["Hören","var(--blue)",IC.wave],listen_type:["Diktat","var(--blue)",IC.wave],build:["Satz bauen","var(--u3)",IC.cards],match:["Paare finden","var(--gold-2)",IC.spark]};
 const LESSON_SCHEMA={type:"object",additionalProperties:false,required:["title","new_terms","exercises"],properties:{
   title:{type:"string"},
   new_terms:{type:"array",items:{type:"object",additionalProperties:false,required:["term","de","definition","example"],properties:{term:{type:"string"},de:{type:"string"},definition:{type:"string"},example:{type:"string"}}}},
   exercises:{type:"array",items:{type:"object",additionalProperties:false,required:["type","prompt","text","options","answer","pairs","explanation"],properties:{
     type:{type:"string",enum:EX_TYPES},prompt:{type:"string"},text:{type:"string"},options:{type:"array",items:{type:"string"}},answer:{type:"string"},
     pairs:{type:"array",items:{type:"object",additionalProperties:false,required:["en","de"],properties:{en:{type:"string"},de:{type:"string"}}}},explanation:{type:"string"}}}}}};
-
 function cleanEx(e){
   if(!e||!EX_TYPES.includes(e.type))return null;
   const x={type:e.type,prompt:String(e.prompt||"").trim(),text:String(e.text||"").trim(),options:(e.options||[]).map(o=>String(o).trim()).filter(Boolean),
     answer:String(e.answer||"").trim(),pairs:(e.pairs||[]).filter(p=>p&&p.en&&p.de).map(p=>({en:String(p.en),de:String(p.de)})),explanation:String(e.explanation||"").trim(),say:e.say||""};
-  if(!canSpeak&&(x.type==="listen_choose"||x.type==="listen_type")){ if(x.type==="listen_type")return null; x.type="mc"; x.prompt="Welcher Satz ist korrekt geschrieben?"; }
+  if(!canSpeak&&(x.type==="listen_choose"||x.type==="listen_type")){if(x.type==="listen_type")return null;x.type="mc";x.prompt="Welcher Satz ist korrekt geschrieben?";}
   if(["mc","fill","correct_sentence","listen_choose"].includes(x.type)){
     if(x.type==="listen_choose"&&!x.answer)x.answer=x.text;
     if(!x.answer)return null;
     if(!x.options.some(o=>o===x.answer))x.options.push(x.answer);
-    x.options=shuffle([...new Set(x.options)]).slice(0,5); if(!x.options.includes(x.answer))x.options[0]=x.answer;
+    x.options=shuffle([...new Set(x.options)]).slice(0,5);if(!x.options.includes(x.answer))x.options[0]=x.answer;
     if(x.options.length<2)return null;
     if(x.type==="fill"&&!/_{2,}/.test(x.text))return null;
     if(x.type==="listen_choose"&&!x.text)x.text=x.answer;
@@ -562,8 +768,6 @@ function cleanEx(e){
   if(x.type==="match"){if(x.pairs.length<3)return null;x.pairs=x.pairs.slice(0,5);}
   return x;
 }
-
-/* ---------- Local lesson generator ---------- */
 function unitTerms(u){return VOCAB.filter(v=>v.u===u).map(v=>({t:v.t,de:v.de,d:v.d,ex:v.ex})).concat(S.lib.filter(l=>l.u===u).map(l=>({t:l.t,de:l.de,d:l.d,ex:l.ex})));}
 function gapOf(sentence,term){const re=new RegExp(term.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"),"i");return re.test(sentence)?sentence.replace(re,"_____"):null;}
 function localLesson(uid){
@@ -591,13 +795,10 @@ function localLesson(uid){
     pick(FALSE_FRIENDS,5).forEach(([w,r,de])=>ex.push({type:"correct_sentence",prompt:"Welcher Satz ist korrekt?",options:[r,w],answer:r,explanation:de}));
     pick(FALSE_FRIENDS,2).forEach(([w,r,de])=>ex.push({type:"build",prompt:`Korrigiere: „${w}“`,text:"",answer:r,options:pick(w.split(" ").filter(x=>!r.split(" ").includes(x)),2),explanation:de}));
     pick(FALSE_FRIENDS,2).forEach(([w,r,de])=>ex.push({type:"listen_type",prompt:"Schreib, was du hörst.",text:r,answer:r,explanation:de}));
-    ex.push({type:"match",prompt:"Deutsches Wort und richtige Übersetzung",pairs:[["aktuell","current"],["eventuell","perhaps"],["bekommen","get"],["sensibel","sensitive"],["kontrollieren","check"],["Chef","manager"],["konsequent","consistent"]].sort(()=>Math.random()-.5).slice(0,5).map(([de,en])=>({en,de})),explanation:""});
+    ex.push({type:"match",prompt:"Deutsches Wort und richtige Übersetzung",pairs:shuffle([["aktuell","current"],["eventuell","perhaps"],["bekommen","get"],["sensibel","sensitive"],["kontrollieren","check"],["Chef","manager"],["konsequent","consistent"]]).slice(0,5).map(([de,en])=>({en,de})),explanation:""});
   }
-  const list=shuffle(ex).map(cleanEx).filter(Boolean);
-  return {title:u.title,exercises:list.slice(0,11),new_terms:[],source:"local"};
+  return {title:u.title,exercises:shuffle(ex).map(cleanEx).filter(Boolean).slice(0,11),new_terms:[],source:"local"};
 }
-
-/* ---------- AI lesson generator ---------- */
 function knownTerms(uid){return unitTerms(uid).map(t=>t.t).concat(S.lib.map(l=>l.t)).slice(-200);}
 async function aiLesson(uid){
   const u=UNITS[uid];const angle=pick(UNIT_ANGLES,2).join(" and ");
@@ -614,20 +815,16 @@ Write exactly 12 exercises in this mix: 2 "mc", 2 "fill", 1 "correct_sentence", 
 - mc: prompt = question in German (e.g. what a term means, which phrase fits a situation); text = optional English context sentence or ""; options = 4 English options; answer = the correct option, copied exactly.
 - fill: prompt = "Ergänze die Lücke."; text = English sentence with the gap written as "_____"; options = 4 single words or short phrases; answer = correct option exactly.
 - correct_sentence: prompt = "Welcher Satz ist korrekt?"; options = 3 English sentences, two contain a typical German-speaker mistake (false friend, preposition, tense, word order); answer = the correct one exactly.
-- listen_choose: prompt = "Was hörst du?"; text = English sentence that will be read aloud; options = 3 similar-sounding or similar-looking sentences including the exact text; answer = text.
+- listen_choose: prompt = "Was hörst du?"; text = English sentence that will be read aloud; options = 3 similar sentences including the exact text; answer = text.
 - listen_type: prompt = "Schreib, was du hörst."; text = short English sentence (max 10 words) read aloud; answer = same as text.
 - build: prompt = "Übersetze ins Englische."; text = a German sentence; answer = natural English translation (max 12 words, no alternatives); options = 3 single distractor words that are NOT in the answer.
 - match: prompt = "Finde die Paare."; pairs = 5 pairs with en = English term, de = German meaning; options = []; text = ""; answer = "".
 For every exercise: unused fields are "" or []; explanation = one short German sentence that teaches why (e.g. the false friend or the nuance).
-title = short German lesson title.
-
-Reply with only one JSON object of this shape:
-{"title": string, "new_terms": [{"term": string, "de": string, "definition": string, "example": string}], "exercises": [{"type": string, "prompt": string, "text": string, "options": [string], "answer": string, "pairs": [{"en": string, "de": string}], "explanation": string}]}`;
+title = short German lesson title.`;
   const res=await aiJSON(prompt,LESSON_SCHEMA);
   const ex=(res.exercises||[]).map(cleanEx).filter(Boolean);
   if(ex.length<6)throw{code:"json"};
-  const nt=(res.new_terms||[]).filter(t=>t.term&&t.de).slice(0,5);
-  return {title:res.title||u.title,exercises:ex,new_terms:nt,source:"ai"};
+  return {title:res.title||u.title,exercises:ex,new_terms:(res.new_terms||[]).filter(t=>t.term&&t.de).slice(0,5),source:"ai"};
 }
 const prefetching={};
 function prefetch(uid){
@@ -638,9 +835,12 @@ function prefetch(uid){
 
 /* ================= Lesson engine ================= */
 let L=null;
-function lessonEl(){return $("#lesson");}
+const LZ=()=>$("#lesson");
+function openLayer(){LZ().hidden=false;document.body.classList.add("lock");}
+function makeL(uid,mode,lesson){return {uid,mode,title:lesson.title,source:lesson.source,new_terms:lesson.new_terms||[],queue:lesson.exercises.slice(),idx:0,
+  correct:0,wrong:0,combo:0,maxCombo:0,start:Date.now(),requeued:new Set(),state:"answer",ans:null,fresh:true,wasActive:S.days.includes(today())};}
 async function startLesson(uid,mode){
-  refillHearts();
+  closeSheet();refillHearts();
   if(mode!=="review"&&heartsOn()&&S.hearts.n<=0){showNoHearts();return;}
   if(canSpeak)speechSynthesis.cancel();
   let lesson;
@@ -651,244 +851,286 @@ async function startLesson(uid,mode){
   } else if(hasAI()){
     if(PRE[uid]&&PRE[uid].length){lesson=PRE[uid].shift();savePre();}
     else{
-      const ctl={cancel:false,mode};
-      showLoading(uid,ctl);
-      try{lesson=await aiLesson(uid);}catch(e){ if(ctl.cancel)return; toast(aiErr(e)+" Offline-Lektion wird verwendet.");lesson=localLesson(uid);}
+      const ctl={cancel:false};showLoading(uid,mode,ctl);
+      try{lesson=await aiLesson(uid);}catch(e){if(ctl.cancel)return;toast(aiErr(e)+" Ich nehme eine Lektion aus dem Grundkurs.");lesson=localLesson(uid);}
       if(ctl.cancel)return;
     }
     prefetch(uid);
   } else lesson=localLesson(uid);
-  L={uid,mode,title:lesson.title,source:lesson.source,new_terms:lesson.new_terms||[],queue:lesson.exercises.slice(),idx:0,base:lesson.exercises.length,
-     correct:0,wrong:0,combo:0,maxCombo:0,start:Date.now(),requeued:new Set(),state:"answer",ans:null};
-  document.body.style.overflow="hidden";
-  renderEx();
+  L=makeL(uid,mode,lesson);openLayer();renderEx();
 }
-function showLoading(uid,ctl){
-  const el=lessonEl();el.hidden=false;document.body.style.overflow="hidden";
-  el.innerHTML=`<div></div><div class="lbody"><div class="wrap center"><div class="spin"></div><h2>Neue Lektion wird erstellt …</h2>
-   <p class="lead">Claude schreibt gerade eine frische Lektion zu „${esc(UNITS[uid].title)}“. Das dauert meist 10 bis 30 Sekunden. Die nächste wird schon im Hintergrund vorbereitet.</p>
-   <div class="row" style="justify-content:center"><button class="btn" id="offl">Offline-Lektion starten</button><button class="btn ghost" id="cancelLoad">Abbrechen</button></div></div></div><div></div>`;
-  $("#offl").onclick=()=>{ctl.cancel=true;const l=localLesson(uid);L={uid,mode:ctl.mode,title:l.title,source:"local",new_terms:[],queue:l.exercises.slice(),idx:0,base:l.exercises.length,correct:0,wrong:0,combo:0,maxCombo:0,start:Date.now(),requeued:new Set(),state:"answer",ans:null};renderEx();};
+function showLoading(uid,mode,ctl){
+  openLayer();
+  LZ().innerHTML=`<div></div><div class="lbody"><div class="center"><div class="dots"><i></i><i></i><i></i></div><h1>Neue Lektion wird erstellt</h1>
+   <p class="muted">Claude schreibt gerade eine frische Lektion zu „${esc(UNITS[uid].title)}“. Das dauert meist 10 bis 30 Sekunden. Die nächste wird schon im Hintergrund vorbereitet.</p>
+   <button class="btn block" id="offl">Lektion aus dem Grundkurs starten</button><button class="btn ghost" id="cancelLoad">Abbrechen</button></div></div><div></div>`;
+  $("#offl").onclick=()=>{ctl.cancel=true;L=makeL(uid,mode,localLesson(uid));renderEx();};
   $("#cancelLoad").onclick=()=>{ctl.cancel=true;closeLesson();};
 }
-function closeLesson(){L=null;lessonEl().hidden=true;lessonEl().innerHTML="";document.body.style.overflow="";if(canSpeak)speechSynthesis.cancel();render();}
+function closeLesson(){L=null;LZ().hidden=true;LZ().innerHTML="";document.body.classList.remove("lock");if(canSpeak)speechSynthesis.cancel();render();}
 function showNoHearts(){
-  const el=lessonEl();el.hidden=false;document.body.style.overflow="hidden";
-  const mins=Math.ceil((HEART_MS-(Date.now()-S.hearts.t))/60e3);
-  el.innerHTML=`<div></div><div class="lbody"><div class="wrap center"><div class="bigicon" style="background:var(--bad)">${IC.heart.replace('class="i"','')}</div>
-   <h2>Keine Herzen mehr</h2><p class="lead">Das nächste Herz kommt in etwa ${mins} Minuten. Oder wiederhole deine Fehler: Jede abgeschlossene Wiederholung bringt ein Herz zurück.</p>
-   <div class="row" style="justify-content:center"><button class="btn primary big" id="rev">Fehler wiederholen</button><button class="btn" id="cl">Später</button></div></div></div><div></div>`;
+  openLayer();const mins=Math.ceil((HEART_MS-(Date.now()-S.hearts.t))/60e3);
+  LZ().innerHTML=`<div></div><div class="lbody"><div class="center"><div class="badge" style="background:var(--coral)">${IC.heart}</div>
+   <h1>Keine Herzen mehr</h1><p class="muted">Das nächste Herz kommt in etwa ${mins} Minuten. Oder wiederhole deine Fehler: Jede abgeschlossene Wiederholung bringt ein Herz zurück.</p>
+   <button class="btn primary block" id="rev">${IC.replay} Fehler wiederholen</button><button class="btn ghost" id="cl">Später</button></div></div><div></div>`;
   $("#rev").onclick=()=>startLesson(null,"review");$("#cl").onclick=closeLesson;
 }
-function curEx(){return L.queue[L.idx];}
+const curEx=()=>L.queue[L.idx];
 function exHtml(x){
-  const listenBtns=t=>`<div class="speaker"><button class="sbtn" data-say="${esc(t)}" aria-label="Anhören">${IC.sound}</button><button class="sbtn slow" data-say="${esc(t)}" data-slow="1" aria-label="Langsam anhören">${IC.slow}</button></div>`;
+  const listen=t=>`<div class="listen"><button class="lbtn" data-say="${esc(t)}" aria-label="Anhören">${IC.speaker}</button><button class="lbtn slow" data-say="${esc(t)}" data-slow="1" aria-label="Langsam anhören">${IC.snail} Langsam</button></div>`;
   const opts=()=>`<div class="opts">${x.options.map((o,i)=>`<button class="opt" data-i="${i}" aria-pressed="${L.ans===i}"><span class="k">${i+1}</span><span>${esc(o)}</span></button>`).join("")}</div>`;
-  const label={mc:"Wähle die richtige Antwort",fill:"Lückentext",correct_sentence:"Fehler finden",listen_choose:"Hörverständnis",listen_type:"Hören und schreiben",build:"Satz bauen",match:"Paare finden"}[x.type];
-  let h=`<div class="eyebrow">${label}${L.combo>=3?` · <span class="combo">${L.combo}er Serie</span>`:""}</div><p class="qtitle">${esc(x.prompt)}</p>`;
-  if(x.type==="mc"){ if(x.text)h+=`<p class="qtext">${esc(x.text)} ${sayBtn(x.text)}</p>`; h+=opts(); }
-  if(x.type==="fill"){ h+=`<p class="qtext">${esc(x.text).replace(/_{2,}/,'<span class="gap"></span>')}</p>`+opts(); }
+  const [label,col,icon]=EX_META[x.type];
+  let h=`<div><span class="etype" style="--et:${col}">${icon}${label}</span>${L.combo>=3?`<span class="streakchip">${IC.flame}${L.combo} in Folge</span>`:""}</div><p class="qtitle">${esc(x.prompt)}</p>`;
+  if(x.type==="mc"){if(x.text)h+=`<div class="qtext"><span>${esc(x.text)}</span>${sayBtn(x.text)}</div>`;h+=opts();}
+  if(x.type==="fill")h+=`<div class="qtext"><span>${esc(x.text).replace(/_{2,}/,'<span class="gap"></span>')}</span></div>`+opts();
   if(x.type==="correct_sentence")h+=opts();
-  if(x.type==="listen_choose")h+=listenBtns(x.text)+opts();
-  if(x.type==="listen_type")h+=listenBtns(x.text)+`<input type="text" id="typed" autocomplete="off" spellcheck="false" placeholder="Auf Englisch schreiben …" value="${esc(L.ans||"")}">`;
+  if(x.type==="listen_choose")h+=listen(x.text)+opts();
+  if(x.type==="listen_type")h+=listen(x.text)+`<input class="field" type="text" id="typed" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Auf Englisch schreiben …" value="${esc(L.ans||"")}">`;
   if(x.type==="build"){
     if(!L.tiles){const words=x.answer.split(/\s+/).map(w=>w.replace(/^[^\w']+|[^\w'%]+$/g,"")).filter(Boolean);L.tiles=shuffle(words.concat(x.options.map(o=>o.replace(/[^\w'%-]/g,"")).filter(Boolean)));L.sel=[];}
-    if(x.say)h+=listenBtns(x.say); if(x.text)h+=`<p class="qtext">${esc(x.text)}</p>`;
-    h+=`<div class="tiles answerline" id="aline">${L.sel.map(i=>`<button class="tile" data-out="${i}">${esc(L.tiles[i])}</button>`).join("")}</div>
-       <div class="tiles" id="bank">${L.tiles.map((t,i)=>`<button class="tile ${L.sel.includes(i)?"ghost":""}" data-in="${i}">${esc(t)}</button>`).join("")}</div>`;
+    if(x.say)h+=listen(x.say);if(x.text)h+=`<div class="qtext"><span>${esc(x.text)}</span></div>`;
+    h+=`<div class="answerline">${L.sel.map(i=>`<button class="tile" data-out="${i}">${esc(L.tiles[i])}</button>`).join("")}</div>
+       <div class="bank">${L.tiles.map((t,i)=>`<button class="tile ${L.sel.includes(i)?"ghost":""}" data-in="${i}" ${L.sel.includes(i)?'tabindex="-1" aria-hidden="true"':""}>${esc(t)}</button>`).join("")}</div>`;
   }
   if(x.type==="match"){
-    if(!L.m){L.m={left:shuffle(x.pairs.map((p,i)=>i)),right:shuffle(x.pairs.map((p,i)=>i)),done:new Set(),a:null,b:null,miss:0};}
+    if(!L.m)L.m={left:shuffle(x.pairs.map((p,i)=>i)),right:shuffle(x.pairs.map((p,i)=>i)),done:new Set(),a:null,b:null,miss:0};
     const m=L.m;
     h+=`<div class="match"><div class="col">${m.left.map(i=>`<button class="tile ${m.done.has(i)?"gone":""} ${m.a===i?"sel":""}" data-l="${i}" ${m.done.has(i)?"disabled":""}>${esc(x.pairs[i].en)}</button>`).join("")}</div>
       <div class="col">${m.right.map(i=>`<button class="tile ${m.done.has(i)?"gone":""} ${m.b===i?"sel":""}" data-r="${i}" ${m.done.has(i)?"disabled":""}>${esc(x.pairs[i].de)}</button>`).join("")}</div></div>`;
   }
   return h;
 }
-function canCheck(){const x=curEx();if(x.type==="listen_type")return !!(L.ans&&L.ans.trim());if(x.type==="build")return L.sel&&L.sel.length>0;if(x.type==="match")return false;return L.ans!==null&&L.ans!==undefined;}
+function canCheck(){const x=curEx();if(x.type==="listen_type")return !!(L.ans&&L.ans.trim());if(x.type==="build")return !!(L.sel&&L.sel.length);if(x.type==="match")return false;return L.ans!==null&&L.ans!==undefined;}
+function footHtml(x,st){
+  if(st==="answer")return `<div class="lfin">${x.type==="match"?`<p class="muted small grow" style="text-align:center">Tippe links und rechts auf zusammengehörige Begriffe.</p>`:`<button class="btn ghost" id="skip">Überspringen</button><button class="btn primary grow" id="chk" ${canCheck()?"":"disabled"}>Prüfen</button>`}</div>`;
+  const ok=st==="ok";
+  return `<div class="lfin fb"><div class="fbhead"><span class="fbi">${ok?IC.check:IC.x}</span><div class="fbt"><b>${ok?esc(L.fbTitle||"Richtig!"):"Nicht ganz."}</b>
+    ${!ok?`<p>Richtig ist: <span class="ans">${esc(L.fbAnswer)}</span></p>`:""}${x.explanation?`<p class="why">${esc(x.explanation)}</p>`:""}</div>
+    ${!ok&&x.type!=="match"&&canSpeak&&/[a-z]/i.test(L.fbAnswer)?sayBtn(L.fbAnswer):""}</div>
+    <button class="btn ${ok?"good":"bad"} block" id="nxt">Weiter</button></div>`;
+}
 function renderEx(){
-  const el=lessonEl();el.hidden=false;
+  openLayer();
   if(L.idx>=L.queue.length){finishLesson();return;}
-  const x=curEx();const pct=Math.round(L.idx/L.queue.length*100);
-  const st=L.state;
-  el.innerHTML=`<div class="wrap lbar"><button class="btn ghost" id="lx" aria-label="Lektion beenden">${IC.x}</button><div class="lprog"><i style="width:${Math.max(3,pct)}%"></i></div>
-     ${heartsOn()&&L.mode!=="review"?`<span class="lhearts">${IC.heart}${S.hearts.n}</span>`:""}</div>
-   <div class="lbody"><div class="wrap" id="exw">${exHtml(x)}</div></div>
-   <div class="lfoot ${st==="ok"?"ok":st==="no"?"no":""}"><div class="wrap">
-     ${st==="answer"?`<button class="btn ghost" id="skip">Überspringen</button><button class="btn primary big" id="chk" ${canCheck()?"":"disabled"}>Prüfen</button>`:
-       `<div class="fb"><b>${st==="ok"?(L.fbTitle||"Richtig!"):"Nicht ganz."}</b>${st==="no"?`<span>Richtig: <b style="font-size:inherit;font-family:inherit">${esc(L.fbAnswer)}</b></span>`:""}${x.explanation?`<span>${esc(x.explanation)}</span>`:""}</div>
-        <button class="btn big ${st==="ok"?"good":"bad"}" id="nxt">Weiter</button>`}
-   </div></div>`;
-  wireEx();
-  if(st==="answer"&&(x.type==="listen_choose"||x.type==="listen_type"||(x.type==="build"&&x.say))&&!L.spoken){L.spoken=true;setTimeout(()=>speak(x.type==="build"?x.say:x.text),250);}
-  const t=$("#typed");if(t&&st==="answer")t.focus();
+  const x=curEx(),pct=L.idx/L.queue.length*100,st=L.state;
+  LZ().innerHTML=`<div class="lhead"><button class="iconbtn" id="lx" aria-label="Lektion beenden">${IC.x}</button><div class="lprog" role="progressbar" aria-valuenow="${Math.round(pct)}" aria-valuemin="0" aria-valuemax="100"><i style="width:${Math.max(5,pct)}%"></i></div>
+     ${heartsOn()&&L.mode!=="review"?`<span class="lhearts">${IC.heart}${S.hearts.n}</span>`:`<span class="lhearts xp">${IC.bolt}${L.correct}</span>`}</div>
+   <div class="lbody"><div class="lwrap ${L.fresh?"enter":""}">${exHtml(x)}</div></div>
+   <div class="lfoot ${st==="answer"?"":st}">${footHtml(x,st)}</div>`;
+  L.fresh=false;wireEx();
+  if(st==="answer"&&!L.spoken&&(x.type==="listen_choose"||x.type==="listen_type"||(x.type==="build"&&x.say))){L.spoken=true;setTimeout(()=>speak(x.type==="build"?x.say:x.text),350);}
+  const t=$("#typed");if(t&&st==="answer"&&!IS_IOS)t.focus();
 }
 function wireEx(){
-  const x=curEx();
-  $("#lx").onclick=()=>{ if(confirmQuit())closeLesson(); };
-  const locked=L.state!=="answer";
-  document.querySelectorAll(".opt").forEach(b=>{b.onclick=()=>{if(locked)return;SND.tap();L.ans=+b.dataset.i;renderEx();};});
-  if(locked){ document.querySelectorAll(".opt").forEach(b=>{const i=+b.dataset.i;b.disabled=true;if(x.options[i]===x.answer)b.classList.add("ok");else if(i===L.ans)b.classList.add("no");}); }
+  const x=curEx(),locked=L.state!=="answer";
+  $("#lx").onclick=askQuit;
+  $$(".opt").forEach(b=>{b.onclick=()=>{if(locked)return;SND.tap();L.ans=+b.dataset.i;$$(".opt").forEach(o=>o.setAttribute("aria-pressed",o===b));const c=$("#chk");if(c)c.disabled=false;};});
+  if(locked)$$(".opt").forEach(b=>{const i=+b.dataset.i;b.disabled=true;if(x.options[i]===x.answer)b.classList.add("ok");else if(i===L.ans)b.classList.add("no");});
   const t=$("#typed");if(t){t.oninput=()=>{L.ans=t.value;const c=$("#chk");if(c)c.disabled=!canCheck();};t.disabled=locked;}
-  document.querySelectorAll("[data-in]").forEach(b=>b.onclick=()=>{if(locked)return;const i=+b.dataset.in;if(L.sel.includes(i))return;SND.tap();L.sel.push(i);renderEx();});
-  document.querySelectorAll("[data-out]").forEach(b=>b.onclick=()=>{if(locked)return;const i=+b.dataset.out;L.sel=L.sel.filter(s=>s!==i);renderEx();});
-  document.querySelectorAll("[data-l],[data-r]").forEach(b=>b.onclick=()=>{
+  $$("[data-in]").forEach(b=>b.onclick=()=>{if(locked)return;const i=+b.dataset.in;if(L.sel.includes(i))return;SND.tap();L.sel.push(i);renderEx();});
+  $$("[data-out]").forEach(b=>b.onclick=()=>{if(locked)return;const i=+b.dataset.out;L.sel=L.sel.filter(s=>s!==i);renderEx();});
+  $$("[data-l],[data-r]").forEach(b=>b.onclick=()=>{
     if(locked)return;const m=L.m;if(b.dataset.l!==undefined)m.a=+b.dataset.l;else m.b=+b.dataset.r;
     if(m.a!==null&&m.b!==null){
       if(m.a===m.b){m.done.add(m.a);SND.ok();speak(x.pairs[m.a].en);m.a=m.b=null;
-        if(m.done.size===x.pairs.length){L.fbTitle=m.miss?"Alle Paare gefunden!":"Alle Paare auf Anhieb!";grade(true,true);return;}}
+        if(m.done.size===x.pairs.length){L.fbTitle=m.miss?"Alle Paare gefunden!":"Alle Paare auf Anhieb!";grade(true);return;}}
       else{SND.no();m.miss++;const a=m.a,bb=m.b;m.a=m.b=null;renderEx();
-        document.querySelector(`[data-l="${a}"]`)?.classList.add("wrong");document.querySelector(`[data-r="${bb}"]`)?.classList.add("wrong");return;}
+        $(`[data-l="${a}"]`)?.classList.add("wrong");$(`[data-r="${bb}"]`)?.classList.add("wrong");return;}
     } else SND.tap();
     renderEx();
   });
   const chk=$("#chk");if(chk)chk.onclick=check;
   const sk=$("#skip");if(sk)sk.onclick=()=>{L.ans=null;grade(false);};
-  const nx=$("#nxt");if(nx){nx.onclick=next;nx.focus();}
+  const nx=$("#nxt");if(nx){nx.onclick=next;nx.focus({preventScroll:true});}
 }
-function confirmQuit(){ if(L.idx===0)return true; const el=$("#exw"); if(L.quitAsk)return true; L.quitAsk=true; toast("Nochmal auf ✕ tippen, um die Lektion ohne XP zu beenden."); setTimeout(()=>{if(L)L.quitAsk=false;},3000); return false; }
+function askQuit(){
+  if(L.idx===0&&L.state==="answer"){closeLesson();return;}
+  openSheet(`<h2>Lektion beenden?</h2><p class="muted">Du bist schon ${Math.round(L.idx/L.queue.length*100)} % weit. Wenn du jetzt aufhörst, bekommst du keine XP für diese Lektion.</p>
+    <button class="btn primary block" data-close>Weiterlernen</button><button class="btn block" id="quitNow">Beenden</button>`,s=>s.querySelector("#quitNow").onclick=()=>{closeSheet();closeLesson();});
+}
 function check(){
   const x=curEx();let ok=false;L.fbTitle="";
   if(["mc","fill","correct_sentence","listen_choose"].includes(x.type))ok=x.options[L.ans]===x.answer;
   if(x.type==="listen_type"){const a=norm(L.ans),b=norm(x.answer);ok=a===b;if(!ok&&lev(a,b)<=Math.max(1,Math.floor(b.length*.08))){ok=true;L.fbTitle="Fast perfekt! Kleiner Tippfehler.";}}
-  if(x.type==="build"){ok=norm(L.sel.map(i=>L.tiles[i]).join(" "))===norm(x.answer);}
+  if(x.type==="build")ok=norm(L.sel.map(i=>L.tiles[i]).join(" "))===norm(x.answer);
   grade(ok);
 }
-function grade(ok,fromMatch){
-  const x=curEx();if(!fromMatch)L.fbTitle=L.fbTitle||"";
-  if(ok){L.correct++;L.combo++;L.maxCombo=Math.max(L.maxCombo,L.combo);SND.ok();if(!L.fbTitle)L.fbTitle=L.combo>=5&&L.combo%5===0?`${L.combo} richtig in Folge!`:pick(["Richtig!","Super!","Stark!","Genau so!","Perfekt!"],1)[0];
-    if(L.mode==="review"){const k=JSON.stringify([x.type,x.answer,x.text]);S.mistakes=S.mistakes.filter(m=>JSON.stringify([m.type,m.answer,m.text])!==k);}
+const mkey=x=>JSON.stringify([x.type,x.answer,x.text]);
+function grade(ok){
+  const x=curEx();
+  if(ok){L.correct++;L.combo++;L.maxCombo=Math.max(L.maxCombo,L.combo);SND.ok();
+    if(!L.fbTitle)L.fbTitle=L.combo>=5&&L.combo%5===0?`${L.combo} richtig in Folge!`:pick(["Richtig!","Super!","Stark!","Genau so!","Perfekt!","Sehr gut!"],1)[0];
+    if(L.mode==="review"){const k=mkey(x);S.mistakes=S.mistakes.filter(m=>mkey(m)!==k);}
     L.state="ok";
   } else {
     L.wrong++;L.combo=0;SND.no();
-    if(heartsOn()&&L.mode!=="review"){S.hearts.n=Math.max(0,S.hearts.n-1);if(S.hearts.n<HEART_MAX&&S.hearts.n===HEART_MAX-1)S.hearts.t=Date.now();}
-    const k=JSON.stringify([x.type,x.answer,x.text]);
-    if(!S.mistakes.some(m=>JSON.stringify([m.type,m.answer,m.text])===k)){S.mistakes.push(x);S.mistakes=S.mistakes.slice(-80);}
+    if(heartsOn()&&L.mode!=="review"){if(S.hearts.n===HEART_MAX)S.hearts.t=Date.now();S.hearts.n=Math.max(0,S.hearts.n-1);}
+    const k=mkey(x);if(!S.mistakes.some(m=>mkey(m)===k))S.mistakes.push(x);
     if(!L.requeued.has(L.idx)){L.requeued.add(L.queue.length);L.queue.push(x);}
-    L.fbAnswer=x.type==="match"?"alle Paare richtig zuordnen":x.answer;L.state="no";
-    save();
+    L.fbAnswer=x.type==="match"?"alle Paare richtig zuordnen":x.answer;L.state="no";save();
   }
-  if(fromMatch&&ok){L.state="ok";}
   renderEx();
 }
 function next(){
   if(L.state==="no"&&heartsOn()&&L.mode!=="review"&&S.hearts.n<=0){failLesson();return;}
-  L.idx++;L.state="answer";L.ans=null;L.tiles=null;L.sel=null;L.m=null;L.spoken=false;renderHeader();renderEx();
+  L.idx++;L.state="answer";L.ans=null;L.tiles=null;L.sel=null;L.m=null;L.spoken=false;L.fresh=true;renderTop();renderEx();
 }
 function failLesson(){
-  save();const el=lessonEl();
-  el.innerHTML=`<div></div><div class="lbody"><div class="wrap center"><div class="bigicon" style="background:var(--bad)">${IC.heart.replace('class="i"','')}</div><h2>Keine Herzen mehr</h2>
-   <p class="lead">Deine Fehler sind gespeichert. Wiederhole sie, um ein Herz zurückzubekommen, und versuch die Lektion dann nochmal.</p>
-   <div class="row" style="justify-content:center"><button class="btn primary big" id="rev">Fehler wiederholen</button><button class="btn" id="cl">Zum Lernpfad</button></div></div></div><div></div>`;
+  save();
+  LZ().innerHTML=`<div></div><div class="lbody"><div class="center"><div class="badge" style="background:var(--coral)">${IC.heart}</div><h1>Keine Herzen mehr</h1>
+   <p class="muted">Deine Fehler sind gespeichert. Wiederhole sie, um ein Herz zurückzubekommen, und versuch die Lektion dann nochmal.</p>
+   <button class="btn primary block" id="rev">${IC.replay} Fehler wiederholen</button><button class="btn ghost" id="cl">Zum Lernpfad</button></div></div><div></div>`;
   $("#rev").onclick=()=>startLesson(null,"review");$("#cl").onclick=closeLesson;
 }
 function finishLesson(){
-  const secs=Math.round((Date.now()-L.start)/1000);const acc=Math.round(L.correct/Math.max(1,L.correct+L.wrong)*100);
-  const perfect=L.wrong===0;let xp=10+(perfect?5:0)+Math.floor(L.maxCombo/5)*2;
+  const secs=Math.round((Date.now()-L.start)/1000),acc=Math.round(L.correct/Math.max(1,L.correct+L.wrong)*100);
+  const perfect=L.wrong===0,xp=10+(perfect?5:0)+Math.floor(L.maxCombo/5)*2,before=xpToday();
   addXP(xp);S.stats.lessons++;if(perfect)S.stats.perfect++;if(L.source==="ai")S.stats.ai++;
-  if(L.mode==="path"){S.units[L.uid]=Math.min(LESSONS_PER_UNIT,(S.units[L.uid]||0)+1);}
+  if(L.mode==="path")S.units[L.uid]=Math.min(LESSONS_PER_UNIT,(S.units[L.uid]||0)+1);
   if(L.mode==="review"&&S.hearts.n<HEART_MAX)S.hearts.n++;
   const added=[];
   for(const t of L.new_terms){const k=t.term.trim().toLowerCase();if(!VOCAB.some(v=>v.t.toLowerCase()===k)&&!S.lib.some(l=>l.t.toLowerCase()===k)){S.lib.push({t:t.term.trim(),de:t.de,d:t.definition,ex:t.example,u:L.uid??0,added:today()});added.push(t);}}
-  save();SND.done();
-  const goalHit=xpToday()>=S.cfg.goal&&xpToday()-xp<S.cfg.goal;
-  const el=lessonEl();
-  el.innerHTML=`<div></div><div class="lbody"><div class="wrap center"><div class="bigicon" style="background:var(--gold)">${perfect?IC.star:IC.trophy}</div>
-   <h2>${perfect?"Fehlerfrei! Lektion geschafft.":"Lektion geschafft!"}</h2>
-   ${goalHit?`<p class="lead" style="color:var(--gold);font-weight:700">Tagesziel erreicht. Serie: ${streak()} ${streak()===1?"Tag":"Tage"}.</p>`:`<p class="lead">${esc(L.title)}</p>`}
-   <div class="resgrid"><div class="res" style="--c:var(--gold)"><b>XP</b><span>+${xp}</span></div><div class="res" style="--c:var(--good)"><b>Treffer</b><span>${acc}%</span></div><div class="res" style="--c:var(--u1)"><b>Zeit</b><span>${Math.floor(secs/60)}:${String(secs%60).padStart(2,"0")}</span></div></div>
-   ${added.length?`<div class="newterms"><div class="eyebrow" style="border:0;background:none;padding:0">Neu in deinem Wortschatz</div>${added.map(t=>`<div><b>${esc(t.term)}</b> <span class="de">${esc(t.de)}</span><br><span class="ex">${esc(t.example)}</span></div>`).join("")}</div>`:""}
-   <button class="btn primary big" id="cont">Weiter</button></div></div><div></div>`;
-  $("#cont").onclick=closeLesson;$("#cont").focus();
+  save();SND.done();confetti();
+  const goalHit=before<S.cfg.goal&&xpToday()>=S.cfg.goal,newDay=!L.wasActive,unitDone=L.mode==="path"&&S.units[L.uid]===LESSONS_PER_UNIT;
+  const head=unitDone?`Einheit „${esc(UNITS[L.uid].title)}“ geschafft!`:perfect?"Fehlerfrei!":"Lektion geschafft!";
+  const sub=newDay?`Deine Serie: ${plural(streak(),"Tag","Tage")} in Folge.`:goalHit?"Tagesziel erreicht. Stark!":L.mode==="review"?"Deine Fehler sitzen jetzt besser.":esc(L.title);
+  LZ().innerHTML=`<div></div><div class="lbody"><div class="center">
+   <div class="badge" style="background:${newDay?"var(--orange)":"var(--gold)"}">${newDay?IC.flame:unitDone?IC.trophy:perfect?IC.star:IC.check}</div>
+   <h1>${head}</h1><p class="muted">${sub}</p>
+   <div class="tiles3"><div class="st" style="--c:var(--gold)"><b>XP</b><span>${IC.bolt}${xp}</span></div><div class="st" style="--c:var(--good)"><b>Treffer</b><span>${acc}%</span></div><div class="st" style="--c:var(--blue)"><b>Zeit</b><span>${Math.floor(secs/60)}:${String(secs%60).padStart(2,"0")}</span></div></div>
+   ${added.length?`<div class="newwords"><div class="kicker">Neu in deinem Wortschatz</div>${added.map(t=>`<div class="nw"><b>${esc(t.term)}</b><span>${esc(t.de)}</span></div>`).join("")}</div>`:""}
+   <button class="btn primary block" id="cont">Weiter</button></div></div><div></div>`;
+  $("#cont").onclick=closeLesson;$("#cont").focus({preventScroll:true});
 }
 document.addEventListener("keydown",e=>{
-  if(!L||lessonEl().hidden)return;
+  if(!L||LZ().hidden||!$("#sheet").hidden)return;
   if(e.key==="Enter"){const n=$("#nxt");if(n){e.preventDefault();n.click();return;}const c=$("#chk");if(c&&!c.disabled){e.preventDefault();c.click();}return;}
   if(document.activeElement&&document.activeElement.id==="typed")return;
-  const d=parseInt(e.key,10);if(d>=1&&d<=9&&L.state==="answer"){const b=document.querySelector(`.opt[data-i="${d-1}"]`);if(b)b.click();}
+  const d=parseInt(e.key,10);if(d>=1&&d<=9&&L.state==="answer"){const b=$(`.opt[data-i="${d-1}"]`);if(b)b.click();}
 });
 
-/* ================= Views ================= */
-const VIEWS=["pfad","wortschatz","rollenspiel","textcheck","einstellungen"];
-let current=VIEWS.includes(location.hash.slice(1))?location.hash.slice(1):"pfad";let lastView=null;
-function go(v){current=v;try{history.replaceState(null,"","#"+v);}catch(e){}render();window.scrollTo(0,0);}
-$("#tabs").addEventListener("click",e=>{const b=e.target.closest(".tab");if(b)go(b.dataset.v);});
+/* ================= Shell & navigation ================= */
+const TABS=[["lernen","Lernen",IC.path],["woerter","Wörter",IC.cards],["coach","Coach",IC.chat],["profil","Profil",IC.user]];
+let current=TABS.some(t=>t[0]===location.hash.slice(1))?location.hash.slice(1):"lernen",lastView=null;
+function go(v){if(current===v){window.scrollTo({top:0,behavior:"smooth"});return;}current=v;try{history.replaceState(null,"","#"+v);}catch(e){}render();window.scrollTo(0,0);}
 function render(){
-  document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",t.dataset.v===current));
-  renderHeader();
-  ({pfad:vPath,wortschatz:vVocab,rollenspiel:vRole,textcheck:vWrite,einstellungen:vSettings})[current]($("#main"),lastView!==current);
+  $("#tabs").innerHTML=TABS.map(([id,l,ic])=>`<button class="tb" data-tab="${id}" ${current===id?'aria-current="page"':""}><span class="ic">${ic}</span>${l}</button>`).join("");
+  $$("[data-tab]").forEach(b=>b.onclick=()=>go(b.dataset.tab));
+  renderTop();
+  ({lernen:vLearn,woerter:vWords,coach:vCoach,profil:vProfile})[current]($("#main"),lastView!==current);
   lastView=current;
 }
 
-/* ---------- Lernpfad ---------- */
-function vPath(m){
-  const x=xpToday(),g=S.cfg.goal,p=Math.min(1,x/g),C=2*Math.PI*26;
-  const total=UNITS.length*LESSONS_PER_UNIT,done=UNITS.reduce((a,u)=>a+(S.units[u.id]||0),0);
-  const offs=[0,56,84,56,0];
-  m.innerHTML=`<section class="view">
-   <div class="panel today">
-     <svg class="ring" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="26" stroke="var(--line)"/><circle cx="32" cy="32" r="26" stroke="var(--gold)" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C*(1-p)}" transform="rotate(-90 32 32)"/></svg>
-     <div><div class="eyebrow">Tagesziel</div><b style="font-family:var(--f-display);font-size:20px">${x} von ${g} XP</b><div class="note">${x>=g?"Geschafft. Jede weitere Lektion zählt trotzdem.":`Noch ${g-x} XP, etwa ${Math.ceil((g-x)/12)} ${Math.ceil((g-x)/12)===1?"Lektion":"Lektionen"}.`} · ${done}/${total} Pfad-Lektionen</div></div>
-     <button class="btn ${S.mistakes.length?"primary":""}" id="review" ${S.mistakes.length?"":"disabled"}>Fehler wiederholen (${S.mistakes.length})</button>
+/* ---------- Lernen ---------- */
+const currentUnit=()=>UNITS.find(u=>(S.units[u.id]||0)<LESSONS_PER_UNIT)||null;
+function vLearn(m){
+  const h=new Date().getHours(),greet=h<11?"Guten Morgen":h<18?"Hallo":"Guten Abend";
+  const cu=currentUnit(),x=xpToday(),g=S.cfg.goal,C=2*Math.PI*28,p=Math.min(1,x/g);
+  const done=cu?(S.units[cu.id]||0):0;
+  const needBackup=S.stats.lessons>=5&&Date.now()-(S.lastBackup||0)>14*864e5;
+  const offs=[0,62,92,62,0];
+  m.innerHTML=`
+   <div class="greet"><span class="muted">${greet}</span><h1>${x>=g?"Tagesziel erreicht":S.days.includes(today())?"Weiter geht’s":"Bereit für ein paar Minuten?"}</h1></div>
+   ${cu?`<section class="hero" style="${unitColor(cu.id)}">
+     <div class="kicker">Einheit ${cu.id+1} · Lektion ${done+1} von ${LESSONS_PER_UNIT}</div>
+     <h2>${esc(cu.title)}</h2><p>${esc(cu.desc)}</p>
+     <div class="bar"><i style="width:${done/LESSONS_PER_UNIT*100}%"></i></div>
+     <button class="btn white block" id="cont">${IC.play} ${done||S.stats.lessons?"Weiterlernen":"Erste Lektion starten"}</button></section>`
+   :`<section class="hero" style="${ucol(1)}"><div class="kicker">Alle Einheiten abgeschlossen</div><h2>Starke Leistung!</h2><p>Übe frei weiter. ${hasAI()?"Jede Lektion ist neu erstellt.":"Mit einem API-Key im Profil bekommst du unbegrenzt neue Lektionen."}</p>
+     <button class="btn white block" id="free">${IC.bolt} Freies Training</button></section>`}
+   <div class="card today">
+     <div class="ring"><svg viewBox="0 0 66 66"><circle cx="33" cy="33" r="28" stroke="var(--surface-2)"/><circle cx="33" cy="33" r="28" stroke="var(--gold)" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C*(1-p)}"/></svg><b>${x>=g?IC.check:IC.bolt}</b></div>
+     <div><b>${x} von ${g} XP</b><div class="muted small">${x>=g?"Tagesziel geschafft.":`Noch etwa ${plural(Math.ceil((g-x)/12),"Lektion","Lektionen")} bis zum Tagesziel.`}</div>${weekHtml()}</div>
    </div>
-   ${hasAI()||IN_CLAUDE?"":`<div class="banner"><span style="flex:1;min-width:220px"><b>KI ist aus.</b> Lektionen kommen aus dem eingebauten Kurs. Mit einem eigenen Claude API-Key erstellt die App unbegrenzt neue Lektionen und Begriffe.</span><button class="btn" data-goto="einstellungen">API-Key eintragen</button></div>`}
-   ${UNITS.map((u,ui)=>{const d=S.units[u.id]||0;const dir=ui%2?-1:1;
-     return `<div class="unit" style="${unitColor(u.id)}">
-       <div class="uhead" style="background:var(--uc)"><div class="eyebrow">Einheit ${ui+1} · ${d}/${LESSONS_PER_UNIT}</div><h2>${esc(u.title)}</h2><p>${esc(u.desc)}</p>
-         <button class="btn" data-practice="${u.id}" title="Freies Üben, zählt nicht zum Pfad">${hasAI()?"Neue Lektion":"Üben"}</button></div>
+   <div class="quick">
+     <button class="qt" id="rev" ${S.mistakes.length?"":"disabled"}><span class="qi" style="background:var(--coral)">${IC.replay}</span><b>Fehler wiederholen</b><span>${S.mistakes.length?plural(S.mistakes.length,"Aufgabe","Aufgaben")+" offen":"Gerade nichts offen"}</span></button>
+     <button class="qt" id="fast"><span class="qi" style="background:var(--blue)">${IC.bolt}</span><b>Schnelle Runde</b><span>Gemischte Übung aus allen Einheiten</span></button>
+   </div>
+   ${needBackup?`<div class="notice">${IC.download}<div><b>Fortschritt sichern</b><br><span class="muted">Dein letztes Backup ist länger her.</span></div><button class="btn sm" id="bk">Sichern</button></div>`:""}
+   ${UNITS.map((u,ui)=>{const d=S.units[u.id]||0,dir=ui%2?-1:1;
+     return `<section class="unit" style="${unitColor(u.id)}">
+       <div class="uhead"><div><div class="kicker">Einheit ${ui+1} · ${d}/${LESSONS_PER_UNIT}</div><h2>${esc(u.title)}</h2><p>${esc(u.desc)}</p></div>
+         <button class="btn sm" data-practice="${u.id}" aria-label="${esc(u.title)} frei üben">${IC.bolt}Üben</button></div>
        <div class="nodes">${Array.from({length:LESSONS_PER_UNIT},(_,i)=>{const s=i<d?"done":i===d?"cur":"lock";
-         return `<button class="node ${s}" style="transform:translateX(${offs[i]*dir}px)" data-node="${u.id}" ${s==="lock"?"disabled":""} aria-label="Lektion ${i+1} ${s==="done"?"abgeschlossen":s==="cur"?"starten":"gesperrt"}">
-           ${s==="cur"?`<span class="tip">START</span>`:""}${s==="done"?IC.check:s==="cur"?IC.star:IC.lock}</button>`;}).join("")}</div>
-       ${d>=LESSONS_PER_UNIT?`<p class="note" style="text-align:center">Einheit abgeschlossen. Über „${hasAI()?"Neue Lektion":"Üben"}“ geht es endlos weiter.</p>`:""}
-     </div>`;}).join("")}
-  </section>`;
-  m.querySelectorAll("[data-node]").forEach(b=>b.onclick=()=>startLesson(+b.dataset.node,"path"));
-  m.querySelectorAll("[data-practice]").forEach(b=>b.onclick=()=>startLesson(+b.dataset.practice,"practice"));
-  m.querySelectorAll("[data-goto]").forEach(b=>b.onclick=()=>go(b.dataset.goto));
-  const r=$("#review");if(r)r.onclick=()=>startLesson(null,"review");
-  if(hasAI()){const nextU=UNITS.find(u=>(S.units[u.id]||0)<LESSONS_PER_UNIT);if(nextU)prefetch(nextU.id);}
+         return `<button class="node ${s}" style="transform:translateX(${offs[i]*dir}px)" data-node="${u.id}" data-i="${i}" data-s="${s}" aria-label="Lektion ${i+1}: ${s==="done"?"abgeschlossen":s==="cur"?"als Nächstes":"gesperrt"}">
+           ${s==="cur"&&cu&&cu.id===u.id?`<span class="tip">START</span>`:""}${s==="done"?IC.check:s==="cur"?IC.star:IC.lock}</button>`;}).join("")}
+         <button class="node trophy ${d>=LESSONS_PER_UNIT?"won":""}" data-trophy="${u.id}" aria-label="Abschluss der Einheit">${IC.trophy}</button></div>
+     </section>`;}).join("")}`;
+  const c=$("#cont");if(c)c.onclick=()=>startLesson(cu.id,"path");
+  const f=$("#free");if(f)f.onclick=()=>startLesson(Math.floor(Math.random()*UNITS.length),"practice");
+  const r=$("#rev");if(r)r.onclick=()=>startLesson(null,"review");
+  $("#fast").onclick=()=>startLesson(Math.floor(Math.random()*UNITS.length),"practice");
+  const bk=$("#bk");if(bk)bk.onclick=exportBackup;
+  $$("[data-practice]").forEach(b=>b.onclick=()=>startLesson(+b.dataset.practice,"practice"));
+  $$("[data-node]").forEach(b=>b.onclick=()=>nodeSheet(+b.dataset.node,+b.dataset.i,b.dataset.s));
+  $$("[data-trophy]").forEach(b=>b.onclick=()=>{const u=UNITS[+b.dataset.trophy],d=S.units[u.id]||0;
+    openSheet(`<div class="sic" style="background:${d>=LESSONS_PER_UNIT?"var(--gold)":"var(--line-2)"}">${IC.trophy}</div><h2>${d>=LESSONS_PER_UNIT?"Einheit abgeschlossen":"Einheitsabschluss"}</h2>
+      <p class="muted">${d>=LESSONS_PER_UNIT?`Du hast alle ${LESSONS_PER_UNIT} Lektionen von „${esc(u.title)}“ geschafft. Über „Üben“ kannst du jederzeit weitertrainieren.`:`Noch ${plural(LESSONS_PER_UNIT-d,"Lektion","Lektionen")}, dann ist „${esc(u.title)}“ geschafft.`}</p>
+      <button class="btn primary block" data-close>Okay</button>`);});
+  if(hasAI()&&cu)prefetch(cu.id);
+}
+function nodeSheet(uid,i,s){
+  const u=UNITS[uid];
+  if(s==="lock"){openSheet(`<div class="sic" style="background:var(--line-2)">${IC.lock}</div><h2>Noch gesperrt</h2><p class="muted">Schließe zuerst Lektion ${(S.units[uid]||0)+1} ab. Danach geht es hier weiter.</p><button class="btn primary block" data-close>Okay</button>`);return;}
+  const n=u.kind==="ff"?10:11;
+  openSheet(`<div class="sic" style="${unitColor(uid)};background:var(--uc)">${s==="done"?IC.check:IC.star}</div>
+    <div><div class="kicker">${esc(u.title)} · Lektion ${i+1}</div><h2>${s==="done"?"Schon geschafft":"Bereit?"}</h2></div>
+    <div class="facts"><span class="fact">${IC.target}${n} Übungen</span><span class="fact">${IC.bolt}+10 XP</span><span class="fact">${hasAI()?IC.spark+"Neu erstellt":IC.cards+"Grundkurs"}</span></div>
+    <p class="muted">${s==="done"?"Wiederhole die Lektion, um die Begriffe zu festigen. Das bringt XP, ändert aber den Pfad nicht.":esc(u.desc)+"."}</p>
+    <button class="btn primary block" id="go">${IC.play} ${s==="done"?"Wiederholen":"Los geht’s"}</button>`,
+    sh=>sh.querySelector("#go").onclick=()=>startLesson(uid,s==="done"?"practice":"path"));
 }
 
-/* ---------- Wortschatz ---------- */
-let vMode="cards",vUnit=-1,vCard=null,vFlip=false,vQ="";
+/* ---------- Wörter ---------- */
+let vMode="cards",vUnit=-1,vCard=null,vQ="";
 function allTerms(){return VOCAB.map(v=>({...v,ai:false})).concat(S.lib.map(l=>({...l,ai:true})));}
 function vDeck(){return allTerms().filter(t=>(vUnit<0||t.u===vUnit)&&(!vQ||(t.t+" "+t.de).toLowerCase().includes(vQ.toLowerCase())));}
-function nextCard(){const d=vDeck();if(!d.length){vCard=null;return;}const min=Math.min(...d.map(v=>S.box[v.t]||0));const pool=d.filter(v=>(S.box[v.t]||0)<=min+1&&(!vCard||v.t!==vCard.t));vCard=shuffle(pool.length?pool:d)[0];vFlip=false;}
-function vVocab(m,fresh){
+function nextCard(){const d=vDeck();if(!d.length){vCard=null;return;}const min=Math.min(...d.map(v=>S.box[v.t]||0));const pool=d.filter(v=>(S.box[v.t]||0)<=min+1&&(!vCard||v.t!==vCard.t));vCard=shuffle(pool.length?pool:d)[0];}
+const lvlHtml=b=>`<span class="lvl" aria-label="Stufe ${b} von 5">${[1,2,3,4,5].map(i=>`<i class="${i<=b?"on":""}"></i>`).join("")}</span>`;
+function vWords(m){
   if(!vCard||!vDeck().some(t=>t.t===vCard.t))nextCard();
-  const d=vDeck(),mastered=d.filter(v=>(S.box[v.t]||0)>=3).length,aiN=S.lib.length;
-  const units=[...new Set(allTerms().map(t=>t.u))].sort();
+  const all=allTerms(),d=vDeck(),mastered=all.filter(v=>(S.box[v.t]||0)>=3).length;
+  const units=[...new Set(all.map(t=>t.u))].sort();
   let body="";
-  if(!d.length)body=`<p class="note">Keine Begriffe gefunden.</p>`;
-  else if(vMode==="cards"){const b=S.box[vCard.t]||0;
-    body=`<div class="flash" id="flash" tabindex="0" role="button" aria-label="Karte umdrehen"><span class="cat eyebrow">${esc(UNITS[vCard.u]?.title||"")}${vCard.ai?'<span class="tag">KI</span>':""}</span>
-      <span class="boxes" title="Lernstufe ${b} von 5">${[1,2,3,4,5].map(i=>`<i class="${i<=b?"on":""}"></i>`).join("")}</span>
-      <h2>${esc(vCard.t)}</h2>${vFlip?`<div class="back"><div class="de">${esc(vCard.de)}</div><p>${esc(vCard.d)}</p><p class="ex">“${esc(vCard.ex)}”</p></div>`:`<p class="note">Erst überlegen, dann umdrehen.</p>`}</div>
-      <div class="row" style="justify-content:center">${vFlip?`<button class="btn bad" id="again">Nochmal</button><button class="btn good" id="know">Gewusst</button>`:`<button class="btn primary" id="flip">Umdrehen</button>`}${sayBtn(vCard.t+". "+vCard.ex)}</div>
-      <p class="note" style="text-align:center">${mastered} von ${d.length} sicher (ab Stufe 3)</p>`;}
-  else body=`<div class="vlist">${d.map(v=>`<div class="vitem"><div><b>${esc(v.t)}</b>${v.ai?'<span class="tag">KI</span>':""} ${sayBtn(v.t+". "+v.ex)}<div class="de">${esc(v.de)}</div></div><div><p>${esc(v.d)}</p><p class="ex">“${esc(v.ex)}”</p></div></div>`).join("")}</div>`;
-  m.innerHTML=`<section class="view">
-    <div style="display:grid;gap:6px"><div class="eyebrow">Wortschatz</div><h2 style="font-size:28px">${allTerms().length} Begriffe</h2>
-    <p class="lead">${VOCAB.length} aus dem Grundkurs${aiN?`, ${aiN} neu aus KI-Lektionen`:""}. Begriffe, die du nicht weißt, kommen öfter dran.</p></div>
-    <div class="row"><button class="chip" data-u="-1" aria-pressed="${vUnit<0}">Alle</button>${units.map(u=>`<button class="chip" data-u="${u}" aria-pressed="${vUnit===u}">${esc(UNITS[u].title)}</button>`).join("")}</div>
-    <div class="row"><input type="search" id="vq" placeholder="Suchen …" value="${esc(vQ)}" style="max-width:260px"><button class="chip" id="mC" aria-pressed="${vMode==="cards"}">Karteikarten</button><button class="chip" id="mL" aria-pressed="${vMode==="list"}">Liste</button></div>
-    ${body}</section>`;
-  m.querySelectorAll("[data-u]").forEach(b=>b.onclick=()=>{vUnit=+b.dataset.u;nextCard();render();});
+  if(vMode==="cards"){
+    if(!vCard)body=`<p class="muted">Keine Begriffe in dieser Auswahl.</p>`;
+    else{const b=S.box[vCard.t]||0;
+      body=`<div class="flip" id="flip" role="button" tabindex="0" aria-label="Karte umdrehen"><div class="in">
+        <div class="face"><div class="ftop"><span class="kicker">${esc(UNITS[vCard.u]?.title||"")}${vCard.ai?' <span class="tag">KI</span>':""}</span>${lvlHtml(b)}</div>
+          <h2>${esc(vCard.t)}</h2><p class="muted small">Tippen zum Umdrehen</p></div>
+        <div class="face back"><div class="row" style="justify-content:space-between;flex-wrap:nowrap"><h3 style="font-size:22px">${esc(vCard.t)}</h3>${sayBtn(vCard.t+". "+vCard.ex)}</div>
+          <div class="de">${esc(vCard.de)}</div><p>${esc(vCard.d)}</p><p class="ex">“${esc(vCard.ex)}”</p></div>
+      </div></div>
+      <div class="cardacts" id="cacts" hidden><button class="btn" id="again" style="--c:var(--coral)">${IC.replay} Nochmal</button><button class="btn good" id="know">${IC.check} Gewusst</button></div>
+      <button class="btn primary block" id="turn">Umdrehen</button>`;}
+  } else {
+    body=`<div class="searchbox">${IC.search}<input class="field" type="search" id="vq" placeholder="Begriff suchen …" value="${esc(vQ)}"></div>
+     ${d.length?`<div class="list">${d.map(v=>`<details><summary><div><b>${esc(v.t)}${v.ai?' <span class="tag">KI</span>':""}</b><span class="muted small">${esc(v.de)}</span></div>${lvlHtml(S.box[v.t]||0)}<span class="chv">${IC.chev}</span></summary>
+       <div class="body"><p>${esc(v.d)}</p><p class="ex">“${esc(v.ex)}”</p><div>${sayBtn(v.t+". "+v.ex)}</div></div></details>`).join("")}</div>`:`<p class="muted">Nichts gefunden.</p>`}`;
+  }
+  m.innerHTML=`<div class="page-h"><span class="muted">${mastered} von ${all.length} sicher</span><h1>Wortschatz</h1></div>
+    <div class="bar" style="margin:12px 0 16px"><i style="width:${mastered/all.length*100}%"></i></div>
+    <div class="stack">
+      <div class="row" style="justify-content:space-between"><div class="seg" role="group"><button id="mC" aria-pressed="${vMode==="cards"}">Karteikarten</button><button id="mL" aria-pressed="${vMode==="list"}">Liste</button></div></div>
+      <div class="chips"><button class="chip" data-u="-1" aria-pressed="${vUnit<0}">Alle</button>${units.map(u=>`<button class="chip" data-u="${u}" aria-pressed="${vUnit===u}">${esc(UNITS[u].title)}</button>`).join("")}</div>
+      ${body}
+      ${S.lib.length?"":`<p class="muted small">${hasAI()?"Neue Begriffe aus KI-Lektionen landen automatisch hier.":"Tipp: Begriffe, die du nicht weißt, kommen öfter dran. Ab Stufe 3 gilt ein Begriff als sicher."}</p>`}
+    </div>`;
+  $$("[data-u]").forEach(b=>b.onclick=()=>{vUnit=+b.dataset.u;nextCard();render();});
   $("#mC").onclick=()=>{vMode="cards";render();};$("#mL").onclick=()=>{vMode="list";render();};
-  const q=$("#vq");q.oninput=()=>{vQ=q.value;clearTimeout(q._t);q._t=setTimeout(()=>{nextCard();render();const n=$("#vq");n.focus();n.setSelectionRange(n.value.length,n.value.length);},250);};
-  if(vMode==="cards"&&vCard){const flip=()=>{if(!vFlip){vFlip=true;render();}};$("#flash").onclick=flip;$("#flash").onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();flip();}};
-    if($("#flip"))$("#flip").onclick=flip;
-    if($("#know"))$("#know").onclick=()=>{S.box[vCard.t]=Math.min(5,(S.box[vCard.t]||0)+1);SND.ok();addXP(1);nextCard();render();};
-    if($("#again"))$("#again").onclick=()=>{S.box[vCard.t]=0;save();nextCard();render();};}
+  const q=$("#vq");if(q)q.oninput=()=>{vQ=q.value;clearTimeout(q._t);q._t=setTimeout(()=>{render();const n=$("#vq");n.focus();n.setSelectionRange(n.value.length,n.value.length);},250);};
+  if(vMode==="cards"&&vCard){
+    const flip=()=>{const f=$("#flip");if(f.classList.contains("on"))return;f.classList.add("on");$("#turn").hidden=true;$("#cacts").hidden=false;SND.tap();};
+    $("#flip").onclick=flip;$("#flip").onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();flip();}};$("#turn").onclick=flip;
+    $("#know").onclick=()=>{S.box[vCard.t]=Math.min(5,(S.box[vCard.t]||0)+1);SND.ok();addXP(1);nextCard();render();};
+    $("#again").onclick=()=>{S.box[vCard.t]=0;save();nextCard();render();};
+  }
 }
 
-/* ---------- Rollenspiel ---------- */
-let R=null;
-const LEVELS={B2:"B2 (fokussiere auf klare Fehler)",C1:"C1 (achte auch auf Stil und Idiomatik)",C2:"C2 (feinste Nuancen, wie Muttersprachler)"};
-const Rec=IN_CLAUDE?null:(window.SpeechRecognition||window.webkitSpeechRecognition);
-function aiOff(what){return IN_CLAUDE
-  ?(sampleFn===null&&syncState==="connecting"?"":`<div class="banner"><span style="flex:1;min-width:220px">${what} braucht Claude. Öffne die App bei claude.ai angemeldet und erlaube Claude, wenn danach gefragt wird.</span></div>`)
-  :`<div class="banner"><span style="flex:1;min-width:220px">${what} braucht einen Claude API-Key.</span><button class="btn" data-goto="einstellungen">API-Key eintragen</button></div>`;}
+/* ---------- Coach ---------- */
+let coachTab="role",R=null;
+const LEVEL_TXT={B2:"B2 (fokussiere auf klare Fehler)",C1:"C1 (achte auch auf Stil und Idiomatik)",C2:"C2 (feinste Nuancen, wie Muttersprachler)"};
+const Rec=window.SpeechRecognition||window.webkitSpeechRecognition;
 function rolePrompt(sc){return `You are running a business English role-play for a native German speaker from Austria who works as a Solution Area Specialist for Cloud & AI at Microsoft Austria (selling Azure infrastructure, data and AI solutions to enterprise customers).
 
 You play: ${sc.role}
@@ -896,7 +1138,7 @@ The learner's goal in this conversation: ${sc.goal}
 
 Rules:
 1. Stay fully in character. Reply in natural spoken business English, 2 to 4 sentences. Be realistic: ask follow-up questions, push back sometimes, don't agree too quickly.
-2. After your in-character reply, write a line containing exactly ###COACH### and then coaching in German for the learner's LAST message only, at level ${LEVELS[S.cfg.level]}:
+2. After your in-character reply, write a line containing exactly ###COACH### and then coaching in German for the learner's LAST message only, at level ${LEVEL_TXT[S.cfg.level]}:
    - Up to 2 corrections as bullet points: **"original"** → **"better"** (short reason in German)
    - 1 bullet starting with "Tipp:" with a more natural or persuasive phrase for this sales situation.
    If the English was excellent, say so in one short line instead of corrections.
@@ -927,67 +1169,73 @@ ${tr.slice(-14000)}`}],maxTokens:6000,effort:"medium",signal:R.ctl.signal});addX
   catch(e){R.err=aiErr(e);}
   R.busy=false;render();
 }
-function startRole(sc){R={sc,turns:[{role:"user",content:"(Start the conversation now with your opening line.)",hidden:true}],busy:false,err:"",review:""};render();if(hasAI())askRole();}
-function vRole(m,fresh){
-  if(!R){
-    m.innerHTML=`<section class="view"><div style="display:grid;gap:6px"><div class="eyebrow">Rollenspiel mit KI-Coach</div><h2 style="font-size:28px">Kundengespräche auf Englisch üben</h2>
-      <p class="lead">Claude spielt dein Gegenüber und liest die Antworten vor. Unter jeder Antwort bekommst du Korrekturen und einen Tipp auf Deutsch.${Rec?" Du kannst auch per Mikrofon antworten.":""}</p></div>
-      ${hasAI()?"":aiOff("Das Rollenspiel")}
-      <div class="scen">${SCENARIOS.map(s=>`<button class="sc" data-sc="${s.id}"><span class="who">${esc(s.who)}</span><h3>${esc(s.title)}</h3><p>${esc(s.desc)}</p></button>`).join("")}</div>
-      <div class="panel set"><label for="own">Eigenes Szenario</label><textarea id="own" placeholder="z. B. Der CIO eines Tiroler Seilbahnbetreibers will wissen, ob sich Copilot für seine 300 Mitarbeitenden lohnt."></textarea>
-      <div class="row"><button class="btn primary" id="ownGo">Szenario starten</button></div></div></section>`;
-    m.querySelectorAll("[data-goto]").forEach(b=>b.onclick=()=>go(b.dataset.goto));
-    m.querySelectorAll("[data-sc]").forEach(b=>b.onclick=()=>startRole(SCENARIOS.find(s=>s.id===b.dataset.sc)));
-    $("#ownGo").onclick=()=>{const v=$("#own").value.trim();if(!v){toast("Beschreibe zuerst die Situation.");return;}startRole({id:"own",who:"Eigenes Szenario",title:v.slice(0,60),desc:v,role:"The counterpart described in this situation (stay realistic and consistent): "+v,goal:"Führe das Gespräch professionell und vereinbare einen konkreten nächsten Schritt."});};
-    return;
+function startRole(sc){R={sc,turns:[{role:"user",content:"(Start the conversation now with your opening line.)",hidden:true}],busy:false,err:"",review:""};render();askRole();}
+function vCoach(m,fresh){
+  if(!hasAI()){
+    m.innerHTML=`<div class="page-h"><span class="muted">Optional</span><h1>Coach</h1></div>
+     <div class="locked" style="margin-top:16px"><div class="sic">${IC.spark}</div><h2>Dein persönlicher KI-Coach</h2>
+       <ul><li>Kundengespräche üben: Bank-CISO, CFO, Forecast-Call und eigene Szenarien</li><li>E-Mails und Teams-Nachrichten verbessern lassen, mit Erklärung jeder Änderung</li><li>Unbegrenzt neue Lektionen statt nur Grundkurs</li></ul>
+       <p class="muted small">Dafür brauchst du einen eigenen Claude API-Key. Die Kosten liegen bei wenigen Cent pro Lektion. Ohne Key funktioniert der Rest der App ganz normal.</p>
+       <button class="btn primary" id="setup">${IC.key} API-Key einrichten</button></div>`;
+    $("#setup").onclick=apiSheet;return;
   }
+  if(R){vChat(m,fresh);return;}
+  m.innerHTML=`<div class="page-h"><span class="muted">Mit Live-Feedback</span><h1>Coach</h1></div>
+   <div class="stack" style="margin-top:14px"><div><div class="seg"><button id="tR" aria-pressed="${coachTab==="role"}">Rollenspiel</button><button id="tW" aria-pressed="${coachTab==="write"}">Textcheck</button></div></div>
+   <div id="cbody" class="stack"></div></div>`;
+  $("#tR").onclick=()=>{coachTab="role";render();};$("#tW").onclick=()=>{coachTab="write";render();};
+  coachTab==="role"?vScenarios($("#cbody")):vWrite($("#cbody"));
+}
+function vScenarios(el){
+  el.innerHTML=`<p class="muted">Claude spielt dein Gegenüber und liest die Antworten vor. Unter jeder Antwort bekommst du Korrekturen auf Deutsch.</p>
+    <div class="scen">${SCENARIOS.map(s=>`<button class="sc" data-sc="${s.id}"><span class="av" style="background:var(--u${s.c})">${esc(s.ini)}</span><div><span class="who">${esc(s.who)}</span><b>${esc(s.title)}</b><span>${esc(s.desc)}</span></div><span class="chv">${IC.chev}</span></button>`).join("")}
+     <button class="sc" id="own"><span class="av" style="background:var(--ink-2)">${IC.pen}</span><div><span class="who">Frei</span><b>Eigenes Szenario</b><span>Beschreibe eine Situation aus deinem Kalender.</span></div><span class="chv">${IC.chev}</span></button></div>`;
+  $$("[data-sc]").forEach(b=>b.onclick=()=>startRole(SCENARIOS.find(s=>s.id===b.dataset.sc)));
+  $("#own").onclick=()=>openSheet(`<h2>Eigenes Szenario</h2><p class="muted">Wer ist dein Gegenüber, und worum geht es?</p>
+    <textarea class="field" id="ownT" placeholder="z. B. Der CIO eines Tiroler Seilbahnbetreibers will wissen, ob sich Copilot für 300 Mitarbeitende lohnt."></textarea>
+    <button class="btn primary block" id="ownGo">${IC.play} Gespräch starten</button>`,s=>s.querySelector("#ownGo").onclick=()=>{const v=s.querySelector("#ownT").value.trim();if(!v){toast("Beschreibe zuerst die Situation.");return;}closeSheet();
+      startRole({id:"own",c:3,ini:"?",who:"Eigenes Szenario",title:v.slice(0,60),desc:v,role:"The counterpart described in this situation (stay realistic and consistent): "+v,goal:"Führe das Gespräch professionell und vereinbare einen konkreten nächsten Schritt."});});
+}
+function vChat(m,fresh){
   const draft=fresh?"":($("#say")?.value||"");const userTurns=R.turns.filter(t=>t.role==="user"&&!t.hidden).length;
-  m.innerHTML=`<section class="view">
-    <div class="row" style="justify-content:space-between"><button class="btn ghost" id="back">← Szenarien</button><label class="note row"><input type="checkbox" id="auto" ${S.cfg.autoSpeak?"checked":""}> Antworten vorlesen</label></div>
-    <div class="brief"><b>${esc(R.sc.who)}: ${esc(R.sc.title)}</b><span>Dein Ziel: ${esc(R.sc.goal)}</span></div>
-    <div class="msgs">${R.turns.filter(t=>!t.hidden).map(t=>{if(t.role==="user")return `<div class="msg me"><div class="who">Du</div><div class="bubble">${esc(t.content)}</div></div>`;
-      const [say,coach]=splitCoach(t.content);return `<div class="msg"><div class="who">${esc(R.sc.who)}</div><div class="bubble">${esc(say)}</div>${coach?`<div class="coach"><div class="eyebrow">Coach</div><div class="md">${md(coach)}</div></div>`:""}<div class="row">${sayBtn(say)}</div></div>`;}).join("")}
-      ${R.busy&&!R.review?`<div class="msg"><div class="who">${esc(R.sc.who)}</div><div class="bubble">Denkt nach …</div></div>`:""}</div>
+  m.innerHTML=`<div class="row" style="justify-content:space-between;margin:2px 0 10px"><button class="btn ghost" id="back" style="padding-left:0">${IC.back} Szenarien</button>
+     <button class="btn ghost" id="eval" ${R.busy||userTurns<2?"disabled":""}>Auswerten</button></div>
+    <div class="brief"><span class="av" style="background:var(--u${R.sc.c})">${esc(R.sc.ini)}</span><div><b>${esc(R.sc.who)}</b><br><span class="muted">Ziel: ${esc(R.sc.goal)}</span></div></div>
+    <div class="msgs">${R.turns.filter(t=>!t.hidden).map(t=>{if(t.role==="user")return `<div class="msg me"><div class="bubble">${esc(t.content)}</div></div>`;
+      const [say,coach]=splitCoach(t.content);return `<div class="msg"><div class="bubble">${esc(say)}</div><div class="mmeta">${sayBtn(say)}</div>${coach?`<details class="coachnote" open><summary>${IC.spark}Coach</summary><div class="md">${md(coach)}</div></details>`:""}</div>`;}).join("")}
+      ${R.busy&&!R.review?`<div class="msg"><div class="bubble"><div class="dots"><i></i><i></i><i></i></div></div></div>`:""}</div>
     ${R.err?`<p class="err">${esc(R.err)}</p>`:""}
-    ${R.review?`<div class="panel"><div class="eyebrow" style="margin-bottom:8px">Auswertung</div><div class="md">${md(R.review)}</div></div>`:""}
-    <div class="composer"><label for="say" class="note">Deine Antwort (Strg + Enter zum Senden)</label>
-      <textarea id="say" placeholder="Type your answer in English …" ${hasAI()?"":"disabled"}>${esc(draft)}</textarea>
-      <div class="row"><button class="btn primary" id="send" ${R.busy||!hasAI()?"disabled":""}>Senden</button>
-        ${Rec?`<button class="btn" id="mic" ${R.busy||!hasAI()?"disabled":""}>${IC.mic} Sprechen</button>`:""}
-        ${R.busy?`<button class="btn" id="stop">Stopp</button>`:""}
-        <button class="btn" id="eval" ${R.busy||userTurns<2?"disabled":""}>Gespräch auswerten</button><button class="btn ghost" id="restart" ${R.busy?"disabled":""}>Neu starten</button></div></div>
-  </section>`;
+    ${R.review?`<div class="card"><div class="kicker">Auswertung</div><div class="md">${md(R.review)}</div></div>`:""}
+    <div class="composer"><div class="row">
+      <textarea class="field" id="say" rows="1" placeholder="Antwort auf Englisch …" aria-label="Deine Antwort">${esc(draft)}</textarea>
+      ${Rec?`<button class="iconbtn" id="mic" aria-label="Sprechen" ${R.busy?"disabled":""}>${IC.mic}</button>`:""}
+      <button class="btn primary" id="send" ${R.busy?"disabled":""} aria-label="Senden" style="padding:0 16px">${IC.play}</button></div>
+      <div class="row small muted" style="justify-content:space-between"><label class="row" style="gap:8px"><input type="checkbox" class="sw" id="auto" ${S.cfg.autoSpeak?"checked":""}>Vorlesen</label>${R.busy?`<button class="btn ghost" id="stop">Stopp</button>`:`<button class="btn ghost" id="restart">Neu starten</button>`}</div></div>`;
   $("#back").onclick=()=>{R.ctl?.abort();R=null;if(canSpeak)speechSynthesis.cancel();render();};
   $("#auto").onchange=e=>{S.cfg.autoSpeak=e.target.checked;save();};
-  $("#restart").onclick=()=>startRole(R.sc);
-  if($("#stop"))$("#stop").onclick=()=>R.ctl?.abort();
+  const rs=$("#restart");if(rs)rs.onclick=()=>startRole(R.sc);
+  const sp=$("#stop");if(sp)sp.onclick=()=>R.ctl?.abort();
   $("#eval").onclick=reviewRole;
   const send=()=>{const v=$("#say").value.trim();if(!v||R.busy)return;R.turns.push({role:"user",content:v});$("#say").value="";S.stats.turns++;addXP(2);R.review="";askRole();};
   $("#send").onclick=send;$("#say").onkeydown=e=>{if(e.key==="Enter"&&(e.ctrlKey||e.metaKey)){e.preventDefault();send();}};
   const mic=$("#mic");if(mic)mic.onclick=()=>{try{const r=new Rec();r.lang="en-GB";r.interimResults=true;const box=$("#say");const base=box.value?box.value+" ":"";
-    mic.textContent="Höre zu …";r.onresult=ev=>{let t="";for(const res of ev.results)t+=res[0].transcript;box.value=base+t;};r.onend=()=>{mic.innerHTML=IC.mic+" Sprechen";};r.onerror=()=>toast("Mikrofon nicht verfügbar oder nicht erlaubt.");r.start();}catch(e){toast("Spracherkennung wird hier nicht unterstützt.");}};
-  const last=m.querySelector(".msgs > :last-child");if(last&&!R.review)last.scrollIntoView({block:"nearest"});
+    mic.style.color="var(--coral)";r.onresult=ev=>{let t="";for(const res of ev.results)t+=res[0].transcript;box.value=base+t;};r.onend=()=>{mic.style.color="";};r.onerror=()=>toast("Mikrofon nicht verfügbar oder nicht erlaubt.");r.start();}catch(e){toast("Spracheingabe wird hier nicht unterstützt.");}};
+  const last=$(".msgs > :last-child");if(last&&!R.review)last.scrollIntoView({block:"nearest",behavior:"smooth"});
 }
-
-/* ---------- Textcheck ---------- */
 const SAMPLE_TEXT="Dear Mr. Huber,\n\nlike discussed in our meeting I send you the informations about the Azure OpenAI pilot. Eventually we can make a workshop with your team until end of November. Please give me a feedback if this is ok for you.\n\nBest regards";
 let W={text:SAMPLE_TEXT,kind:"E-Mail an Kunden",tone:"professionell, freundlich",out:"",busy:false,err:"",isSample:true};
-function vWrite(m){
+function vWrite(el){
   const t=W.out,a=t.indexOf("###VERSION###"),b=t.indexOf("###NOTES###");
   const ver=a<0?t:t.slice(a+13,b<0?undefined:b).trim(),notes=b<0?"":t.slice(b+11).trim();
-  m.innerHTML=`<section class="view"><div style="display:grid;gap:6px"><div class="eyebrow">Textcheck mit KI-Coach</div><h2 style="font-size:28px">E-Mails und Nachrichten verbessern</h2>
-    <p class="lead">Füge deinen Entwurf ein. Du bekommst eine verbesserte Version und jede Änderung auf Deutsch erklärt.</p></div>
-    ${hasAI()?"":aiOff("Der Textcheck")}
-    <div class="grid2"><div class="panel set">
-      <div class="row"><label class="note" for="wk">Art</label><select id="wk">${["E-Mail an Kunden","Teams-Nachricht","Interne E-Mail an Management","Meeting-Zusammenfassung","LinkedIn-Post"].map(k=>`<option ${k===W.kind?"selected":""}>${k}</option>`).join("")}</select>
-        <label class="note" for="wt">Ton</label><select id="wt">${["professionell, freundlich","formell","locker, kollegial","überzeugend"].map(k=>`<option ${k===W.tone?"selected":""}>${k}</option>`).join("")}</select></div>
-      <label for="wtext" class="note">${W.isSample?"Beispiel mit typischen Fehlern. Ersetze ihn durch deinen eigenen Text.":"Dein Entwurf"}</label>
-      <textarea id="wtext" style="min-height:220px">${esc(W.text)}</textarea>
-      <div class="row"><button class="btn primary" id="wgo" ${W.busy||!hasAI()?"disabled":""}>${W.busy?"Prüft …":"Text prüfen"}</button></div></div>
-    <div class="panel set" style="align-content:start"><div class="row" style="justify-content:space-between"><div class="eyebrow">Verbesserte Version</div>${ver&&!W.busy?`<button class="btn ghost" data-copy="${esc(ver)}">Kopieren</button>`:""}</div>
-      <div class="out">${W.busy?"Claude prüft deinen Text …":ver?esc(ver):'<span class="note">Hier erscheint dein überarbeiteter Text.</span>'}</div>
-      ${notes?`<div class="eyebrow">Was geändert wurde</div><div class="md">${md(notes)}</div>`:""}${W.err?`<p class="err">${esc(W.err)}</p>`:""}</div></div></section>`;
-  m.querySelectorAll("[data-goto]").forEach(b=>b.onclick=()=>go(b.dataset.goto));
+  el.innerHTML=`<p class="muted">Füge deinen Entwurf ein. Du bekommst eine verbesserte Version, und jede Änderung wird auf Deutsch erklärt.</p>
+    <div class="row"><select class="field" id="wk" style="flex:1;min-width:150px">${["E-Mail an Kunden","Teams-Nachricht","Interne E-Mail an Management","Meeting-Zusammenfassung","LinkedIn-Post"].map(k=>`<option ${k===W.kind?"selected":""}>${k}</option>`).join("")}</select>
+      <select class="field" id="wt" style="flex:1;min-width:150px">${["professionell, freundlich","formell","locker, kollegial","überzeugend"].map(k=>`<option ${k===W.tone?"selected":""}>${k}</option>`).join("")}</select></div>
+    <textarea class="field" id="wtext" style="min-height:200px" aria-label="Dein Text">${esc(W.text)}</textarea>
+    ${W.isSample?`<p class="muted small" style="margin-top:-4px">Das ist ein Beispiel mit typischen Fehlern. Ersetze es durch deinen Text.</p>`:""}
+    <button class="btn primary block" id="wgo" ${W.busy?"disabled":""}>${W.busy?"Wird geprüft …":IC.spark+" Text verbessern"}</button>
+    ${W.err?`<p class="err">${esc(W.err)}</p>`:""}
+    ${W.busy?`<div class="card"><div class="dots"><i></i><i></i><i></i></div></div>`:ver?`<div class="card stack"><div class="row" style="justify-content:space-between"><span class="kicker">Verbesserte Version</span><button class="btn ghost" data-copy="${esc(ver)}">${IC.copy} Kopieren</button></div><div class="out">${esc(ver)}</div>
+      ${notes?`<span class="kicker">Was geändert wurde</span><div class="md">${md(notes)}</div>`:""}</div>`:""}`;
   $("#wtext").oninput=e=>{W.text=e.target.value;W.isSample=false;};$("#wk").onchange=e=>W.kind=e.target.value;$("#wt").onchange=e=>W.tone=e.target.value;
   $("#wgo").onclick=async()=>{const txt=W.text.trim();if(!txt)return;W.busy=true;W.err="";W.out="";render();
     try{W.out=await aiText({messages:[{role:"user",content:`You are a business English editor for a native German speaker from Austria working as a Solution Area Specialist for Cloud & AI at Microsoft Austria.
@@ -1007,63 +1255,113 @@ ${txt.slice(0,8000)}
     W.busy=false;render();};
 }
 
-/* ---------- Einstellungen ---------- */
-function vSettings(m){
-  const sorted=voices.slice().sort((a,b)=>voiceScore(b)-voiceScore(a));const bv=bestVoice();
-  const natural=voices.some(v=>/natural|neural/i.test(v.name));
-  m.innerHTML=`<section class="view"><div style="display:grid;gap:6px"><div class="eyebrow">Einstellungen</div><h2 style="font-size:28px">App einrichten</h2></div>
-   ${IN_CLAUDE?`<div class="panel set"><h3>Claude &amp; Synchronisierung</h3>
-     <p class="note">Neue Lektionen, Rollenspiele und Textchecks laufen über dein Claude-Konto, du brauchst keinen API-Key. Beim ersten Mal fragt Claude, ob du das erlaubst.${sampleFn?"":" <b>Claude ist in dieser Ansicht gerade nicht verfügbar.</b>"}</p>
-     <p class="note"><b>Fortschritt:</b> ${syncState==="on"?"wird mit deinem Claude-Konto synchronisiert. Öffne die App auf iPhone und PC über denselben Link, dann hast du überall denselben Stand.":syncState==="connecting"?"Verbindung zum Speicher wird aufgebaut …":syncState==="error"?"Synchronisierung gerade gestört. Dein Fortschritt bleibt auf diesem Gerät und wird später nachgeholt.":"wird nur auf diesem Gerät gespeichert (bitte bei claude.ai anmelden)."}</p>
-     <label for="lvl">Dein Niveau</label><select id="lvl">${Object.keys(LEVELS).map(k=>`<option value="${k}" ${S.cfg.level===k?"selected":""}>${k}</option>`).join("")}</select></div>`:`
-   <div class="panel set"><h3>Claude API-Key</h3>
-     <p class="note">Damit erstellt die App unbegrenzt neue Lektionen, Rollenspiele und Textchecks. Einen Key bekommst du in der Claude Console unter console.anthropic.com → API Keys. Die Nutzung wird über dein API-Guthaben abgerechnet (eine Lektion kostet mit Opus 5.5 etwa 3 bis 6 Cent, mit Haiku deutlich weniger). Der Key wird nur in diesem Browser gespeichert und direkt an die Claude API geschickt.</p>
-     <label for="key">API-Key</label><input type="password" id="key" value="${esc(S.cfg.key)}" placeholder="sk-ant-…" autocomplete="off">
-     <label for="model">Modell</label><select id="model">${MODELS.map(([id,n])=>`<option value="${id}" ${S.cfg.model===id?"selected":""}>${n}</option>`).join("")}</select>
-     <label for="lvl">Dein Niveau</label><select id="lvl">${Object.keys(LEVELS).map(k=>`<option value="${k}" ${S.cfg.level===k?"selected":""}>${k}</option>`).join("")}</select>
-     <div class="row"><button class="btn primary" id="saveKey">Speichern</button><button class="btn" id="testKey">Verbindung testen</button><span class="note" id="keyMsg"></span></div></div>`}
-   <div class="panel set"><h3>Stimme</h3>
-     ${!canSpeak?`<p class="err">Dieser Browser hat keine Sprachausgabe.</p>`:`
-     <p class="note">${IS_IOS?"Auf dem iPhone klingen die Stimmen „Erweitert“ oder „Premium“ am natürlichsten. Lade sie einmalig unter <b>Einstellungen → Bedienungshilfen → Gesprochene Inhalte → Stimmen → Englisch</b>, z. B. „Daniel“, „Arthur“ oder „Serena“ (britisch). Danach hier auswählen.":natural?"Natürliche Stimmen gefunden. Die beste ist automatisch ausgewählt.":"Für die natürlichsten Stimmen öffne die App in <b>Microsoft Edge</b>. Edge bringt kostenlose neuronale Stimmen mit, z. B. „Sonia“, „Ryan“ (britisch) oder „Aria“, „Andrew“ (amerikanisch)."}</p>
-     <label for="voice">Stimme</label><select id="voice" style="width:100%"><option value="">Automatisch (${esc(bv?bv.name:"Standard")})</option>${sorted.map(v=>`<option value="${esc(v.name)}" ${S.cfg.voice===v.name?"selected":""}>${esc(v.name)} · ${esc(v.lang)}${/natural|neural/i.test(v.name)?" · natürlich":""}</option>`).join("")}</select>
-     <label for="rate">Tempo: <span id="rateV">${(S.cfg.rate||1).toFixed(2)}</span></label><input type="range" id="rate" min="0.6" max="1.3" step="0.05" value="${S.cfg.rate||1}">
-     <div class="row"><button class="btn" id="testVoice">Probe hören</button></div>`}</div>
-   <div class="panel set"><h3>Lernen</h3>
-     <label for="goal">Tagesziel</label><select id="goal">${[[20,"Locker: 20 XP"],[30,"Normal: 30 XP"],[50,"Ernsthaft: 50 XP"],[80,"Intensiv: 80 XP"]].map(([v,n])=>`<option value="${v}" ${S.cfg.goal==v?"selected":""}>${n}</option>`).join("")}</select>
-     <label class="row"><input type="checkbox" id="hearts" ${S.cfg.hearts?"checked":""}> Herzen verwenden (Fehler kosten ein Herz)</label>
-     <label class="row"><input type="checkbox" id="sound" ${S.cfg.sound?"checked":""}> Soundeffekte</label></div>
-   <div class="panel set"><h3>Fortschritt sichern</h3>
-     <p class="note">${IN_CLAUDE?`Stand: ${S.stats.lessons} Lektionen, ${S.lib.length} KI-Begriffe, ${streak()} Tage Serie. Hast du schon mit der Datei auf dem PC gelernt? Lade dort ein Backup herunter und hier mit „Backup laden“ hoch.`:`Dein Fortschritt wird automatisch in diesem Browser gespeichert (${S.stats.lessons} Lektionen, ${S.lib.length} KI-Begriffe, ${streak()} Tage Serie). Lösche die Browserdaten nicht, oder lade regelmäßig ein Backup herunter. Das Backup enthält keinen API-Key.`}</p>
-     <div class="row">${IN_CLAUDE?"":`<button class="btn primary" id="exp">Backup herunterladen</button>`}<label class="btn" for="imp" style="cursor:pointer">Backup laden</label><input type="file" id="imp" accept="application/json,.json" hidden>
-       <button class="btn ghost" id="reset">${resetArm?"Wirklich alles löschen? Nochmal tippen":"Fortschritt zurücksetzen"}</button></div></div>
-  </section>`;
-  if(IN_CLAUDE)$("#lvl").onchange=e=>{S.cfg.level=e.target.value;PRE={};savePre();save();toast("Gespeichert");};
-  if(!IN_CLAUDE){
-  $("#saveKey").onclick=()=>{S.cfg.key=$("#key").value.trim();S.cfg.model=$("#model").value;S.cfg.level=$("#lvl").value;S.cfg.noFallback=false;PRE={};savePre();save();toast("Gespeichert");render();};
-  $("#testKey").onclick=async()=>{S.cfg.key=$("#key").value.trim();S.cfg.model=$("#model").value;save();const msg=$("#keyMsg");msg.textContent="Teste …";
-    try{const t=await callClaude({messages:[{role:"user",content:"Reply with exactly: Ready"}],maxTokens:2000,effort:"low"});msg.textContent="Verbindung steht ("+t.trim().slice(0,20)+")";msg.style.color="var(--good)";}
-    catch(e){msg.textContent=aiErr(e);msg.style.color="var(--bad)";}};
-  }
+/* ---------- Profil ---------- */
+function vProfile(m){
+  const st=streak(),sorted=voices.slice().sort((a,b)=>voiceScore(b)-voiceScore(a)),bv=bestVoice();
+  const words=allTerms().filter(v=>(S.box[v.t]||0)>=3).length;
+  const bAge=S.lastBackup?Math.floor((Date.now()-S.lastBackup)/864e5):null;
+  m.innerHTML=`<div class="page-h"><h1>Profil</h1></div>
+   <div class="card prof" style="margin-top:14px"><div class="flamebig">${IC.flame}</div><div><b style="font-family:var(--f-display);font-size:24px">${plural(st,"Tag","Tage")} Serie</b><div class="muted small">${S.days.includes(today())?"Heute schon gelernt.":"Lerne heute, damit sie weiterläuft."}</div>${weekHtml()}</div></div>
+   <div class="statgrid" style="margin-top:10px">
+     <div class="sg"><b style="color:var(--gold)">${IC.bolt}${totalXP()}</b><span>XP gesamt</span></div>
+     <div class="sg"><b style="color:var(--accent)">${IC.check}${S.stats.lessons}</b><span>Lektionen</span></div>
+     <div class="sg"><b style="color:var(--blue)">${IC.cards}${words}</b><span>Begriffe sicher</span></div>
+     <div class="sg"><b style="color:var(--orange)">${IC.star}${S.stats.perfect}</b><span>fehlerfrei</span></div>
+   </div>
+   <div class="gt">Lernen</div><div class="group">
+     <div class="it"><span class="ii" style="background:var(--accent)">${IC.globe}</span><span class="lb"><b>Mein Niveau</b></span><select id="lvl" aria-label="Niveau">${Object.keys(LEVELS).map(k=>`<option value="${k}" ${S.cfg.level===k?"selected":""}>${k}</option>`).join("")}</select></div>
+     <div class="it"><span class="ii" style="background:var(--gold)">${IC.target}</span><span class="lb"><b>Tagesziel</b></span><select id="goal" aria-label="Tagesziel">${GOALS.map(([v,t])=>`<option value="${v}" ${S.cfg.goal==v?"selected":""}>${t} · ${v} XP</option>`).join("")}</select></div>
+     <label class="it"><span class="ii" style="background:var(--coral)">${IC.heart}</span><span class="lb"><b>Herzen</b><span>Fehler kosten ein Herz</span></span><input type="checkbox" class="sw" id="hearts" ${S.cfg.hearts?"checked":""}></label>
+     <label class="it"><span class="ii" style="background:var(--u3)">${IC.sound}</span><span class="lb"><b>Soundeffekte</b></span><input type="checkbox" class="sw" id="sound" ${S.cfg.sound?"checked":""}></label>
+   </div>
+   <div class="gt">Stimme</div><div class="group">
+     ${canSpeak?`<div class="it"><span class="ii" style="background:var(--blue)">${IC.speaker}</span><span class="lb"><b>Stimme</b></span><select id="voice" aria-label="Stimme"><option value="">Automatisch${bv?" ("+esc(bv.name.replace(/^Microsoft |\s*\(.*$/g,"").slice(0,18))+")":""}</option>${sorted.filter(v=>!NOVELTY.test(v.name)).map(v=>`<option value="${esc(v.name)}" ${S.cfg.voice===v.name?"selected":""}>${esc(v.name)}</option>`).join("")}</select></div>
+     <div class="it"><span class="ii" style="background:var(--blue)">${IC.gauge}</span><span class="lb"><b>Tempo</b><span id="rateV">${(S.cfg.rate||1).toFixed(2)}×</span></span><input type="range" id="rate" min="0.6" max="1.3" step="0.05" value="${S.cfg.rate||1}" aria-label="Sprechtempo"></div>
+     <button class="it" id="testVoice"><span class="ii" style="background:var(--blue)">${IC.play}</span><span class="lb"><b>Probe hören</b></span><span class="chv">${IC.chev}</span></button>`
+     :`<div class="it"><span class="lb"><b>Keine Sprachausgabe</b><span>Dieser Browser kann nicht vorlesen.</span></span></div>`}
+   </div>
+   <p class="muted small" style="margin:8px 4px 0">${IS_IOS?"Natürlichere Stimmen: iPhone-Einstellungen → Bedienungshilfen → Gesprochene Inhalte → Stimmen → Englisch. Lade z. B. „Daniel“ oder „Serena“ als „Erweitert“ oder „Premium“ und wähle sie hier aus.":"Am natürlichsten klingen die kostenlosen „Natural“-Stimmen in Microsoft Edge."}</p>
+   <div class="gt">KI-Coach (optional)</div><div class="group">
+     <button class="it" id="api"><span class="ii" style="background:var(--ink-2)">${IC.key}</span><span class="lb"><b>Claude API-Key</b><span>${hasAI()?"Aktiv · "+esc((MODELS.find(x=>x[0]===S.cfg.model)||MODELS[0])[1]):"Nicht eingerichtet"}</span></span><span class="chv">${IC.chev}</span></button>
+   </div>
+   <div class="gt">Daten</div><div class="group">
+     <button class="it" id="exp"><span class="ii" style="background:var(--good)">${IC.share}</span><span class="lb"><b>Backup sichern</b><span>${bAge===null?"Noch nie gesichert":bAge===0?"Heute gesichert":`Zuletzt vor ${plural(bAge,"Tag","Tagen")}`}</span></span><span class="chv">${IC.chev}</span></button>
+     <label class="it" for="imp" style="cursor:pointer"><span class="ii" style="background:var(--good)">${IC.download}</span><span class="lb"><b>Backup laden</b><span>Fortschritt von einem anderen Gerät übernehmen</span></span><span class="chv">${IC.chev}</span></label>
+     <button class="it" id="reset"><span class="ii" style="background:var(--coral)">${IC.trash}</span><span class="lb"><b style="color:var(--coral)">Fortschritt zurücksetzen</b></span></button>
+   </div>
+   <input type="file" id="imp" accept="application/json,.json" hidden>
+   <p class="foot">Dein Fortschritt bleibt auf diesem Gerät. Deal Room English · für Cloud &amp; AI Sales</p>`;
+  $("#lvl").onchange=e=>{S.cfg.level=e.target.value;PRE={};savePre();save();toast("Niveau gespeichert");};
+  $("#goal").onchange=e=>{S.cfg.goal=+e.target.value;save();renderTop();toast("Tagesziel gespeichert");};
+  $("#hearts").onchange=e=>{S.cfg.hearts=e.target.checked;save();renderTop();};
+  $("#sound").onchange=e=>{S.cfg.sound=e.target.checked;save();if(S.cfg.sound)SND.ok();};
   if(canSpeak){$("#voice").onchange=e=>{S.cfg.voice=e.target.value;save();speak("Thanks for making the time today. Let's look at your cloud roadmap.");};
-    $("#rate").oninput=e=>{S.cfg.rate=+e.target.value;$("#rateV").textContent=S.cfg.rate.toFixed(2);save();};
+    $("#rate").oninput=e=>{S.cfg.rate=+e.target.value;$("#rateV").textContent=S.cfg.rate.toFixed(2)+"×";save();};
+    $("#rate").onchange=()=>speak("Could you walk me through your priorities?");
     $("#testVoice").onclick=()=>speak("Thanks for making the time today. Could you walk me through your priorities for the next twelve months?");}
-  $("#goal").onchange=e=>{S.cfg.goal=+e.target.value;save();renderHeader();};
-  $("#hearts").onchange=e=>{S.cfg.hearts=e.target.checked;save();renderHeader();};
-  $("#sound").onchange=e=>{S.cfg.sound=e.target.checked;save();};
-  if($("#exp"))$("#exp").onclick=()=>{const data=JSON.parse(JSON.stringify(S));data.cfg.key="";
-    const blob=new Blob([JSON.stringify(data,null,1)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="deal-room-english-backup-"+today()+".json";document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},500);toast("Backup gespeichert");};
-  $("#imp").onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const o=JSON.parse(r.result);if(!o||!o.cfg||!o.stats)throw 0;const key=S.cfg.key;
-      S=fromSaved(o,key);save();toast("Backup geladen");render();}catch(err){toast("Diese Datei ist kein gültiges Backup.");}};r.readAsText(f);};
-  $("#reset").onclick=()=>{if(!resetArm){resetArm=true;render();setTimeout(()=>{resetArm=false;if(current==="einstellungen")render();},4000);return;}
-    const cfg=S.cfg;S=blank();S.cfg=cfg;resetArm=false;save();toast("Fortschritt zurückgesetzt");render();};
+  $("#api").onclick=apiSheet;
+  $("#exp").onclick=exportBackup;
+  $("#imp").onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const o=JSON.parse(r.result);if(!o||!o.cfg||!o.stats)throw 0;
+      S=fromSaved(o,S.cfg.key);S.onboarded=true;save();toast("Backup geladen");render();}catch(err){toast("Diese Datei ist kein gültiges Backup.");}};r.readAsText(f);e.target.value="";};
+  $("#reset").onclick=()=>openSheet(`<div class="sic" style="background:var(--coral)">${IC.trash}</div><h2>Alles zurücksetzen?</h2><p class="muted">XP, Serie, Lernpfad und Wortschatz werden gelöscht. Einstellungen und API-Key bleiben. Das lässt sich nicht rückgängig machen, außer mit einem Backup.</p>
+    <button class="btn bad block" id="doReset">Ja, zurücksetzen</button><button class="btn block" data-close>Abbrechen</button>`,s=>s.querySelector("#doReset").onclick=()=>{const cfg=S.cfg;S=blank();S.cfg=cfg;S.onboarded=true;save();closeSheet();toast("Fortschritt zurückgesetzt");render();});
 }
-let resetArm=false;
+async function exportBackup(){
+  const data=JSON.parse(JSON.stringify(S));data.cfg.key="";
+  const name="deal-room-english-backup-"+today()+".json",json=JSON.stringify(data,null,1);
+  const done=()=>{S.lastBackup=Date.now();save();render();};
+  try{const file=new File([json],name,{type:"application/json"});
+    if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],title:"Deal Room English Backup"});done();toast("Backup gesichert");return;}}
+  catch(e){if(e&&e.name==="AbortError")return;}
+  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([json],{type:"application/json"}));a.download=name;document.body.appendChild(a);a.click();
+  setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},800);done();toast("Backup gespeichert");
+}
+function apiSheet(){
+  openSheet(`<div class="sic" style="background:var(--ink-2)">${IC.key}</div><h2>KI-Coach einrichten</h2>
+    <p class="muted">Mit einem eigenen Claude API-Key bekommst du unbegrenzt neue Lektionen, Rollenspiele und den Textcheck. Einen Key erstellst du in der Claude Console (console.anthropic.com → API Keys). Abgerechnet wird über dein API-Guthaben, grob 3 bis 6 Cent pro Lektion mit Opus, mit Haiku deutlich weniger. Der Key bleibt nur auf diesem Gerät.</p>
+    <input class="field" type="password" id="key" value="${esc(S.cfg.key)}" placeholder="sk-ant-…" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="API-Key">
+    <div class="choice">${MODELS.map(([id,n,d])=>`<button class="ch" data-model="${id}" aria-pressed="${S.cfg.model===id}"><div><b>${n}</b><span>${d}</span></div></button>`).join("")}</div>
+    <p class="small" id="keyMsg" aria-live="polite"></p>
+    <button class="btn primary block" id="saveKey">Speichern und testen</button>
+    ${S.cfg.key?`<button class="btn ghost" id="rmKey" style="color:var(--coral)">Key entfernen</button>`:""}`,
+  s=>{let model=S.cfg.model;
+    s.querySelectorAll("[data-model]").forEach(b=>b.onclick=()=>{model=b.dataset.model;s.querySelectorAll("[data-model]").forEach(o=>o.setAttribute("aria-pressed",o===b));});
+    s.querySelector("#saveKey").onclick=async()=>{const k=s.querySelector("#key").value.trim(),msg=s.querySelector("#keyMsg");
+      S.cfg.key=k;S.cfg.model=model;S.cfg.noFallback=false;PRE={};savePre();save();
+      if(!k){closeSheet();render();return;}
+      msg.textContent="Verbindung wird getestet …";msg.style.color="var(--muted)";
+      try{await callClaude({messages:[{role:"user",content:"Reply with exactly: Ready"}],maxTokens:2000,effort:"low"});closeSheet();toast("KI-Coach ist aktiv");render();}
+      catch(e){msg.textContent=aiErr(e);msg.style.color="var(--bad)";}};
+    const rm=s.querySelector("#rmKey");if(rm)rm.onclick=()=>{S.cfg.key="";PRE={};savePre();save();closeSheet();toast("Key entfernt");render();};});
+}
 
+/* ---------- Onboarding ---------- */
+let OB={step:0,level:"C1",goal:30};
+function showOnb(){
+  const el=$("#onb");el.hidden=false;document.body.classList.add("lock");
+  const dots=`<div class="steps">${[0,1,2].map(i=>`<i class="${i<=OB.step?"on":""}"></i>`).join("")}</div>`;
+  if(OB.step===0)el.innerHTML=`<div class="center">${LOGO}<h1>Deal Room English</h1><p class="lead">Business English für deinen Job als Solution Area Specialist Cloud &amp; AI. Kurze Lektionen mit echten Situationen aus Kundenterminen, Deals und Forecasts.</p>
+    <div class="facts" style="justify-content:center"><span class="fact">${IC.bolt}5 bis 10 Minuten am Tag</span><span class="fact">${IC.speaker}Mit Aussprache</span><span class="fact">${IC.flame}Serie halten</span></div>
+    <button class="btn primary block" id="ob">Los geht’s</button>${dots}</div>`;
+  if(OB.step===1)el.innerHTML=`<div class="center"><h1>Wie gut ist dein Englisch?</h1><p class="lead">Danach richten sich Lektionen und Feedback. Du kannst das später im Profil ändern.</p>
+    <div class="choice">${Object.entries(LEVELS).map(([k,[n,d]])=>`<button class="ch" data-lv="${k}" aria-pressed="${OB.level===k}"><span class="big">${n}</span><div><span>${d}</span></div></button>`).join("")}</div>
+    <button class="btn primary block" id="ob">Weiter</button>${dots}</div>`;
+  if(OB.step===2)el.innerHTML=`<div class="center"><h1>Wie viel Zeit pro Tag?</h1><p class="lead">Dein Tagesziel. Kleine, regelmäßige Einheiten wirken am besten.</p>
+    <div class="choice">${GOALS.map(([v,t,n])=>`<button class="ch" data-gl="${v}" aria-pressed="${OB.goal===v}"><span class="big">${IC.bolt.replace("<svg",'<svg style="width:26px;height:26px;color:var(--gold)"')}</span><div><b>${t}</b><span>${n} · ${v} XP</span></div></button>`).join("")}</div>
+    <button class="btn primary block" id="ob">Erste Lektion starten</button><button class="btn ghost" id="obLater">Erst umsehen</button>${dots}</div>`;
+  el.querySelectorAll("[data-lv]").forEach(b=>b.onclick=()=>{OB.level=b.dataset.lv;showOnb();});
+  el.querySelectorAll("[data-gl]").forEach(b=>b.onclick=()=>{OB.goal=+b.dataset.gl;showOnb();});
+  const finish=start=>{S.cfg.level=OB.level;S.cfg.goal=OB.goal;S.onboarded=true;save();el.hidden=true;el.innerHTML="";document.body.classList.remove("lock");render();if(start)startLesson(0,"path");};
+  $("#ob").onclick=()=>{if(OB.step<2){OB.step++;showOnb();}else finish(true);};
+  const later=$("#obLater");if(later)later.onclick=()=>finish(false);
+  el.scrollTo(0,0);
+}
+
+/* ================= Start ================= */
 appReady=true;
 render();
-initClaude();
-/* Installed as a home-screen app: cache the app so it also starts offline */
-if("serviceWorker" in navigator&&/^https?:$/.test(location.protocol)&&!IN_CLAUDE){navigator.serviceWorker.register("sw.js").catch(()=>{});}
+if(!S.onboarded)showOnb();
+if("serviceWorker" in navigator&&/^https?:$/.test(location.protocol))navigator.serviceWorker.register("sw.js").catch(()=>{});
 </script>
 </body>
 </html>
