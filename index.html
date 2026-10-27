@@ -186,6 +186,11 @@ main{padding-top:8px;padding-bottom:calc(var(--tab-h) + env(safe-area-inset-bott
 .node.trophy.won{background:var(--gold);color:#fff;box-shadow:0 7px 0 var(--gold-2)}
 .node.trophy svg{width:38px;height:38px}
 @keyframes bob{50%{transform:translate(-50%,-5px)}}
+.newb{background:#fff;color:var(--uc);border-radius:6px;padding:1px 6px;letter-spacing:.06em}
+.endcard{margin-top:40px;display:grid;gap:12px;justify-items:start}
+.endcard .sic{width:48px;height:48px;border-radius:15px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center}
+.endcard .sic svg{width:26px;height:26px}
+.unit{scroll-margin-top:80px}
 
 /* Sheet */
 .sheet{position:fixed;inset:0;z-index:70;display:grid;align-items:end}
@@ -561,6 +566,24 @@ const UNITS = [
  {id:7,c:3,title:"Falsche Freunde",desc:"Typische Fehler deutschsprachiger Sprecher",kind:"ff",topic:"typical mistakes German and Austrian speakers make in business English: false friends, prepositions, tenses, uncountable nouns"}
 ];
 const LESSONS_PER_UNIT = 5;
+/* Extra chapters: published ones come from chapters.json, AI-made ones live in S.chapters on this device */
+let REMOTE=[];try{REMOTE=JSON.parse(localStorage.getItem("dre-v2-chapters")||"[]")||[];}catch(e){}
+const normChapter=(ch,src)=>({id:String(ch.id),title:String(ch.title||"Neues Kapitel"),desc:String(ch.desc||""),topic:String(ch.topic||ch.title||""),kind:"chapter",added:ch.added||"",source:src,
+  terms:(ch.terms||[]).filter(t=>t&&t.t&&t.de).map(t=>({t:String(t.t),de:String(t.de),d:String(t.d||""),ex:String(t.ex||"")})),
+  phrases:(ch.phrases||[]).filter(p=>Array.isArray(p)&&p[0]).map(p=>[String(p[0]),String(p[1]||"")])});
+function chapters(){const seen=new Set(),out=[];
+  for(const ch of [...REMOTE.map(c=>normChapter(c,"remote")),...(S.chapters||[]).map(c=>normChapter(c,"ai"))]){if(seen.has(ch.id)||ch.terms.length<4)continue;seen.add(ch.id);out.push(ch);}
+  return out.sort((a,b)=>String(a.added).localeCompare(String(b.added)));}
+function allUnits(){return UNITS.concat(chapters().map((ch,i)=>({...ch,c:(UNITS.length+i)%4})));}
+const U=id=>allUnits().find(u=>String(u.id)===String(id))||UNITS[0];
+const idOf=s=>/^\d+$/.test(String(s))?+s:String(s);
+const isNewCh=u=>u.kind==="chapter"&&S.stats.lessons>0&&!(S.units[u.id])&&!(S.seenCh||[]).includes(u.id);
+async function loadChapters(){
+  if(!/^https?:$/.test(location.protocol))return;
+  try{const r=await fetch("chapters.json?v="+Date.now(),{cache:"no-store"});if(!r.ok)return;const j=await r.json();
+    if(Array.isArray(j.chapters)){const before=JSON.stringify(REMOTE);REMOTE=j.chapters;try{localStorage.setItem("dre-v2-chapters",JSON.stringify(REMOTE));}catch(e){}
+      if(before!==JSON.stringify(REMOTE)&&appReady&&!L)render();}}catch(e){}
+}
 const SCENARIOS = [
  {id:"ciso",c:0,ini:"KS",who:"CISO · Bank, Wien",title:"Datenhoheit & DORA",desc:"Die CISO einer Wiener Bank ist skeptisch, Kerndaten in die Cloud zu bringen.",role:"Dr. Katharina Steiner, CISO of a mid-sized Austrian bank in Vienna. Sceptical, precise, regulation-focused (GDPR, DORA, FMA supervision). Worried about data residency, concentration risk, exit strategy and who can access the data.",goal:"Verstehe ihre Bedenken und vereinbare einen Workshop mit dem Security-Team."},
  {id:"cfo",c:2,ini:"TG",who:"CFO · Industrie, Oberösterreich",title:"Kosten planbar machen",desc:"Der CFO eines Maschinenbauers fürchtet unkontrollierte Cloud-Kosten.",role:"Thomas Gruber, CFO of a machinery manufacturer in Upper Austria with 2,000 employees. Numbers-driven, impatient with buzzwords, afraid of runaway cloud bills, wants predictable costs and a clear ROI.",goal:"Baue einen Business Case auf und erkläre, wie Kosten steuerbar bleiben."},
@@ -577,7 +600,7 @@ const GOALS=[[20,"5 Minuten","Locker"],[30,"10 Minuten","Normal"],[50,"15 Minute
 const KEY="dre-v2";
 const blank=()=>({cfg:{key:"",model:"claude-opus-5-5",voice:"",rate:1,sound:true,goal:30,hearts:true,level:"C1",autoSpeak:true},
   onboarded:false,lastBackup:0,hearts:{n:5,t:Date.now(),day:""},xp:{},days:[],units:{},box:{},lib:[],mistakes:[],
-  stats:{lessons:0,perfect:0,turns:0,texts:0,ai:0},updated:0});
+  stats:{lessons:0,perfect:0,turns:0,texts:0,ai:0},chapters:[],seenCh:[],updated:0});
 function fromSaved(o,key){const s=Object.assign(blank(),o);s.cfg=Object.assign(blank().cfg,o.cfg||{});if(key!==undefined)s.cfg.key=key;s.stats=Object.assign(blank().stats,o.stats||{});delete s.pre;return s;}
 let S=blank();
 try{
@@ -617,7 +640,7 @@ function md(src){
 }
 function copy(text){try{navigator.clipboard.writeText(text).then(()=>toast("Kopiert"),()=>toast("Kopieren nicht möglich"));}catch(e){toast("Kopieren nicht möglich");}}
 const ucol=c=>`--uc:var(--u${c});--ud:var(--u${c}d)`;
-const unitColor=u=>ucol(UNITS[u].c);
+const unitColor=u=>ucol(U(u).c);
 const plural=(n,one,many)=>n+" "+(n===1?one:many);
 
 /* ================= Day, XP, hearts ================= */
@@ -768,11 +791,26 @@ function cleanEx(e){
   if(x.type==="match"){if(x.pairs.length<3)return null;x.pairs=x.pairs.slice(0,5);}
   return x;
 }
-function unitTerms(u){return VOCAB.filter(v=>v.u===u).map(v=>({t:v.t,de:v.de,d:v.d,ex:v.ex})).concat(S.lib.filter(l=>l.u===u).map(l=>({t:l.t,de:l.de,d:l.d,ex:l.ex})));}
+function unitTerms(u){const un=U(u);const base=un.kind==="chapter"?un.terms:VOCAB.filter(v=>v.u===un.id);
+  return base.map(v=>({t:v.t,de:v.de,d:v.d,ex:v.ex})).concat(S.lib.filter(l=>String(l.u)===String(un.id)).map(l=>({t:l.t,de:l.de,d:l.d,ex:l.ex})));}
+function unitPhrases(u){const un=U(u);return (un.kind==="chapter"?un.phrases:un.kind==="phrase"?un.sits.flatMap(s=>SITUATIONS[s]):[]).map(([en,de])=>({en,de}));}
+const randUnit=()=>pick(allUnits(),1)[0].id;
 function gapOf(sentence,term){const re=new RegExp(term.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"),"i");return re.test(sentence)?sentence.replace(re,"_____"):null;}
 function localLesson(uid){
-  const u=UNITS[uid];const ex=[];
-  if(u.kind==="vocab"){
+  const u=U(uid);const ex=[];
+  if(u.kind==="chapter"){
+    const terms=unitTerms(uid),ph=unitPhrases(uid);const others=t=>pick(terms.filter(x=>x!==t),3);const oph=p=>pick(ph.filter(x=>x!==p),2);
+    pick(terms,2).forEach(t=>ex.push({type:"mc",prompt:`Was bedeutet „${t.t}“?`,options:[t.d,...others(t).map(o=>o.d)],answer:t.d,explanation:`${t.t} = ${t.de}`}));
+    pick(terms,2).forEach(t=>ex.push({type:"mc",prompt:`Welcher Begriff passt zu „${t.de}“?`,options:[t.t,...others(t).map(o=>o.t)],answer:t.t,explanation:t.d}));
+    pick(terms.filter(t=>gapOf(t.ex,t.t)),2).forEach(t=>ex.push({type:"fill",prompt:"Ergänze die Lücke.",text:gapOf(t.ex,t.t),options:[t.t,...others(t).map(o=>o.t)],answer:t.t,explanation:t.ex}));
+    pick(terms,1).forEach(t=>ex.push({type:"listen_type",prompt:"Schreib, was du hörst.",text:t.t,answer:t.t,explanation:`${t.t} = ${t.de}`}));
+    if(ph.length>=3){
+      pick(ph,1).forEach(p=>ex.push({type:"mc",prompt:`Welche Formulierung passt? (${p.de})`,options:[p.en,...oph(p).map(o=>o.en)],answer:p.en,explanation:p.de}));
+      pick(ph,1).forEach(p=>ex.push({type:"listen_choose",prompt:"Was hörst du?",text:p.en,options:[p.en,...oph(p).map(o=>o.en)],answer:p.en,explanation:p.de}));
+      pick(ph.filter(p=>p.en.split(" ").length<=14),1).forEach(p=>ex.push({type:"build",prompt:"Hör zu und bilde den Satz.",text:"",say:p.en,answer:p.en,options:pick(oph(p).flatMap(o=>o.en.split(" ")),3),explanation:p.de}));
+    } else pick(terms.filter(t=>t.ex.split(" ").length<=13),1).forEach(t=>ex.push({type:"build",prompt:"Hör zu und bilde den Satz.",text:"",say:t.ex,answer:t.ex,options:pick(others(t).flatMap(o=>o.ex.split(" ")),3),explanation:t.ex}));
+    ex.push({type:"match",prompt:"Finde die Paare.",pairs:pick(terms,5).map(t=>({en:t.t,de:t.de})),explanation:""});
+  } else if(u.kind==="vocab"){
     const terms=unitTerms(uid);const others=t=>pick(terms.filter(x=>x!==t),3);
     pick(terms,2).forEach(t=>ex.push({type:"mc",prompt:`Was bedeutet „${t.t}“?`,options:[t.d,...others(t).map(o=>o.d)],answer:t.d,explanation:`${t.t} = ${t.de}`}));
     pick(terms,2).forEach(t=>ex.push({type:"mc",prompt:`Welcher Begriff passt zu „${t.de}“?`,options:[t.t,...others(t).map(o=>o.t)],answer:t.t,explanation:t.d}));
@@ -782,7 +820,7 @@ function localLesson(uid){
     pick(terms,1).forEach(t=>ex.push({type:"listen_type",prompt:"Schreib, was du hörst.",text:t.t,answer:t.t,explanation:`${t.t} = ${t.de}`}));
     ex.push({type:"match",prompt:"Finde die Paare.",pairs:pick(terms,5).map(t=>({en:t.t,de:t.de})),explanation:""});
   } else if(u.kind==="phrase"){
-    const ph=u.sits.flatMap(s=>SITUATIONS[s]).map(([en,de])=>({en,de}));
+    const ph=unitPhrases(uid);
     const others=p=>pick(ph.filter(x=>x!==p),2);
     pick(ph,3).forEach(p=>ex.push({type:"mc",prompt:`Welche Formulierung passt? (${p.de})`,options:[p.en,...others(p).map(o=>o.en)],answer:p.en,explanation:p.de}));
     pick(ph,2).forEach(p=>{const ws=p.en.split(" ");const cand=ws.map((w,i)=>[w.replace(/[^A-Za-z'-]/g,""),i]).filter(([w])=>w.length>=5);if(!cand.length)return;
@@ -801,11 +839,12 @@ function localLesson(uid){
 }
 function knownTerms(uid){return unitTerms(uid).map(t=>t.t).concat(S.lib.map(l=>l.t)).slice(-200);}
 async function aiLesson(uid){
-  const u=UNITS[uid];const angle=pick(UNIT_ANGLES,2).join(" and ");
+  const u=U(uid);const angle=pick(UNIT_ANGLES,2).join(" and ");
   const prompt=`Create one gamified micro-lesson for a business English learning app.
 
 Learner: native German speaker from Austria, works as Solution Area Specialist for Cloud & AI at Microsoft Austria (sells Azure infrastructure, data and AI solutions to enterprise and public-sector customers, works with partners, reports forecasts to a manager). Target level: ${S.cfg.level}.
-Unit topic: ${u.topic}.
+Unit topic: ${u.topic}.${u.kind==="chapter"?`
+Core vocabulary of this unit (practise these): ${u.terms.map(t=>t.t).join(", ")}.`:""}
 Set this lesson in the context of ${angle}. Make the sentences realistic for this job and different from the usual textbook phrases.
 Terms the learner already knows (do not introduce these as new terms; you may reuse them): ${knownTerms(uid).join(", ")}.
 
@@ -833,6 +872,47 @@ function prefetch(uid){
   aiLesson(uid).then(l=>{PRE[uid]=[l];savePre();}).catch(()=>{}).finally(()=>{prefetching[uid]=false;});
 }
 
+/* ---------- AI chapters (own API key): a new chapter with fresh vocabulary ---------- */
+const CHAPTER_SCHEMA={type:"object",additionalProperties:false,required:["title","desc","topic","terms","phrases"],properties:{
+  title:{type:"string"},desc:{type:"string"},topic:{type:"string"},
+  terms:{type:"array",items:{type:"object",additionalProperties:false,required:["t","de","d","ex"],properties:{t:{type:"string"},de:{type:"string"},d:{type:"string"},ex:{type:"string"}}}},
+  phrases:{type:"array",items:{type:"array",items:{type:"string"}}}}};
+let chapterBusy=false;
+async function aiChapter(){
+  const titles=allUnits().map(u=>u.title).join("; "),known=allTerms().map(t=>t.t).slice(-400).join(", ");
+  const prompt=`Design one new chapter for a business English learning app.
+
+Learner: native German speaker from Austria, Solution Area Specialist for Cloud & AI at Microsoft Austria (sells Azure infrastructure, data and AI solutions to enterprise and public-sector customers, works with partners, reports forecasts to a manager). Level: ${S.cfg.level}.
+Existing chapters (choose a clearly different topic from this job): ${titles}.
+Terms the learner already has (do not repeat any of them): ${known}.
+
+Return:
+- title: short German chapter title (2 to 4 words)
+- desc: German subtitle listing 3 to 4 subtopics, separated by commas
+- topic: one English sentence describing the chapter topic
+- terms: exactly 10 English terms or short expressions useful in this job, each with t = the term, de = short German meaning, d = one-sentence English definition, ex = one realistic example sentence from this job that contains the term exactly as written in t
+- phrases: exactly 6 items, each an array of two strings: [useful English sentence for a real conversation in this topic, short German note when to use it]
+
+Reply with only one JSON object: {"title": string, "desc": string, "topic": string, "terms": [{"t": string, "de": string, "d": string, "ex": string}], "phrases": [[string, string]]}`;
+  const r=await aiJSON(prompt,CHAPTER_SCHEMA);
+  const ch=normChapter({id:"ai-"+Date.now().toString(36),title:r.title,desc:r.desc,topic:r.topic,terms:r.terms,phrases:r.phrases,added:new Date().toISOString().slice(0,16)},"ai");
+  const have=new Set(allTerms().map(t=>t.t.toLowerCase()));ch.terms=ch.terms.filter(t=>!have.has(t.t.toLowerCase()));
+  if(ch.terms.length<6)throw{code:"json"};
+  return ch;
+}
+async function addAIChapter(manual){
+  if(chapterBusy||!hasAI())return;chapterBusy=true;if(manual)render();
+  try{const ch=await aiChapter();S.chapters=(S.chapters||[]).concat([ch]);save();if(manual)toast(`Neues Kapitel: ${ch.title}`);}
+  catch(e){if(manual)toast(aiErr(e));}
+  chapterBusy=false;if(!L)render();
+}
+/* Keep one unstarted chapter ready once the learner gets close to the end of the path */
+function ensureNextChapter(){
+  if(!hasAI()||chapterBusy)return;
+  const open=allUnits().filter(u=>(S.units[u.id]||0)<LESSONS_PER_UNIT);
+  if(open.length<=1&&!open.some(u=>u.kind==="chapter"&&!S.units[u.id]))addAIChapter(false);
+}
+
 /* ================= Lesson engine ================= */
 let L=null;
 const LZ=()=>$("#lesson");
@@ -842,11 +922,12 @@ function makeL(uid,mode,lesson){return {uid,mode,title:lesson.title,source:lesso
 async function startLesson(uid,mode){
   closeSheet();refillHearts();
   if(mode!=="review"&&heartsOn()&&S.hearts.n<=0){showNoHearts();return;}
+  if(uid!==null&&U(uid).kind==="chapter"&&!(S.seenCh||[]).includes(String(uid))){S.seenCh=(S.seenCh||[]).concat([String(uid)]).slice(-300);save();}
   if(canSpeak)speechSynthesis.cancel();
   let lesson;
   if(mode==="review"){
     const pool=shuffle(S.mistakes).slice(0,8);
-    const fill=pool.length<6?localLesson(Math.floor(Math.random()*UNITS.length)).exercises.slice(0,8-pool.length):[];
+    const fill=pool.length<6?localLesson(randUnit()).exercises.slice(0,8-pool.length):[];
     lesson={title:"Fehler wiederholen",exercises:pool.concat(fill).map(cleanEx).filter(Boolean),new_terms:[],source:"review"};
   } else if(hasAI()){
     if(PRE[uid]&&PRE[uid].length){lesson=PRE[uid].shift();savePre();}
@@ -862,7 +943,7 @@ async function startLesson(uid,mode){
 function showLoading(uid,mode,ctl){
   openLayer();
   LZ().innerHTML=`<div></div><div class="lbody"><div class="center"><div class="dots"><i></i><i></i><i></i></div><h1>Neue Lektion wird erstellt</h1>
-   <p class="muted">Claude schreibt gerade eine frische Lektion zu „${esc(UNITS[uid].title)}“. Das dauert meist 10 bis 30 Sekunden. Die nächste wird schon im Hintergrund vorbereitet.</p>
+   <p class="muted">Claude schreibt gerade eine frische Lektion zu „${esc(U(uid).title)}“. Das dauert meist 10 bis 30 Sekunden. Die nächste wird schon im Hintergrund vorbereitet.</p>
    <button class="btn block" id="offl">Lektion aus dem Grundkurs starten</button><button class="btn ghost" id="cancelLoad">Abbrechen</button></div></div><div></div>`;
   $("#offl").onclick=()=>{ctl.cancel=true;L=makeL(uid,mode,localLesson(uid));renderEx();};
   $("#cancelLoad").onclick=()=>{ctl.cancel=true;closeLesson();};
@@ -990,9 +1071,9 @@ function finishLesson(){
   if(L.mode==="review"&&S.hearts.n<HEART_MAX)S.hearts.n++;
   const added=[];
   for(const t of L.new_terms){const k=t.term.trim().toLowerCase();if(!VOCAB.some(v=>v.t.toLowerCase()===k)&&!S.lib.some(l=>l.t.toLowerCase()===k)){S.lib.push({t:t.term.trim(),de:t.de,d:t.definition,ex:t.example,u:L.uid??0,added:today()});added.push(t);}}
-  save();SND.done();confetti();
+  save();SND.done();confetti();ensureNextChapter();
   const goalHit=before<S.cfg.goal&&xpToday()>=S.cfg.goal,newDay=!L.wasActive,unitDone=L.mode==="path"&&S.units[L.uid]===LESSONS_PER_UNIT;
-  const head=unitDone?`Einheit „${esc(UNITS[L.uid].title)}“ geschafft!`:perfect?"Fehlerfrei!":"Lektion geschafft!";
+  const head=unitDone?`„${esc(U(L.uid).title)}“ geschafft!`:perfect?"Fehlerfrei!":"Lektion geschafft!";
   const sub=newDay?`Deine Serie: ${plural(streak(),"Tag","Tage")} in Folge.`:goalHit?"Tagesziel erreicht. Stark!":L.mode==="review"?"Deine Fehler sitzen jetzt besser.":esc(L.title);
   LZ().innerHTML=`<div></div><div class="lbody"><div class="center">
    <div class="badge" style="background:${newDay?"var(--orange)":"var(--gold)"}">${newDay?IC.flame:unitDone?IC.trophy:perfect?IC.star:IC.check}</div>
@@ -1022,7 +1103,7 @@ function render(){
 }
 
 /* ---------- Lernen ---------- */
-const currentUnit=()=>UNITS.find(u=>(S.units[u.id]||0)<LESSONS_PER_UNIT)||null;
+const currentUnit=()=>allUnits().find(u=>(S.units[u.id]||0)<LESSONS_PER_UNIT)||null;
 function vLearn(m){
   const h=new Date().getHours(),greet=h<11?"Guten Morgen":h<18?"Hallo":"Guten Abend";
   const cu=currentUnit(),x=xpToday(),g=S.cfg.goal,C=2*Math.PI*28,p=Math.min(1,x/g);
@@ -1046,31 +1127,42 @@ function vLearn(m){
      <button class="qt" id="rev" ${S.mistakes.length?"":"disabled"}><span class="qi" style="background:var(--coral)">${IC.replay}</span><b>Fehler wiederholen</b><span>${S.mistakes.length?plural(S.mistakes.length,"Aufgabe","Aufgaben")+" offen":"Gerade nichts offen"}</span></button>
      <button class="qt" id="fast"><span class="qi" style="background:var(--blue)">${IC.bolt}</span><b>Schnelle Runde</b><span>Gemischte Übung aus allen Einheiten</span></button>
    </div>
+   ${(()=>{const nc=allUnits().filter(isNewCh);if(!nc.length)return "";const c0=nc[0];
+     return `<div class="notice" style="background:var(--accent-soft)">${IC.spark.replace("<svg",'<svg style="color:var(--accent)"')}<div><b>${nc.length===1?"Neues Kapitel":plural(nc.length,"neues Kapitel","neue Kapitel")}</b><br><span class="muted">${esc(c0.title)}: ${esc(c0.desc)}</span></div><button class="btn sm primary" id="newCh" data-uid="${esc(c0.id)}">Ansehen</button></div>`;})()}
    ${needBackup?`<div class="notice">${IC.download}<div><b>Fortschritt sichern</b><br><span class="muted">Dein letztes Backup ist länger her.</span></div><button class="btn sm" id="bk">Sichern</button></div>`:""}
-   ${UNITS.map((u,ui)=>{const d=S.units[u.id]||0,dir=ui%2?-1:1;
-     return `<section class="unit" style="${unitColor(u.id)}">
-       <div class="uhead"><div><div class="kicker">Einheit ${ui+1} · ${d}/${LESSONS_PER_UNIT}</div><h2>${esc(u.title)}</h2><p>${esc(u.desc)}</p></div>
+   ${allUnits().map((u,ui)=>{const d=S.units[u.id]||0,dir=ui%2?-1:1;
+     return `<section class="unit" id="unit-${esc(u.id)}" style="${unitColor(u.id)}">
+       <div class="uhead"><div><div class="kicker">${u.kind==="chapter"?"Kapitel":"Einheit"} ${ui+1} · ${d}/${LESSONS_PER_UNIT}${isNewCh(u)?' · <span class="newb">Neu</span>':""}</div><h2>${esc(u.title)}</h2><p>${esc(u.desc)}</p></div>
          <button class="btn sm" data-practice="${u.id}" aria-label="${esc(u.title)} frei üben">${IC.bolt}Üben</button></div>
        <div class="nodes">${Array.from({length:LESSONS_PER_UNIT},(_,i)=>{const s=i<d?"done":i===d?"cur":"lock";
          return `<button class="node ${s}" style="transform:translateX(${offs[i]*dir}px)" data-node="${u.id}" data-i="${i}" data-s="${s}" aria-label="Lektion ${i+1}: ${s==="done"?"abgeschlossen":s==="cur"?"als Nächstes":"gesperrt"}">
            ${s==="cur"&&cu&&cu.id===u.id?`<span class="tip">START</span>`:""}${s==="done"?IC.check:s==="cur"?IC.star:IC.lock}</button>`;}).join("")}
          <button class="node trophy ${d>=LESSONS_PER_UNIT?"won":""}" data-trophy="${u.id}" aria-label="Abschluss der Einheit">${IC.trophy}</button></div>
-     </section>`;}).join("")}`;
+     </section>`;}).join("")}
+   <div class="card endcard"><div class="sic">${IC.spark}</div><h2>Mehr Kapitel</h2>
+     ${hasAI()?`<p class="muted">Die App erstellt automatisch ein neues Kapitel mit frischen Vokabeln, sobald du dich dem Ende des Pfads näherst. Du kannst auch jetzt gleich eines anlegen.</p>
+       <button class="btn primary block" id="genCh" ${chapterBusy?"disabled":""}>${chapterBusy?"Kapitel wird erstellt …":IC.spark+" Neues Kapitel erstellen"}</button>`
+     :`<p class="muted">Neue Kapitel mit neuen Vokabeln kommen regelmäßig per Update dazu. ${chapters().length?`Zuletzt hinzugefügt: „${esc(chapters().slice(-1)[0].title)}“.`:""} Mit einem API-Key im Profil erstellt die App zusätzlich jederzeit eigene Kapitel.</p>`}
+   </div>`;
+  const nb=$("#newCh");if(nb)nb.onclick=()=>{const id=nb.dataset.uid;S.seenCh=(S.seenCh||[]).concat(allUnits().filter(isNewCh).map(u=>String(u.id))).slice(-300);save();render();
+    const t=document.getElementById("unit-"+id);if(t)t.scrollIntoView({behavior:"smooth",block:"start"});};
+  const gc=$("#genCh");if(gc)gc.onclick=()=>addAIChapter(true);
+  ensureNextChapter();
   const c=$("#cont");if(c)c.onclick=()=>startLesson(cu.id,"path");
-  const f=$("#free");if(f)f.onclick=()=>startLesson(Math.floor(Math.random()*UNITS.length),"practice");
+  const f=$("#free");if(f)f.onclick=()=>startLesson(randUnit(),"practice");
   const r=$("#rev");if(r)r.onclick=()=>startLesson(null,"review");
-  $("#fast").onclick=()=>startLesson(Math.floor(Math.random()*UNITS.length),"practice");
+  $("#fast").onclick=()=>startLesson(randUnit(),"practice");
   const bk=$("#bk");if(bk)bk.onclick=exportBackup;
-  $$("[data-practice]").forEach(b=>b.onclick=()=>startLesson(+b.dataset.practice,"practice"));
-  $$("[data-node]").forEach(b=>b.onclick=()=>nodeSheet(+b.dataset.node,+b.dataset.i,b.dataset.s));
-  $$("[data-trophy]").forEach(b=>b.onclick=()=>{const u=UNITS[+b.dataset.trophy],d=S.units[u.id]||0;
+  $$("[data-practice]").forEach(b=>b.onclick=()=>startLesson(idOf(b.dataset.practice),"practice"));
+  $$("[data-node]").forEach(b=>b.onclick=()=>nodeSheet(idOf(b.dataset.node),+b.dataset.i,b.dataset.s));
+  $$("[data-trophy]").forEach(b=>b.onclick=()=>{const u=U(b.dataset.trophy),d=S.units[u.id]||0;
     openSheet(`<div class="sic" style="background:${d>=LESSONS_PER_UNIT?"var(--gold)":"var(--line-2)"}">${IC.trophy}</div><h2>${d>=LESSONS_PER_UNIT?"Einheit abgeschlossen":"Einheitsabschluss"}</h2>
       <p class="muted">${d>=LESSONS_PER_UNIT?`Du hast alle ${LESSONS_PER_UNIT} Lektionen von „${esc(u.title)}“ geschafft. Über „Üben“ kannst du jederzeit weitertrainieren.`:`Noch ${plural(LESSONS_PER_UNIT-d,"Lektion","Lektionen")}, dann ist „${esc(u.title)}“ geschafft.`}</p>
       <button class="btn primary block" data-close>Okay</button>`);});
   if(hasAI()&&cu)prefetch(cu.id);
 }
 function nodeSheet(uid,i,s){
-  const u=UNITS[uid];
+  const u=U(uid);
   if(s==="lock"){openSheet(`<div class="sic" style="background:var(--line-2)">${IC.lock}</div><h2>Noch gesperrt</h2><p class="muted">Schließe zuerst Lektion ${(S.units[uid]||0)+1} ab. Danach geht es hier weiter.</p><button class="btn primary block" data-close>Okay</button>`);return;}
   const n=u.kind==="ff"?10:11;
   openSheet(`<div class="sic" style="${unitColor(uid)};background:var(--uc)">${s==="done"?IC.check:IC.star}</div>
@@ -1082,21 +1174,21 @@ function nodeSheet(uid,i,s){
 }
 
 /* ---------- Wörter ---------- */
-let vMode="cards",vUnit=-1,vCard=null,vQ="";
-function allTerms(){return VOCAB.map(v=>({...v,ai:false})).concat(S.lib.map(l=>({...l,ai:true})));}
-function vDeck(){return allTerms().filter(t=>(vUnit<0||t.u===vUnit)&&(!vQ||(t.t+" "+t.de).toLowerCase().includes(vQ.toLowerCase())));}
+let vMode="cards",vUnit=null,vCard=null,vQ="";
+function allTerms(){return VOCAB.map(v=>({...v,ai:false})).concat(chapters().flatMap(ch=>ch.terms.map(t=>({...t,u:ch.id,ai:ch.source==="ai"}))),S.lib.map(l=>({...l,ai:true})));}
+function vDeck(){return allTerms().filter(t=>(vUnit===null||String(t.u)===String(vUnit))&&(!vQ||(t.t+" "+t.de).toLowerCase().includes(vQ.toLowerCase())));}
 function nextCard(){const d=vDeck();if(!d.length){vCard=null;return;}const min=Math.min(...d.map(v=>S.box[v.t]||0));const pool=d.filter(v=>(S.box[v.t]||0)<=min+1&&(!vCard||v.t!==vCard.t));vCard=shuffle(pool.length?pool:d)[0];}
 const lvlHtml=b=>`<span class="lvl" aria-label="Stufe ${b} von 5">${[1,2,3,4,5].map(i=>`<i class="${i<=b?"on":""}"></i>`).join("")}</span>`;
 function vWords(m){
   if(!vCard||!vDeck().some(t=>t.t===vCard.t))nextCard();
   const all=allTerms(),d=vDeck(),mastered=all.filter(v=>(S.box[v.t]||0)>=3).length;
-  const units=[...new Set(all.map(t=>t.u))].sort();
+  const used=new Set(all.map(t=>String(t.u))),units=allUnits().filter(u=>used.has(String(u.id)));
   let body="";
   if(vMode==="cards"){
     if(!vCard)body=`<p class="muted">Keine Begriffe in dieser Auswahl.</p>`;
     else{const b=S.box[vCard.t]||0;
       body=`<div class="flip" id="flip" role="button" tabindex="0" aria-label="Karte umdrehen"><div class="in">
-        <div class="face"><div class="ftop"><span class="kicker">${esc(UNITS[vCard.u]?.title||"")}${vCard.ai?' <span class="tag">KI</span>':""}</span>${lvlHtml(b)}</div>
+        <div class="face"><div class="ftop"><span class="kicker">${esc(U(vCard.u).title)}${vCard.ai?' <span class="tag">KI</span>':""}</span>${lvlHtml(b)}</div>
           <h2>${esc(vCard.t)}</h2><p class="muted small">Tippen zum Umdrehen</p></div>
         <div class="face back"><div class="row" style="justify-content:space-between;flex-wrap:nowrap"><h3 style="font-size:22px">${esc(vCard.t)}</h3>${sayBtn(vCard.t+". "+vCard.ex)}</div>
           <div class="de">${esc(vCard.de)}</div><p>${esc(vCard.d)}</p><p class="ex">“${esc(vCard.ex)}”</p></div>
@@ -1112,11 +1204,11 @@ function vWords(m){
     <div class="bar" style="margin:12px 0 16px"><i style="width:${mastered/all.length*100}%"></i></div>
     <div class="stack">
       <div class="row" style="justify-content:space-between"><div class="seg" role="group"><button id="mC" aria-pressed="${vMode==="cards"}">Karteikarten</button><button id="mL" aria-pressed="${vMode==="list"}">Liste</button></div></div>
-      <div class="chips"><button class="chip" data-u="-1" aria-pressed="${vUnit<0}">Alle</button>${units.map(u=>`<button class="chip" data-u="${u}" aria-pressed="${vUnit===u}">${esc(UNITS[u].title)}</button>`).join("")}</div>
+      <div class="chips"><button class="chip" data-u="" aria-pressed="${vUnit===null}">Alle</button>${units.map(u=>`<button class="chip" data-u="${esc(u.id)}" aria-pressed="${vUnit!==null&&String(vUnit)===String(u.id)}">${esc(u.title)}</button>`).join("")}</div>
       ${body}
       ${S.lib.length?"":`<p class="muted small">${hasAI()?"Neue Begriffe aus KI-Lektionen landen automatisch hier.":"Tipp: Begriffe, die du nicht weißt, kommen öfter dran. Ab Stufe 3 gilt ein Begriff als sicher."}</p>`}
     </div>`;
-  $$("[data-u]").forEach(b=>b.onclick=()=>{vUnit=+b.dataset.u;nextCard();render();});
+  $$("[data-u]").forEach(b=>b.onclick=()=>{vUnit=b.dataset.u===""?null:idOf(b.dataset.u);nextCard();render();});
   $("#mC").onclick=()=>{vMode="cards";render();};$("#mL").onclick=()=>{vMode="list";render();};
   const q=$("#vq");if(q)q.oninput=()=>{vQ=q.value;clearTimeout(q._t);q._t=setTimeout(()=>{render();const n=$("#vq");n.focus();n.setSelectionRange(n.value.length,n.value.length);},250);};
   if(vMode==="cards"&&vCard){
@@ -1361,6 +1453,7 @@ function showOnb(){
 appReady=true;
 render();
 if(!S.onboarded)showOnb();
+loadChapters();
 if("serviceWorker" in navigator&&/^https?:$/.test(location.protocol))navigator.serviceWorker.register("sw.js").catch(()=>{});
 </script>
 </body>

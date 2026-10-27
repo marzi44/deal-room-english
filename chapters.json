@@ -1,0 +1,294 @@
+{
+  "updated": "2026-10-28",
+  "chapters": [
+    {
+      "id": "c01-finops", "added": "2026-10-28T01", "title": "Kosten im Griff",
+      "desc": "Budgets, Tagging, Rightsizing, Einsparungen",
+      "topic": "FinOps and cloud cost management: budgets, tagging, rightsizing, savings plans and cost transparency for finance teams",
+      "terms": [
+        {"t": "rightsizing", "de": "Größenanpassung von Ressourcen", "d": "Adjusting cloud resources to match actual usage so you don't pay for idle capacity.", "ex": "A quick rightsizing exercise cut their compute bill by a fifth."},
+        {"t": "tagging", "de": "Kennzeichnung mit Tags", "d": "Labelling cloud resources with metadata such as cost centre or owner.", "ex": "Without consistent tagging, nobody knows which department is driving the costs."},
+        {"t": "chargeback", "de": "interne Kostenverrechnung", "d": "Billing internal departments for the cloud resources they actually use.", "ex": "Finance wants a chargeback model by the next budget cycle."},
+        {"t": "showback", "de": "Kostentransparenz ohne Verrechnung", "d": "Showing departments their cloud costs without actually charging them.", "ex": "We usually start with showback before moving to chargeback."},
+        {"t": "savings plan", "de": "Spartarif mit Verbrauchszusage", "d": "A commitment to a fixed hourly spend in exchange for lower prices.", "ex": "A savings plan makes sense once the workloads are stable."},
+        {"t": "cost anomaly", "de": "ungewöhnliche Kostenspitze", "d": "An unexpected spike in spending that needs investigation.", "ex": "The alert flagged a cost anomaly in the test subscription over the weekend."},
+        {"t": "budget alert", "de": "Budgetwarnung", "d": "An automatic notification when spending approaches a set limit.", "ex": "Let's set a budget alert at eighty percent for every project."},
+        {"t": "unit economics", "de": "Kosten pro Einheit", "d": "Costs and revenue measured per unit, such as per customer or per transaction.", "ex": "The CFO cares less about the total bill and more about unit economics."},
+        {"t": "egress costs", "de": "Kosten für ausgehenden Datenverkehr", "d": "Charges for data transferred out of a cloud region or network.", "ex": "Remember to factor egress costs into the architecture."},
+        {"t": "idle resources", "de": "ungenutzte Ressourcen", "d": "Cloud resources that are running but not doing useful work.", "ex": "We found dozens of idle resources left over from old pilots."}
+      ],
+      "phrases": [
+        ["Let's look at where the money is actually going before we cut anything.", "Kostenanalyse vorschlagen"],
+        ["The quickest win is usually switching off what nobody uses.", "Quick Win benennen"],
+        ["Can we agree on a tagging policy before the next migration wave?", "Governance anstoßen"],
+        ["Predictable costs matter more to you than the lowest price, is that fair to say?", "Bedarf bestätigen"],
+        ["I'll send you a breakdown by subscription so finance can see the trend.", "Follow-up zusagen"],
+        ["We can cap the risk with budgets and alerts from day one.", "Kostenangst nehmen"]
+      ]
+    },
+    {
+      "id": "c02-security", "added": "2026-10-28T02", "title": "Sicherheit & Zero Trust",
+      "desc": "Identitäten, Zugriffe, Bedrohungen, Monitoring",
+      "topic": "cloud security conversations: zero trust, identity and access, threats like phishing and ransomware, and incident response",
+      "terms": [
+        {"t": "zero trust", "de": "Zero-Trust-Prinzip", "d": "A security model that verifies every access request instead of trusting the network.", "ex": "Zero trust means we check every login, even from inside the office."},
+        {"t": "multi-factor authentication", "de": "Mehrfaktor-Authentifizierung", "d": "Signing in with a second proof of identity in addition to a password.", "ex": "Enforcing multi-factor authentication would have stopped this attack."},
+        {"t": "least privilege", "de": "Prinzip der minimalen Rechte", "d": "Giving users only the access they need for their job.", "ex": "Admins should work with least privilege and request higher rights only when needed."},
+        {"t": "conditional access", "de": "bedingter Zugriff", "d": "Rules that allow or block access based on user, device, location or risk.", "ex": "With conditional access, unmanaged devices can only open email in the browser."},
+        {"t": "attack surface", "de": "Angriffsfläche", "d": "All the points where an attacker could try to get into a system.", "ex": "Every public endpoint increases the attack surface."},
+        {"t": "security posture", "de": "Sicherheitslage", "d": "The overall strength of an organisation's security setup.", "ex": "The assessment gives you a score for your current security posture."},
+        {"t": "incident response", "de": "Reaktion auf Sicherheitsvorfälle", "d": "The process of detecting, containing and recovering from a security breach.", "ex": "Do you have an incident response plan that has actually been tested?"},
+        {"t": "phishing", "de": "Phishing", "d": "Fake messages designed to trick people into revealing data or clicking malicious links.", "ex": "Most breaches still start with a simple phishing email."},
+        {"t": "ransomware", "de": "Erpressungssoftware", "d": "Malware that encrypts data and demands payment to unlock it.", "ex": "Immutable backups are your best insurance against ransomware."},
+        {"t": "encryption at rest", "de": "Verschlüsselung gespeicherter Daten", "d": "Protecting stored data by encrypting it on disk.", "ex": "All customer data is protected by encryption at rest by default."}
+      ],
+      "phrases": [
+        ["Who can access this data today, and how would you know if that changed?", "Bedarf aufdecken"],
+        ["Security is usually the reason to move, not the reason to wait.", "Einwand umdrehen"],
+        ["Let's start with identity, because that's where most attacks begin.", "Priorität setzen"],
+        ["Would it help if our security architect joined the next call?", "Experten einbinden"],
+        ["We can map this against the controls your auditors already use.", "Compliance verbinden"]
+      ]
+    },
+    {
+      "id": "c03-data", "added": "2026-10-28T03", "title": "Daten & Analytics",
+      "desc": "Datenplattform, Qualität, Echtzeit, Reporting",
+      "topic": "data platforms and analytics: breaking down data silos, data quality, pipelines, dashboards and data governance",
+      "terms": [
+        {"t": "data platform", "de": "Datenplattform", "d": "A central environment for storing, processing and analysing an organisation's data.", "ex": "A modern data platform is the foundation for any serious AI project."},
+        {"t": "data silos", "de": "Datensilos", "d": "Data kept in separate systems that don't talk to each other.", "ex": "Sales and service still work in data silos, so nobody sees the full customer."},
+        {"t": "single source of truth", "de": "einzige verlässliche Datenquelle", "d": "One agreed place where the correct version of data lives.", "ex": "The board wants a single source of truth for revenue figures."},
+        {"t": "data quality", "de": "Datenqualität", "d": "How accurate, complete and up to date data is.", "ex": "Poor data quality will undermine the best dashboard."},
+        {"t": "data pipeline", "de": "Datenpipeline", "d": "An automated flow that moves and transforms data between systems.", "ex": "The data pipeline refreshes the sales figures every hour."},
+        {"t": "real-time analytics", "de": "Echtzeit-Analyse", "d": "Analysing data as it arrives instead of in batches.", "ex": "Real-time analytics lets the plant react before a machine fails."},
+        {"t": "dashboard", "de": "Dashboard, Kennzahlen-Übersicht", "d": "A visual overview of key figures on one screen.", "ex": "The regional managers check the dashboard every Monday morning."},
+        {"t": "data governance", "de": "Daten-Governance", "d": "Rules and responsibilities for how data is managed and used.", "ex": "Data governance decides who may see salary information."},
+        {"t": "self-service BI", "de": "Self-Service-Analysen", "d": "Business users building their own reports without help from IT.", "ex": "Self-service BI took a lot of pressure off the IT team."},
+        {"t": "data catalogue", "de": "Datenkatalog", "d": "An inventory that describes what data exists and where it lives.", "ex": "Start with a data catalogue so people can find what already exists."}
+      ],
+      "phrases": [
+        ["What decisions would you make differently if you had this data every morning?", "Nutzen herausarbeiten"],
+        ["Let's start with one report everyone already argues about.", "Pragmatischer Einstieg"],
+        ["AI is only as good as the data behind it.", "Daten als Basis betonen"],
+        ["Who owns this data today, IT or the business?", "Verantwortung klären"],
+        ["Could you share a sample so our architect can take a look?", "Nächsten Schritt einleiten"]
+      ]
+    },
+    {
+      "id": "c04-compliance", "added": "2026-10-28T04", "title": "Regulierung & Compliance",
+      "desc": "DSGVO, DORA, NIS2, EU AI Act",
+      "topic": "regulation and compliance conversations with Austrian customers: GDPR, DORA, NIS2, the EU AI Act, audits and third-party risk",
+      "terms": [
+        {"t": "compliance", "de": "Regelkonformität", "d": "Meeting the laws, regulations and standards that apply to a business.", "ex": "Compliance is the first question in every banking workshop."},
+        {"t": "audit trail", "de": "Prüfpfad", "d": "A record that shows who did what and when.", "ex": "The regulator expects a complete audit trail for every change."},
+        {"t": "data processing agreement", "de": "Auftragsverarbeitungsvertrag", "d": "A contract that defines how a provider processes personal data on a customer's behalf.", "ex": "Legal has asked for our data processing agreement before the pilot starts."},
+        {"t": "risk assessment", "de": "Risikobewertung", "d": "A structured evaluation of what could go wrong and how likely it is.", "ex": "We'll support your risk assessment with our documentation."},
+        {"t": "exit strategy", "de": "Ausstiegsstrategie", "d": "A plan for how to move away from a provider if needed.", "ex": "DORA requires banks to have a realistic exit strategy for critical providers."},
+        {"t": "third-party risk", "de": "Drittanbieterrisiko", "d": "Risks that come from relying on external suppliers.", "ex": "Third-party risk is now a standing item on the board agenda."},
+        {"t": "certification", "de": "Zertifizierung", "d": "Official confirmation that a service meets a specific standard.", "ex": "You'll find every certification in our trust centre."},
+        {"t": "high-risk AI system", "de": "KI-System mit hohem Risiko", "d": "Under the EU AI Act, an AI system used in sensitive areas that has stricter obligations.", "ex": "A credit-scoring model would likely count as a high-risk AI system."},
+        {"t": "personal data", "de": "personenbezogene Daten", "d": "Any information that can identify a person.", "ex": "The chatbot must not store personal data longer than necessary."},
+        {"t": "regulator", "de": "Aufsichtsbehörde", "d": "The authority that supervises an industry.", "ex": "The regulator will want to see how you monitor the provider."}
+      ],
+      "phrases": [
+        ["Which regulations are top of mind for your team this year?", "Prioritäten erfragen"],
+        ["We can provide the documentation your auditors usually ask for.", "Unterstützung anbieten"],
+        ["Let's involve your compliance team early rather than at the end.", "Stakeholder einbinden"],
+        ["This doesn't remove your responsibility, but it makes it much easier to prove.", "Ehrliche Einordnung"],
+        ["I'd suggest we map your requirements to our controls in a short workshop.", "Workshop vorschlagen"]
+      ]
+    },
+    {
+      "id": "c05-adoption", "added": "2026-10-28T05", "title": "Copilot-Einführung",
+      "desc": "Pilotgruppe, Change Management, Nutzen messen",
+      "topic": "rolling out Copilot and AI assistants: adoption, change management, pilot groups, champions, the works council and measuring success",
+      "terms": [
+        {"t": "adoption", "de": "Nutzung, Akzeptanz", "d": "How widely and actively people use a new tool.", "ex": "Licences are easy to buy; adoption is the hard part."},
+        {"t": "change management", "de": "Veränderungsmanagement", "d": "Preparing and supporting people through a change in how they work.", "ex": "Without change management, the rollout will feel like just another IT project."},
+        {"t": "pilot group", "de": "Pilotgruppe", "d": "A small group that tests a solution before a wider rollout.", "ex": "We picked a pilot group from finance, sales and HR."},
+        {"t": "champions network", "de": "Netzwerk interner Multiplikatoren", "d": "Enthusiastic employees who help colleagues adopt a new tool.", "ex": "The champions network answered most questions before they reached IT."},
+        {"t": "productivity gains", "de": "Produktivitätsgewinne", "d": "Time or effort saved thanks to a new way of working.", "ex": "We measured productivity gains in meeting preparation and email."},
+        {"t": "prompt", "de": "Prompt, Eingabe an die KI", "d": "The instruction or question you give an AI assistant.", "ex": "A good prompt includes the context, the goal and the format you want."},
+        {"t": "rollout", "de": "Einführung", "d": "The step-by-step introduction of a solution across an organisation.", "ex": "The rollout will happen in three waves over six months."},
+        {"t": "works council", "de": "Betriebsrat", "d": "Employee representatives who must be consulted on certain workplace changes.", "ex": "In Austria, the works council should be involved early in any AI project."},
+        {"t": "success metrics", "de": "Erfolgskennzahlen", "d": "Agreed measures that show whether a project worked.", "ex": "Let's define the success metrics before the pilot starts."},
+        {"t": "oversharing", "de": "zu weit gefasste Freigaben", "d": "Content that is accessible to more people than intended.", "ex": "Fix oversharing in SharePoint before switching on Copilot for everyone."}
+      ],
+      "phrases": [
+        ["Which three tasks eat up most of your team's week?", "Use Cases finden"],
+        ["Let's agree on how we'll measure success before anyone gets a licence.", "Erfolg messbar machen"],
+        ["The technology is ready; the question is whether your people are.", "Change-Thema ansprechen"],
+        ["I'd involve the works council from the start to build trust.", "Betriebsrat einbinden"],
+        ["We've seen the best results when managers use it first.", "Best Practice teilen"]
+      ]
+    },
+    {
+      "id": "c06-partner", "added": "2026-10-28T06", "title": "Partner & Co-Sell",
+      "desc": "Marketplace, Joint Business Plan, Deal Registration",
+      "topic": "working with partners: systems integrators, managed service providers, the marketplace, joint business plans and deal registration",
+      "terms": [
+        {"t": "partner ecosystem", "de": "Partnernetzwerk", "d": "The network of companies that build, sell and deliver solutions with a vendor.", "ex": "Our partner ecosystem in Austria covers almost every industry."},
+        {"t": "systems integrator", "de": "Systemintegrator", "d": "A partner that designs and implements complex IT solutions.", "ex": "The systems integrator will handle the migration itself."},
+        {"t": "managed service provider", "de": "Managed Service Provider", "d": "A partner that runs and maintains IT services for a customer.", "ex": "Many mid-sized customers prefer a managed service provider to run their environment."},
+        {"t": "marketplace", "de": "Marketplace, Online-Kaufplattform", "d": "An online store where customers buy partner solutions through their cloud agreement.", "ex": "Buying through the marketplace can count towards their existing commitment."},
+        {"t": "private offer", "de": "individuelles Marketplace-Angebot", "d": "A customer-specific price or term offered by a partner on the marketplace.", "ex": "The partner created a private offer with a three-year discount."},
+        {"t": "joint business plan", "de": "gemeinsamer Geschäftsplan", "d": "A shared plan with targets, accounts and activities agreed with a partner.", "ex": "Let's review the joint business plan at the end of each quarter."},
+        {"t": "deal registration", "de": "Deal-Registrierung", "d": "Officially recording a partner's opportunity to protect it and unlock benefits.", "ex": "Please complete the deal registration before the customer workshop."},
+        {"t": "go-to-market", "de": "Markteinführungsstrategie", "d": "The plan for how a solution will be sold and to whom.", "ex": "Our go-to-market for this offer focuses on manufacturing in Upper Austria."},
+        {"t": "referral", "de": "Empfehlung, Weitergabe einer Opportunity", "d": "Passing a sales opportunity from one company to another.", "ex": "We received a referral from the partner for a hospital group in Graz."},
+        {"t": "funding", "de": "Fördermittel", "d": "Money a vendor provides to support workshops or pilots.", "ex": "There's funding available for an envisioning workshop."}
+      ],
+      "phrases": [
+        ["Who owns the customer relationship in this account?", "Rollen klären"],
+        ["Let's pick three target accounts we both believe in.", "Fokus setzen"],
+        ["What do you need from us to move faster?", "Unterstützung anbieten"],
+        ["I'd like to align on next steps before either of us contacts the CIO.", "Abstimmung sichern"],
+        ["Can you register the deal so we can unlock the funding?", "Prozess anstoßen"]
+      ]
+    },
+    {
+      "id": "c07-executive", "added": "2026-10-28T07", "title": "Mit dem C-Level sprechen",
+      "desc": "Kernbotschaft, Executive Summary, Trade-offs",
+      "topic": "executive communication with CEOs, CFOs and CIOs: short key messages, business outcomes, trade-offs and decisions",
+      "terms": [
+        {"t": "executive summary", "de": "Management-Zusammenfassung", "d": "A short overview of the key points for senior decision-makers.", "ex": "Put the executive summary on the first slide, not the last."},
+        {"t": "bottom line", "de": "Kernaussage, Fazit", "d": "The most important point or result.", "ex": "The bottom line is that the project pays for itself in two years."},
+        {"t": "key takeaway", "de": "wichtigste Erkenntnis", "d": "The main point you want people to remember.", "ex": "The key takeaway for the board is lower risk, not new technology."},
+        {"t": "strategic priority", "de": "strategische Priorität", "d": "A goal that leadership has decided is most important.", "ex": "Is cost reduction still your strategic priority for next year?"},
+        {"t": "trade-off", "de": "Zielkonflikt, Abwägung", "d": "Giving up one thing to gain another.", "ex": "The trade-off is a slightly longer timeline for much lower risk."},
+        {"t": "roadmap", "de": "Fahrplan", "d": "A plan that shows the main steps and milestones over time.", "ex": "We'll share a twelve-month roadmap after the workshop."},
+        {"t": "return on investment", "de": "Kapitalrendite (ROI)", "d": "The benefit gained compared with the money spent.", "ex": "The CFO asked for the return on investment in one sentence."},
+        {"t": "sponsor", "de": "Sponsor, Auftraggeber", "d": "A senior person who supports a project and removes obstacles.", "ex": "Without an executive sponsor, the project will stall at the first budget question."},
+        {"t": "time to value", "de": "Zeit bis zum Nutzen", "d": "How quickly a customer sees results after starting.", "ex": "Time to value matters more to them than feature lists."},
+        {"t": "elevator pitch", "de": "Kurzpräsentation", "d": "A very short, persuasive summary you could give during a lift ride.", "ex": "Practise an elevator pitch for when you meet the CEO at the event."}
+      ],
+      "phrases": [
+        ["I'll keep this short: three points, then your questions.", "Klarer Einstieg"],
+        ["What would make this a success for you personally?", "Persönliches Ziel erfragen"],
+        ["In one sentence: lower risk, faster delivery, predictable costs.", "Kernbotschaft"],
+        ["The decision we need from you today is whether to start the pilot.", "Entscheidung einfordern"],
+        ["Happy to go deeper on any of this with your team.", "Details delegieren"]
+      ]
+    },
+    {
+      "id": "c08-procurement", "added": "2026-10-28T08", "title": "Einkauf & Ausschreibung",
+      "desc": "RFP, Konditionen, Freigaben, Vertrag",
+      "topic": "procurement and tenders: requests for proposal, public tenders, contract terms, approvals and legal review",
+      "terms": [
+        {"t": "procurement", "de": "Einkauf, Beschaffung", "d": "The department or process responsible for buying goods and services.", "ex": "Procurement will want three competing offers."},
+        {"t": "request for proposal", "de": "Ausschreibung (RFP)", "d": "A formal document asking vendors to submit offers.", "ex": "The request for proposal is due on the fifteenth."},
+        {"t": "tender", "de": "öffentliche Ausschreibung", "d": "A formal invitation to bid, especially in the public sector.", "ex": "The tender includes strict requirements on data location."},
+        {"t": "terms and conditions", "de": "Geschäftsbedingungen", "d": "The rules that apply to a contract.", "ex": "Their lawyers are still reviewing the terms and conditions."},
+        {"t": "payment terms", "de": "Zahlungsbedingungen", "d": "When and how payment must be made.", "ex": "They asked for ninety-day payment terms."},
+        {"t": "sign-off", "de": "Freigabe", "d": "Formal approval from the person responsible.", "ex": "We're waiting for the final sign-off from the CFO."},
+        {"t": "framework agreement", "de": "Rahmenvertrag", "d": "A long-term contract that sets the terms for future orders.", "ex": "They can order through the existing framework agreement."},
+        {"t": "shortlist", "de": "engere Auswahl", "d": "A small group of vendors still in the selection process.", "ex": "Good news: we made the shortlist."},
+        {"t": "redlines", "de": "Änderungsmarkierungen im Vertrag", "d": "Changes a party proposes to a contract draft.", "ex": "Legal sent back the contract with redlines on liability."},
+        {"t": "evaluation criteria", "de": "Bewertungskriterien", "d": "The factors used to compare and score offers.", "ex": "Price is only thirty percent of the evaluation criteria."}
+      ],
+      "phrases": [
+        ["Could you share the evaluation criteria so we can focus on what matters to you?", "Kriterien erfragen"],
+        ["Who else needs to sign off before the order can go out?", "Freigabeprozess klären"],
+        ["We can work within your framework agreement to keep this simple.", "Hürden senken"],
+        ["I understand procurement needs alternatives; let's make the comparison fair.", "Wettbewerb ansprechen"],
+        ["Let's agree on a realistic timeline for legal review.", "Zeitplan absichern"]
+      ]
+    },
+    {
+      "id": "c09-workshops", "added": "2026-10-28T09", "title": "Workshops & Präsentationen",
+      "desc": "Agenda, Moderation, Fragen, Zusammenfassung",
+      "topic": "running customer workshops and presentations: agendas, facilitation, breakout sessions, handling questions and wrapping up",
+      "terms": [
+        {"t": "agenda", "de": "Tagesordnung", "d": "The list of topics to cover in a meeting.", "ex": "Let me quickly run through the agenda."},
+        {"t": "envisioning workshop", "de": "Ideenworkshop", "d": "A workshop to explore possibilities and define a vision with the customer.", "ex": "The envisioning workshop produced fifteen use cases."},
+        {"t": "facilitator", "de": "Moderator/in", "d": "The person who guides a workshop or discussion.", "ex": "As facilitator, I'll keep an eye on the time."},
+        {"t": "breakout session", "de": "Kleingruppenarbeit", "d": "A short session in smaller groups within a larger meeting.", "ex": "We'll start a breakout session for each department after the coffee break."},
+        {"t": "whiteboard", "de": "Whiteboard", "d": "A board, physical or digital, for drawing and writing ideas.", "ex": "Let's sketch the current architecture on the whiteboard."},
+        {"t": "hands-on", "de": "praxisnah", "d": "Involving active practice rather than just theory.", "ex": "The afternoon is hands-on, so please bring your laptops."},
+        {"t": "recap", "de": "Zusammenfassung", "d": "A short summary of what has been discussed.", "ex": "Here's a quick recap before we move on."},
+        {"t": "parking lot", "de": "Themenspeicher", "d": "A list of topics to discuss later so the meeting stays on track.", "ex": "Good point, let's put it in the parking lot for now."},
+        {"t": "wrap up", "de": "abschließen", "d": "To finish a meeting or discussion.", "ex": "Let's wrap up with the next steps."},
+        {"t": "Q&A", "de": "Fragerunde", "d": "A session where the audience asks questions.", "ex": "We'll leave fifteen minutes for Q&A at the end."}
+      ],
+      "phrases": [
+        ["Before we start, what would make today worthwhile for you?", "Erwartungen klären"],
+        ["Let me pause here: does this match what you're seeing?", "Interaktion herstellen"],
+        ["That's a great question; let's park it and come back after lunch.", "Fokus halten"],
+        ["To sum up, we agreed on three use cases and a pilot date.", "Ergebnisse sichern"],
+        ["I'll send the slides and a short summary by tomorrow.", "Follow-up ankündigen"]
+      ]
+    },
+    {
+      "id": "c10-delivery", "added": "2026-10-28T10", "title": "Projekte & Delivery",
+      "desc": "Meilensteine, Go-live, Abhängigkeiten, Risiken",
+      "topic": "project delivery language: milestones, go-live, dependencies, scope creep, steering committees and status updates",
+      "terms": [
+        {"t": "milestone", "de": "Meilenstein", "d": "An important point or event in a project timeline.", "ex": "The first milestone is the landing zone sign-off."},
+        {"t": "go-live", "de": "Produktivstart", "d": "The moment a system starts being used for real work.", "ex": "Go-live is planned for the first weekend in March."},
+        {"t": "dependency", "de": "Abhängigkeit", "d": "Something that must happen before another task can start.", "ex": "The network upgrade is a dependency for the migration."},
+        {"t": "scope creep", "de": "schleichende Ausweitung des Umfangs", "d": "Gradual, uncontrolled growth of a project's scope.", "ex": "We need to watch for scope creep in the reporting requirements."},
+        {"t": "steering committee", "de": "Lenkungsausschuss", "d": "A senior group that guides a project and makes key decisions.", "ex": "The steering committee meets every four weeks."},
+        {"t": "handover", "de": "Übergabe", "d": "Passing responsibility for something to another person or team.", "ex": "The handover to operations happens two weeks after go-live."},
+        {"t": "status update", "de": "Statusbericht", "d": "A short report on progress, risks and next steps.", "ex": "Could you send a status update before the steering committee?"},
+        {"t": "risk register", "de": "Risikoregister", "d": "A list of project risks with owners and actions.", "ex": "Let's add the licence delay to the risk register."},
+        {"t": "deliverable", "de": "Arbeitsergebnis", "d": "A concrete output a project must produce.", "ex": "The main deliverable of phase one is a tested architecture."},
+        {"t": "on track", "de": "im Plan", "d": "Progressing as planned.", "ex": "Overall we're on track, with one open risk."}
+      ],
+      "phrases": [
+        ["We're on track overall, but there's one risk I want to flag.", "Status mit Risiko"],
+        ["What's the impact if this slips by two weeks?", "Auswirkung klären"],
+        ["That sounds like a change in scope; shall we assess it properly?", "Scope Creep ansprechen"],
+        ["Who needs to approve this before we continue?", "Entscheidung einholen"],
+        ["Let's agree on owners and dates for each action.", "Verbindlichkeit schaffen"]
+      ]
+    },
+    {
+      "id": "c11-modernisation", "added": "2026-10-28T11", "title": "Modernisierung & Apps",
+      "desc": "Container, Kubernetes, DevOps, technische Schulden",
+      "topic": "application modernisation: legacy systems, technical debt, containers, Kubernetes, microservices, serverless and DevOps",
+      "terms": [
+        {"t": "application modernisation", "de": "Anwendungsmodernisierung", "d": "Updating existing applications to use modern cloud technologies.", "ex": "Application modernisation is where the long-term savings are."},
+        {"t": "legacy system", "de": "Altsystem", "d": "An old system that is still in use but hard to maintain.", "ex": "The legacy system runs on hardware that's out of support."},
+        {"t": "technical debt", "de": "technische Schulden", "d": "Future work caused by quick fixes or outdated technology.", "ex": "Every year they wait, the technical debt grows."},
+        {"t": "container", "de": "Container", "d": "A lightweight package that bundles an application with everything it needs to run.", "ex": "Packaging the app in a container makes it easy to move."},
+        {"t": "Kubernetes", "de": "Kubernetes", "d": "An open-source platform for running and managing containers at scale.", "ex": "Their developers already know Kubernetes, which helps a lot."},
+        {"t": "microservices", "de": "Microservices", "d": "An architecture where an application is split into small independent services.", "ex": "Moving to microservices only makes sense if the teams are ready."},
+        {"t": "serverless", "de": "serverlos", "d": "Running code without managing servers; you pay only when it runs.", "ex": "For irregular workloads, serverless can be very cost-effective."},
+        {"t": "DevOps", "de": "DevOps", "d": "A way of working that brings development and operations together to deliver faster.", "ex": "DevOps practices cut their release cycle from months to weeks."},
+        {"t": "CI/CD", "de": "kontinuierliche Integration und Auslieferung", "d": "Automated building, testing and deployment of software.", "ex": "With a CI/CD pipeline, every change is tested automatically."},
+        {"t": "refactor", "de": "Code umbauen", "d": "To restructure code without changing what it does.", "ex": "We'd refactor the billing module first."}
+      ],
+      "phrases": [
+        ["Which applications cause the most pain when you need to change them?", "Schmerzpunkte finden"],
+        ["We don't need to modernise everything; let's start where change is most frequent.", "Priorisieren"],
+        ["What skills does your team already have in-house?", "Fähigkeiten klären"],
+        ["Lift and shift now, modernise later, is a perfectly valid plan.", "Pragmatik"],
+        ["Let's look at the cost of doing nothing as well.", "Kosten des Stillstands"]
+      ]
+    },
+    {
+      "id": "c12-networking", "added": "2026-10-28T12", "title": "Events & Networking",
+      "desc": "Small Talk, Kontakte, Nachfassen",
+      "topic": "events and networking: small talk with customers, introductions, conferences, LinkedIn and following up after an event",
+      "terms": [
+        {"t": "networking", "de": "Kontakte knüpfen", "d": "Meeting people to build professional relationships.", "ex": "The partner event is great for networking with CIOs."},
+        {"t": "small talk", "de": "Smalltalk", "d": "Light, friendly conversation about everyday topics.", "ex": "A bit of small talk about the ski season always works in Austria."},
+        {"t": "icebreaker", "de": "Eisbrecher", "d": "A question or activity that helps people start talking.", "ex": "Asking about their keynote is an easy icebreaker."},
+        {"t": "keynote", "de": "Hauptvortrag", "d": "The main speech at a conference or event.", "ex": "Did you catch the keynote on AI agents this morning?"},
+        {"t": "business card", "de": "Visitenkarte", "d": "A small card with your contact details.", "ex": "Hardly anyone asks for a business card anymore; we connect on LinkedIn."},
+        {"t": "connect", "de": "sich vernetzen", "d": "To add someone as a contact, especially online.", "ex": "Great talking to you, shall we connect on LinkedIn?"},
+        {"t": "catch up", "de": "sich austauschen", "d": "To talk to someone you haven't spoken to for a while.", "ex": "Let's catch up over coffee next week."},
+        {"t": "introduce", "de": "vorstellen", "d": "To present one person to another.", "ex": "Let me introduce you to our AI lead."},
+        {"t": "follow-up", "de": "Nachfassen, Folgekontakt", "d": "An action taken after a first contact to continue the conversation.", "ex": "A short follow-up within two days makes a big difference."},
+        {"t": "mutual contact", "de": "gemeinsamer Kontakt", "d": "A person you both know.", "ex": "We have a mutual contact at the bank."}
+      ],
+      "phrases": [
+        ["What brings you to the event today?", "Gesprächseinstieg"],
+        ["That sounds interesting; how did you get into that?", "Gespräch vertiefen"],
+        ["I don't want to keep you, but could I send you a short note next week?", "Höflich abschließen"],
+        ["It was great meeting you; I'll follow up as promised.", "Nachfassen ankündigen"],
+        ["Would you mind introducing me to your colleague in IT?", "Um Kontakt bitten"]
+      ]
+    }
+  ]
+}
