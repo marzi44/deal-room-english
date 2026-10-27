@@ -1,0 +1,1069 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Deal Room English</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Deal Room">
+<meta name="theme-color" content="#0D6A62">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: sticky header with stats + tabs; one centered column. Lessons run in a full-screen overlay with a bottom feedback sheet. */
+:root{
+  --bg:#F2F4F3; --surface:#FFFFFF; --ink:#13201E; --muted:#566966; --line:#D5DDDB; --line-deep:#BCC8C5;
+  --accent:#0D6A62; --accent-deep:#094A44; --accent-ink:#FFFFFF; --soft:#E1EEEB;
+  --signal:#B85A17; --signal-soft:#F7E9DD; --gold:#C98A0B; --gold-soft:#FBF0D6;
+  --good:#2C7A4C; --good-deep:#1E5A37; --good-soft:#DDF0E3; --bad:#B0281F; --bad-deep:#86190F; --bad-soft:#F8E1DF;
+  --u0:#0D6A62; --u0d:#094A44; --u1:#3F57A6; --u1d:#2C3F7E; --u2:#B85A17; --u2d:#8A410E; --u3:#7D4486; --u3d:#5C2F63;
+  --f-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --f-body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+  --r:12px; color-scheme:light;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0E1514; --surface:#162120; --ink:#E4EDEB; --muted:#93A6A2; --line:#283735; --line-deep:#1A2524;
+  --accent:#3FA89C; --accent-deep:#24685F; --accent-ink:#04201C; --soft:#1B2F2C;
+  --signal:#E8975A; --signal-soft:#33241A; --gold:#E8B341; --gold-soft:#332A14;
+  --good:#5CC28A; --good-deep:#2F7A50; --good-soft:#15291D; --bad:#F28279; --bad-deep:#A3443C; --bad-soft:#331A18; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#0E1514; --surface:#162120; --ink:#E4EDEB; --muted:#93A6A2; --line:#283735; --line-deep:#1A2524;
+  --accent:#3FA89C; --accent-deep:#24685F; --accent-ink:#04201C; --soft:#1B2F2C;
+  --signal:#E8975A; --signal-soft:#33241A; --gold:#E8B341; --gold-soft:#332A14;
+  --good:#5CC28A; --good-deep:#2F7A50; --good-soft:#15291D; --bad:#F28279; --bad-deep:#A3443C; --bad-soft:#331A18; color-scheme:dark }
+
+*{box-sizing:border-box}
+html,body{margin:0}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55}
+button,input,textarea,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+[hidden]{display:none!important}
+h1,h2,h3{font-family:var(--f-display);font-weight:700;text-wrap:balance;margin:0;line-height:1.15}
+p{margin:0}
+.wrap{max-width:860px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+svg.i{width:18px;height:18px;flex:none}
+
+/* Header */
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+button,.tile,.opt,.node{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+@media (hover:none){input[type=text],input[type=password],input[type=search],textarea,select{font-size:16px}}
+.bar{display:flex;align-items:center;gap:10px;padding-block:12px 4px;flex-wrap:wrap}
+.brand h1{font-size:21px;letter-spacing:-.01em}
+.brand span{display:block;font-family:var(--f-mono);font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.hstats{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap}
+.hs{display:flex;align-items:center;gap:5px;font-weight:700;font-variant-numeric:tabular-nums;padding:4px 10px;border-radius:999px;font-size:14px}
+.hs.streak{color:var(--signal);background:var(--signal-soft)}
+.hs.xp{color:var(--gold);background:var(--gold-soft)}
+.hs.heart{color:var(--bad);background:var(--bad-soft)}
+.tabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;margin:0 -4px}
+.tabs::-webkit-scrollbar{display:none}
+.tab{background:none;border:0;padding:10px 12px;border-bottom:3px solid transparent;color:var(--muted);cursor:pointer;white-space:nowrap;font-weight:600}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+main{padding-block:24px 80px}
+.view{display:grid;gap:20px}
+.eyebrow{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.lead{color:var(--muted);max-width:62ch}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.note{font-size:13px;color:var(--muted)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.grid2>*{min-width:0}
+
+/* Buttons: chunky press style */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:2px solid var(--line);border-bottom-width:4px;background:var(--surface);padding:8px 16px;border-radius:12px;cursor:pointer;font-weight:700;letter-spacing:.01em}
+.btn:active:not(:disabled){transform:translateY(2px);border-bottom-width:2px;margin-bottom:2px}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent-deep)}
+.btn.good{background:var(--good);color:#fff;border-color:var(--good-deep)}
+.btn.bad{background:var(--bad);color:#fff;border-color:var(--bad-deep)}
+.btn.big{padding:12px 24px;font-size:16px;text-transform:uppercase;letter-spacing:.04em}
+.btn.ghost{border:0;background:none;color:var(--muted);padding:6px 8px}
+.btn.ghost:hover{color:var(--ink)}
+.btn:disabled{opacity:.45;cursor:default}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 12px;cursor:pointer;font-size:13px}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+input[type=text],input[type=password],input[type=search],textarea,select{border:2px solid var(--line);background:var(--surface);border-radius:10px;padding:9px 12px;width:100%}
+textarea{resize:vertical;min-height:80px}
+select{width:auto}
+
+/* Path */
+.today{display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center}
+@media (max-width:560px){.today{grid-template-columns:auto 1fr}.today .btn{grid-column:1 / -1}}
+.ring{width:64px;height:64px}
+.ring circle{fill:none;stroke-width:7}
+.banner{border:2px dashed var(--line);border-radius:var(--r);padding:12px 16px;font-size:14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.unit{display:grid;gap:18px}
+.uhead{border-radius:var(--r);padding:16px 18px;color:#fff;display:grid;grid-template-columns:1fr auto;gap:4px 12px;align-items:center;box-shadow:0 4px 0 var(--ud)}
+.uhead .eyebrow{color:#fff;opacity:.75}
+.uhead h2{font-size:22px}
+.uhead p{opacity:.9;font-size:14px;grid-column:1}
+.uhead .btn{grid-row:1 / span 3;grid-column:2;background:rgba(255,255,255,.15);color:#fff;border-color:rgba(0,0,0,.25)}
+@media (max-width:520px){.uhead{grid-template-columns:1fr}.uhead .btn{grid-row:auto;grid-column:1;justify-self:start}}
+.nodes{display:grid;justify-items:center;gap:30px;padding-block:30px 6px}
+.node{position:relative;width:70px;height:64px;border-radius:50%;border:0;cursor:pointer;background:var(--uc);color:#fff;box-shadow:0 6px 0 var(--ud);display:grid;place-items:center;transition:transform .1s}
+.node:active:not(:disabled){transform:translateY(4px);box-shadow:0 2px 0 var(--ud)}
+.node svg{width:28px;height:28px}
+.node.lock{background:var(--line);color:var(--muted);box-shadow:0 6px 0 var(--line-deep);cursor:default}
+.node.done{background:var(--gold);box-shadow:0 6px 0 #8F6206}
+.node.cur::after{content:"";position:absolute;inset:-9px;border-radius:50%;border:4px solid var(--uc);opacity:.35}
+.node .tip{position:absolute;bottom:calc(100% + 14px);left:50%;transform:translateX(-50%);background:var(--surface);color:var(--uc);border:2px solid var(--line);font-weight:800;font-size:13px;letter-spacing:.06em;padding:5px 12px;border-radius:10px;white-space:nowrap;animation:bob 1.6s ease-in-out infinite}
+@keyframes bob{50%{transform:translate(-50%,-4px)}}
+.endless{justify-self:center}
+
+/* Lesson overlay */
+.lesson{position:fixed;inset:0;z-index:30;background:var(--bg);display:grid;grid-template-rows:auto 1fr auto;padding-top:env(safe-area-inset-top,0px)}
+.lbar{display:flex;align-items:center;gap:14px;padding-block:14px;width:100%}
+.lprog{flex:1;height:16px;background:var(--line);border-radius:999px;overflow:hidden}
+.lprog i{display:block;height:100%;background:var(--good);border-radius:999px;transition:width .35s;box-shadow:inset 0 -4px 0 rgba(0,0,0,.12)}
+.lhearts{display:flex;align-items:center;gap:4px;color:var(--bad);font-weight:800;font-variant-numeric:tabular-nums}
+.lbody{overflow-y:auto}
+.lbody .wrap{padding-block:12px 32px;display:grid;gap:22px;max-width:640px}
+.combo{font-family:var(--f-mono);font-size:12px;color:var(--signal);font-weight:500;letter-spacing:.05em;text-transform:uppercase}
+.qtitle{font-family:var(--f-display);font-size:24px;font-weight:700;line-height:1.25}
+.qtext{font-size:18px;padding:14px 16px;border:2px solid var(--line);border-radius:var(--r);background:var(--surface)}
+.qtext .gap{display:inline-block;min-width:90px;border-bottom:3px solid var(--accent);margin:0 4px}
+.opts{display:grid;gap:10px}
+.opt{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center;text-align:left;border:2px solid var(--line);border-bottom-width:4px;background:var(--surface);padding:12px 14px;border-radius:12px;cursor:pointer;font-size:16px}
+.opt .k{width:26px;height:26px;border:2px solid var(--line);border-radius:7px;display:grid;place-items:center;font-size:12px;color:var(--muted);font-family:var(--f-mono)}
+.opt[aria-pressed="true"]{border-color:var(--accent);background:var(--soft)}
+.opt[aria-pressed="true"] .k{border-color:var(--accent);color:var(--accent)}
+.opt.ok{border-color:var(--good);background:var(--good-soft)}
+.opt.no{border-color:var(--bad);background:var(--bad-soft)}
+.opt:disabled{cursor:default}
+.speaker{display:flex;gap:12px;align-items:center}
+.sbtn{width:92px;height:84px;border-radius:18px;border:0;background:var(--u1);color:#fff;box-shadow:0 6px 0 var(--u1d);cursor:pointer;display:grid;place-items:center}
+.sbtn svg{width:40px;height:40px}
+.sbtn.slow{width:60px;height:56px;border-radius:14px}
+.sbtn.slow svg{width:24px;height:24px}
+.sbtn:active{transform:translateY(4px);box-shadow:0 2px 0 var(--u1d)}
+.tiles{display:flex;flex-wrap:wrap;gap:8px}
+.answerline{min-height:64px;border-bottom:2px solid var(--line);padding-bottom:10px;align-content:flex-start}
+.tile{border:2px solid var(--line);border-bottom-width:4px;background:var(--surface);padding:8px 14px;border-radius:12px;cursor:pointer;font-size:16px}
+.tile.ghost{visibility:hidden}
+.match{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.match .col{display:grid;gap:10px;align-content:start}
+.match .tile{width:100%;text-align:center}
+.match .tile.sel{border-color:var(--accent);background:var(--soft)}
+.match .tile.gone{opacity:.35;cursor:default;border-color:var(--good)}
+.match .tile.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.lfoot{border-top:2px solid var(--line);background:var(--bg);padding-bottom:env(safe-area-inset-bottom,0px)}
+.lfoot.ok{background:var(--good-soft);border-top-color:transparent}
+.lfoot.no{background:var(--bad-soft);border-top-color:transparent}
+.lfoot .wrap{max-width:640px;display:flex;gap:14px;align-items:center;justify-content:space-between;padding-block:18px;flex-wrap:wrap}
+.fb{display:grid;gap:2px;min-width:0;flex:1}
+.fb b{font-family:var(--f-display);font-size:20px}
+.lfoot.ok .fb b{color:var(--good)} .lfoot.no .fb b{color:var(--bad)}
+.fb span{font-size:14px;overflow-wrap:anywhere}
+.center{display:grid;justify-items:center;text-align:center;gap:16px;padding-block:40px}
+.bigicon{width:96px;height:96px;border-radius:28px;display:grid;place-items:center;color:#fff}
+.bigicon svg{width:52px;height:52px}
+.resgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;width:100%;max-width:440px}
+.res{border:2px solid var(--c);border-radius:14px;overflow:hidden}
+.res b{display:block;background:var(--c);color:#fff;font-size:12px;letter-spacing:.06em;text-transform:uppercase;padding:4px}
+.res span{display:block;font-family:var(--f-display);font-size:24px;font-weight:700;padding:8px 4px;color:var(--c);font-variant-numeric:tabular-nums}
+.spin{width:44px;height:44px;border:5px solid var(--line);border-top-color:var(--accent);border-radius:50%;animation:sp 1s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.newterms{display:grid;gap:6px;text-align:left;width:100%;max-width:440px}
+.newterms div{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:8px 12px;font-size:14px}
+
+/* Vocab */
+.flash{width:100%;max-width:600px;justify-self:center;min-height:240px;background:var(--surface);border:2px solid var(--line);border-bottom-width:5px;border-radius:16px;padding:26px;display:grid;align-content:center;gap:12px;text-align:center;cursor:pointer;position:relative}
+.flash .cat{position:absolute;top:12px;left:16px}
+.flash .boxes{position:absolute;top:14px;right:16px;display:flex;gap:3px}
+.flash .boxes i{width:8px;height:8px;border-radius:2px;background:var(--line)}
+.flash .boxes i.on{background:var(--accent)}
+.flash h2{font-size:clamp(24px,5vw,34px)}
+.flash .back{display:grid;gap:8px;text-align:left;border-top:1px dashed var(--line);padding-top:12px}
+.de{font-family:var(--f-mono);font-size:13px;color:var(--signal)}
+.ex{font-style:italic;color:var(--muted)}
+.vlist{border:1px solid var(--line);border-radius:var(--r);background:var(--surface);overflow:hidden}
+.vitem{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:14px;padding:12px 16px;border-top:1px solid var(--line)}
+.vitem:first-child{border-top:0}
+.vitem>*{min-width:0}
+.tag{font-family:var(--f-mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;background:var(--gold-soft);color:var(--gold);padding:1px 6px;border-radius:4px;margin-left:6px}
+@media (max-width:560px){.vitem{grid-template-columns:1fr;gap:4px}}
+
+/* Roleplay / write */
+.scen{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.sc{text-align:left;background:var(--surface);border:2px solid var(--line);border-bottom-width:4px;border-radius:var(--r);padding:14px;cursor:pointer;display:grid;gap:6px;align-content:start}
+.sc:hover{border-color:var(--accent)}
+.sc h3{font-size:17px}
+.sc .who{font-family:var(--f-mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--signal)}
+.sc p{font-size:14px;color:var(--muted)}
+.brief{background:var(--soft);border-radius:var(--r);padding:12px 16px;font-size:14px;display:grid;gap:4px}
+.msgs{display:grid;gap:12px}
+.msg{max-width:min(600px,90%);display:grid;gap:6px}
+.msg.me{justify-self:end}
+.msg .who{font-family:var(--f-mono);font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.msg.me .who{text-align:right}
+.bubble{background:var(--surface);border:1px solid var(--line);padding:12px 14px;border-radius:14px 14px 14px 4px;white-space:pre-wrap;overflow-wrap:anywhere}
+.msg.me .bubble{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);border-radius:14px 14px 4px 14px}
+.coach{background:var(--signal-soft);border-radius:10px;padding:10px 12px;font-size:13.5px;display:grid;gap:4px}
+.coach .eyebrow{color:var(--signal)}
+.md{display:grid;gap:8px;font-size:14.5px}
+.md h4{font-family:var(--f-display);font-size:16px;margin:6px 0 0}
+.md ul{margin:0;padding-left:20px;display:grid;gap:4px}
+.composer{display:grid;gap:8px;position:sticky;bottom:0;background:var(--bg);padding-block:10px calc(10px + env(safe-area-inset-bottom,0px))}
+.out{white-space:pre-wrap;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;overflow-wrap:anywhere}
+.err{color:var(--bad);font-size:14px}
+.set{display:grid;gap:8px}
+.set label{font-weight:600}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(24px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:8px 16px;border-radius:999px;font-size:13px;z-index:50}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="bar">
+      <div class="brand"><h1>Deal Room English</h1><span>Cloud &amp; AI · Solution Area Specialist</span></div>
+      <div class="hstats" id="hstats"></div>
+    </div>
+    <nav class="tabs" id="tabs">
+      <button class="tab" data-v="pfad">Lernpfad</button>
+      <button class="tab" data-v="wortschatz">Wortschatz</button>
+      <button class="tab" data-v="rollenspiel">Rollenspiel</button>
+      <button class="tab" data-v="textcheck">Textcheck</button>
+      <button class="tab" data-v="einstellungen">Einstellungen</button>
+    </nav>
+  </div>
+</header>
+<main class="wrap" id="main"></main>
+<div class="lesson" id="lesson" hidden></div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+/* ================= Icons ================= */
+const IC = {
+  flame:'<svg class="i" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c1 3.5-1.5 5-1.5 7.5 0 1.4 1 2.5 2.3 2.5 1.5 0 2.2-1.2 2.2-2.8 2.3 1.8 3.5 4.3 3.5 6.6C18.5 19.5 15.6 22 12 22s-6.5-2.5-6.5-6.2C5.5 10.6 11 8 12 2z"/></svg>',
+  bolt:'<svg class="i" viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 2 4 14h6.5L9.5 22 20 9.5h-6.6z"/></svg>',
+  heart:'<svg class="i" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-8-5.1-8-11.2C4 6.6 6.4 4.5 9 4.5c1.4 0 2.4.6 3 1.5.6-.9 1.6-1.5 3-1.5 2.6 0 5 2.1 5 5.3C20 15.9 12 21 12 21z"/></svg>',
+  star:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.2 6.1 20.5l1.3-6.6L2.5 9.3l6.6-.8z"/></svg>',
+  check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>',
+  lock:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 10V8a5 5 0 0 1 10 0v2h1a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1zm2 0h6V8a3 3 0 0 0-6 0z"/></svg>',
+  spark:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.2 6.3L20.5 10l-6.3 2.2L12 18.5l-2.2-6.3L3.5 10l6.3-1.7zM19 15l1 2.6 2.5 1-2.5 1L19 22l-1-2.4-2.5-1 2.5-1z"/></svg>',
+  sound:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 9h4l5-4v14l-5-4H4zM16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" stroke="currentColor" stroke-width="2" fill-rule="evenodd" stroke-linecap="round"/></svg>',
+  slow:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 16c0-4 3.6-7 8-7s7 2.5 7 5.5V16h2v2H5a1 1 0 0 1-1-1zm4 3h2v2H8zm6 0h2v2h-2zM17 7a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"/></svg>',
+  x:'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>',
+  mic:'<svg class="i" viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm6-3a6 6 0 0 1-5 5.9V21h-2v-3.1A6 6 0 0 1 6 12h2a4 4 0 0 0 8 0z"/></svg>',
+  trophy:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 3h10v2h3v3a4 4 0 0 1-4 4h-.3A5 5 0 0 1 13 14.9V18h3v3H8v-3h3v-3.1A5 5 0 0 1 8.3 12H8a4 4 0 0 1-4-4V5h3zm0 4H6v1a2 2 0 0 0 1 1.7zm10 0v2.7A2 2 0 0 0 18 8V7z"/></svg>'
+};
+
+/* ================= Built-in content ================= */
+const VOCAB = [
+ {t:"workload",u:0,de:"Workload, Anwendung/Last",d:"An application, service or process that runs on cloud infrastructure.",ex:"Which workloads are you planning to migrate first?"},
+ {t:"lift and shift",u:0,de:"Rehosting ohne Umbau",d:"Moving an application to the cloud with minimal changes.",ex:"Lift and shift gets you out of the data centre quickly, but modernisation is where the real savings are."},
+ {t:"landing zone",u:0,de:"Basis-Umgebung in Azure",d:"A pre-configured, governed cloud environment that is ready to host workloads.",ex:"Before we migrate anything, let's agree on a landing zone that meets your security standards."},
+ {t:"data residency",u:0,de:"Speicherort der Daten",d:"The geographic location where data is stored and processed.",ex:"For Austrian banks, data residency is a board-level topic."},
+ {t:"sovereignty",u:0,de:"(digitale) Souveränität",d:"Control over one's own data, technology and legal jurisdiction.",ex:"Digital sovereignty comes up in almost every public-sector conversation."},
+ {t:"hybrid",u:0,de:"hybrid (Cloud + On-Prem)",d:"A setup that combines on-premises systems with public cloud services.",ex:"With Azure Arc, you can manage your hybrid estate from a single control plane."},
+ {t:"total cost of ownership",u:0,de:"Gesamtbetriebskosten (TCO)",d:"All direct and indirect costs of running a system over its lifetime.",ex:"Once you include hardware refreshes and staff time, the total cost of ownership looks very different."},
+ {t:"scalability",u:0,de:"Skalierbarkeit",d:"The ability to handle more load by adding resources.",ex:"Scalability matters most during your peak season in December."},
+ {t:"service level agreement",u:0,de:"Verfügbarkeitszusage (SLA)",d:"A contractual commitment to a level of availability or performance.",ex:"The service level agreement for this tier is 99.95 percent."},
+ {t:"reserved instances",u:0,de:"Reservierungen (1/3 Jahre)",d:"Capacity committed for one or three years in exchange for a lower price.",ex:"For stable workloads, reserved instances can cut compute costs significantly."},
+ {t:"governance",u:0,de:"Steuerung, Regelwerk",d:"Policies and processes that control how cloud resources are used.",ex:"Good governance stops shadow IT before it starts."},
+ {t:"end of support",u:0,de:"Supportende",d:"The date after which a product no longer receives security updates.",ex:"End of support for your old SQL Servers is a good trigger to move to Azure."},
+ {t:"migration wave",u:0,de:"Migrationswelle",d:"A group of applications migrated together in one phase.",ex:"We'd move the ERP satellites in the second migration wave."},
+ {t:"large language model",u:1,de:"großes Sprachmodell (LLM)",d:"An AI model trained on large amounts of text that can understand and generate language.",ex:"A large language model alone doesn't know your internal policies."},
+ {t:"grounding",u:1,de:"Fundierung (mit eigenen Daten)",d:"Connecting a model's answers to trusted, company-specific data.",ex:"Grounding the assistant in your product manuals reduces wrong answers."},
+ {t:"retrieval-augmented generation",u:1,de:"RAG, Antworten mit Dokumentensuche",d:"A pattern where relevant documents are retrieved and passed to the model before it answers.",ex:"Retrieval-augmented generation lets us use your SharePoint content without retraining a model."},
+ {t:"fine-tuning",u:1,de:"Feinabstimmung eines Modells",d:"Further training a model on specific data to adapt its behaviour.",ex:"In most cases you don't need fine-tuning; good prompts and grounding are enough."},
+ {t:"hallucination",u:1,de:"Halluzination (falsche KI-Antwort)",d:"A confident but incorrect answer generated by an AI model.",ex:"The legal team is worried about hallucination in contract summaries."},
+ {t:"token",u:1,de:"Token (Texteinheit, Abrechnungsbasis)",d:"A small unit of text that models process; often the basis for pricing.",ex:"Pricing is per token, so long prompts drive up the cost."},
+ {t:"use case",u:1,de:"Anwendungsfall",d:"A specific business scenario where a solution creates value.",ex:"Let's pick one use case with a clear owner and measurable impact."},
+ {t:"proof of concept",u:1,de:"Machbarkeitsnachweis (PoC)",d:"A small, time-boxed project to show that an idea works.",ex:"The proof of concept worked; now we need a plan to take it to production."},
+ {t:"responsible AI",u:1,de:"verantwortungsvolle KI",d:"Principles and practices for fair, safe, transparent and accountable AI.",ex:"Our responsible AI framework helps you prepare for the EU AI Act."},
+ {t:"agent",u:1,de:"KI-Agent",d:"An AI system that can plan and carry out tasks, often by calling tools or other systems.",ex:"The agent checks the order status in SAP and drafts the reply to the customer."},
+ {t:"inference",u:1,de:"Inferenz (Modell im Einsatz)",d:"Running a trained model to produce an output.",ex:"Inference costs grow with usage, so we should model the volume early."},
+ {t:"guardrails",u:1,de:"Leitplanken, Schutzmechanismen",d:"Technical and policy controls that keep AI output within safe limits.",ex:"We'll add guardrails so the bot never gives financial advice."},
+ {t:"latency",u:1,de:"Latenz, Antwortzeit",d:"The delay between a request and the response.",ex:"For the call-centre scenario, latency needs to stay under two seconds."},
+ {t:"consumption",u:2,de:"Verbrauch (nutzungsbasiert)",d:"Actual usage of cloud services, which drives revenue in a pay-as-you-go model.",ex:"Signing the contract is only the start; consumption is what really counts."},
+ {t:"commitment",u:2,de:"Verbrauchszusage",d:"An agreement by the customer to spend a certain amount over a defined period.",ex:"A three-year commitment gives you better pricing and us better planning."},
+ {t:"pipeline",u:2,de:"Vertriebspipeline",d:"All open sales opportunities at their various stages.",ex:"My pipeline for Q2 is strong in AI but thin in migration."},
+ {t:"forecast",u:2,de:"Prognose",d:"The expected revenue from deals in a given period.",ex:"I'll update the forecast after Thursday's meeting with the CFO."},
+ {t:"upside",u:2,de:"zusätzliches Potenzial (unsicher)",d:"Deals that could close but are not certain enough to commit.",ex:"I'd keep this deal in upside until legal has signed off."},
+ {t:"economic buyer",u:2,de:"Budgetverantwortliche/r",d:"The person who has final authority to approve the spending.",ex:"We still haven't met the economic buyer."},
+ {t:"champion",u:2,de:"interner Fürsprecher",d:"A person inside the customer who actively promotes your solution.",ex:"Our champion in IT arranged the meeting with the board."},
+ {t:"business case",u:2,de:"Wirtschaftlichkeitsrechnung",d:"A structured argument showing costs, benefits and risks of an investment.",ex:"Let's build the business case together with your finance team."},
+ {t:"value proposition",u:2,de:"Nutzenversprechen",d:"A clear statement of the benefit a customer gets.",ex:"Our value proposition for manufacturing is faster quality checks with computer vision."},
+ {t:"objection",u:2,de:"Einwand",d:"A concern or reason a customer gives for not moving forward.",ex:"The most common objection is cost predictability."},
+ {t:"co-sell",u:2,de:"gemeinsamer Vertrieb mit Partnern",d:"Selling jointly with a partner who delivers the services.",ex:"We'll co-sell this with our partner, who has strong SAP expertise."},
+ {t:"buy-in",u:2,de:"Zustimmung, Rückhalt",d:"Agreement and support from the people involved.",ex:"Without buy-in from the works council, the rollout will stall."},
+ {t:"qualify",u:2,de:"(Opportunity) qualifizieren",d:"To check whether an opportunity is real, funded and winnable.",ex:"Let's qualify this before we invest more architect time."},
+ {t:"blocker",u:2,de:"Hindernis",d:"Something that prevents progress until it is resolved.",ex:"The security review is the only blocker right now."},
+ {t:"run rate",u:2,de:"laufende Umsatzrate",d:"Current revenue extrapolated over a period, often monthly or annual.",ex:"The customer's monthly run rate has doubled since the migration."},
+ {t:"align on",u:3,de:"sich abstimmen über",d:"To agree on something together.",ex:"Can we align on the scope before Friday?"},
+ {t:"follow up",u:3,de:"nachfassen, sich melden",d:"To contact someone again about an earlier topic.",ex:"I'll follow up with a short summary by email."},
+ {t:"circle back",u:3,de:"auf etwas zurückkommen",d:"To return to a topic later.",ex:"Let's circle back on pricing once the architecture is clear."},
+ {t:"touch base",u:3,de:"kurz Kontakt halten",d:"To briefly check in with someone.",ex:"Shall we touch base again next Tuesday?"},
+ {t:"escalate",u:3,de:"eskalieren, an höhere Ebene geben",d:"To raise an issue to a higher level of authority.",ex:"If capacity isn't confirmed by Monday, I'll escalate it internally."},
+ {t:"action item",u:3,de:"To-do aus dem Meeting",d:"A task assigned to someone during a meeting.",ex:"The main action item for us is the cost estimate."},
+ {t:"push back",u:3,de:"widersprechen, sich wehren",d:"To resist or argue against a request or idea.",ex:"Procurement will probably push back on the payment terms."},
+ {t:"ballpark figure",u:3,de:"grobe Schätzung",d:"A rough estimate of a number.",ex:"Can you give me a ballpark figure for the monthly cost?"},
+ {t:"on the same page",u:3,de:"auf demselben Stand",d:"Having the same understanding of something.",ex:"Just to make sure we're on the same page: the pilot starts in January."},
+ {t:"heads-up",u:3,de:"Vorwarnung, kurze Info",d:"Advance notice about something.",ex:"Quick heads-up: the CIO will join the call for the last ten minutes."},
+ {t:"loop in",u:3,de:"jemanden einbinden",d:"To include someone in a conversation or email thread.",ex:"I'll loop in our data protection expert."}
+];
+const FALSE_FRIENDS = [
+ ["What is the actual status?","What is the current status?","aktuell = current. „actual“ heißt tatsächlich."],
+ ["Eventually we can do a workshop.","Perhaps we can do a workshop.","eventuell = perhaps/possibly. „eventually“ heißt schließlich, irgendwann."],
+ ["When can we become the offer?","When can we get the proposal?","bekommen = get. „become“ heißt werden."],
+ ["I have worked here since three years.","I have worked here for three years.","Zeitraum: for. Zeitpunkt: since (since 2023)."],
+ ["Please send it until Friday.","Please send it by Friday.","Deadline (bis spätestens) = by. „until“ beschreibt eine Dauer."],
+ ["Let me control the numbers.","Let me check the numbers.","kontrollieren = check. „control“ heißt steuern."],
+ ["I will send you the informations.","I will send you the information.","information ist unzählbar, kein Plural."],
+ ["This is very sensible data.","This is very sensitive data.","sensibel = sensitive. „sensible“ heißt vernünftig."],
+ ["We need a consequent approach.","We need a consistent approach.","konsequent = consistent."],
+ ["Can you give me a feedback?","Can you give me some feedback?","feedback ist unzählbar: some feedback."],
+ ["I will make a presentation for the board.","I will give a presentation to the board.","Präsentation halten = give a presentation."],
+ ["My chef wants an update.","My manager wants an update.","Chef = manager/boss. „chef“ ist Koch."],
+ ["Call me on my handy.","Call me on my mobile.","Handy = mobile (UK) / cell phone (US)."],
+ ["We have a termin on Monday.","We have a meeting on Monday.","Termin = meeting, appointment, deadline."],
+ ["Like discussed, here is the proposal.","As discussed, here is the proposal.","wie besprochen = as discussed."],
+ ["I am working here since 2022.","I have been working here since 2022.","Seit-Sätze brauchen Present Perfect."]
+];
+const SITUATIONS = {
+ discovery:[["Could you walk me through your priorities for the next twelve months?","Einstieg: Kunde zuerst erzählen lassen"],["What's driving this initiative right now?","Nach dem Auslöser fragen"],["How are you handling this today, and where does it hurt the most?","Pain Points herausarbeiten"],["Who else should be involved in this decision?","Entscheider klären"],["What would success look like for you in six months?","Erfolgskriterien festhalten"],["Just so I understand correctly, your main concern is the timeline?","Zusammenfassen und bestätigen"]],
+ pitch:[["Let me start with the outcome, then I'll show you how we get there.","Ergebnis zuerst"],["Customers in a similar situation usually focus on cost, speed and risk.","Referenz mit Struktur"],["What would it mean for your business if this took hours instead of weeks?","Nutzen vom Kunden formulieren lassen"],["I'd suggest we start small and prove the value with one use case.","Risiko klein halten"],["Your developers could spend more time on features and less on infrastructure.","Konkretes Zukunftsbild"]],
+ objections:[["That's a fair point. What's behind that concern?","Einwand anerkennen, nachfragen"],["Let's look at the full picture, including what you spend on hardware today.","Kosten: auf TCO lenken"],["We can walk your data protection officer through where the data is stored.","Datenschutz-Bedenken"],["Much of what we'd build runs on open standards like Kubernetes.","Lock-in entkräften"],["How about a four-week pilot with clear success criteria?","Risiko reduzieren durch Pilot"],["If we could address that, would you be comfortable moving forward?","Trial Close"]],
+ negotiation:[["What flexibility do you have on timing?","Spielraum ausloten"],["If we can agree on the scope today, I'll check what's possible on our side.","Gegenleistung verknüpfen"],["That's a bit outside what I can offer, but let me see what I can do.","Nein sagen, ohne zu blockieren"],["Let's park the commercial discussion for a moment.","Preisgespräch vertagen"],["Before we wrap up, can we agree on the next step and a date?","Mit nächstem Schritt enden"]],
+ forecast:[["I'd call this one upside rather than commit until we have the CFO's sign-off.","Ehrliche Einordnung"],["The main risk is the security review, which is scheduled for next week.","Risiko + Datum"],["It has slipped by about two weeks because legal needs more time.","Verzögerung erklären"],["I need some support from engineering to unblock the technical validation.","Um Hilfe bitten"],["My confidence is high because we have a champion and a clear timeline.","Einschätzung begründen"]],
+ email:[["Following up on our call yesterday, please find the next steps below.","Follow-up-Einstieg"],["As discussed, I've attached the architecture overview.","statt: Like discussed"],["Could you let me know by Friday whether the date works for you?","Höfliche Deadline"],["I'm looping in my colleague, who leads our AI architecture team.","Jemanden einbinden"],["Please don't hesitate to reach out if you have any questions.","Höflicher Abschluss"]],
+ soft:[["I'm not sure that's the best approach.","statt: That is wrong."],["Would it be possible to share the data by Thursday?","statt: You must send …"],["I see it slightly differently.","statt: I disagree."],["That might be a challenge given the timeline.","statt: That's impossible."],["Could you help me understand the reasoning behind that?","statt: Why?"],["I was wondering if you'd had a chance to look at the proposal.","Sanft nachfassen"]]
+};
+const UNITS = [
+ {id:0,c:0,title:"Cloud & Azure",desc:"Migration, Kosten, Governance, Datenhoheit",kind:"vocab",topic:"Azure infrastructure, migration, hybrid cloud, cost management, governance, security, data residency"},
+ {id:1,c:1,title:"AI & Copilot",desc:"GenAI, Agents, RAG, Responsible AI",kind:"vocab",topic:"generative AI on Azure (Azure AI Foundry, Azure OpenAI), Copilot, AI agents, RAG, responsible AI and the EU AI Act"},
+ {id:2,c:2,title:"Sales & Deals",desc:"Consumption, Pipeline, Business Case",kind:"vocab",topic:"consumption-based cloud sales, pipeline, forecast, deal qualification, partners and co-sell, business cases"},
+ {id:3,c:3,title:"Meetings",desc:"Abstimmen, nachfassen, eskalieren",kind:"vocab",topic:"meeting language: aligning, following up, escalating, summarising, small talk with Austrian customers"},
+ {id:4,c:0,title:"Kundengespräch",desc:"Discovery, Pitch, Einwände",kind:"phrase",sits:["discovery","pitch","objections"],topic:"discovery calls, C-level pitches and objection handling for cloud and AI deals"},
+ {id:5,c:1,title:"Verhandeln & Forecast",desc:"Abschluss und interner Forecast-Call",kind:"phrase",sits:["negotiation","forecast"],topic:"negotiation, closing, and internal forecast calls with a sales manager (commit, upside, risks)"},
+ {id:6,c:2,title:"Schreiben & Diplomatie",desc:"E-Mails und höfliche Formulierungen",kind:"phrase",sits:["email","soft"],topic:"professional emails, Teams messages and diplomatic softening of direct German-style statements"},
+ {id:7,c:3,title:"Falsche Freunde",desc:"Typische Fehler deutschsprachiger Sprecher",kind:"ff",topic:"typical mistakes German and Austrian speakers make in business English: false friends, prepositions, tenses, uncountable nouns"}
+];
+const LESSONS_PER_UNIT = 5;
+const SCENARIOS = [
+ {id:"ciso",who:"CISO · Bank, Wien",title:"Datenhoheit & DORA",desc:"Die CISO einer Wiener Bank ist skeptisch, Kerndaten in die Cloud zu bringen.",role:"Dr. Katharina Steiner, CISO of a mid-sized Austrian bank in Vienna. Sceptical, precise, regulation-focused (GDPR, DORA, FMA supervision). Worried about data residency, concentration risk, exit strategy and who can access the data.",goal:"Verstehe ihre Bedenken und vereinbare einen Workshop mit dem Security-Team."},
+ {id:"cfo",who:"CFO · Industrie, Oberösterreich",title:"Kosten planbar machen",desc:"Der CFO eines Maschinenbauers fürchtet unkontrollierte Cloud-Kosten.",role:"Thomas Gruber, CFO of a machinery manufacturer in Upper Austria with 2,000 employees. Numbers-driven, impatient with buzzwords, afraid of runaway cloud bills, wants predictable costs and a clear ROI.",goal:"Baue einen Business Case auf und erkläre, wie Kosten steuerbar bleiben."},
+ {id:"ai",who:"Head of Innovation · Versicherung",title:"Vom PoC in die Produktion",desc:"Ein GenAI-Pilot war erfolgreich, steckt aber fest.",role:"Lisa Hofer, Head of Innovation at an Austrian insurance company. Enthusiastic about GenAI but frustrated: the claims-assistant pilot worked, yet the works council, compliance and IT operations are blocking the rollout.",goal:"Finde die echten Blocker und schlage einen Weg zur Produktion vor."},
+ {id:"public",who:"IT-Leiter · Verwaltung",title:"Souveränität & Lock-in",desc:"Ein IT-Leiter im öffentlichen Sektor sorgt sich um Abhängigkeit.",role:"Mag. Andreas Berger, head of IT at a regional public administration in Austria. Cautious, politically aware, worried about vendor lock-in, digital sovereignty and public procurement rules.",goal:"Gehe auf Lock-in-Bedenken ein und kläre den nächsten Schritt."},
+ {id:"partner",who:"Partner · Systemintegrator",title:"Co-Sell-Planung",desc:"Mit einem Partner planst du gemeinsame Kunden-Accounts.",role:"Markus Wagner, practice lead at an Austrian systems integrator partner. Friendly but commercially sharp; wants clarity on who owns the customer relationship, funding for workshops and how leads are shared.",goal:"Vereinbare drei Ziel-Accounts und klare Verantwortlichkeiten."},
+ {id:"manager",who:"Deine Managerin · intern",title:"Forecast-Call",desc:"Deine Managerin will wissen, welche Deals diesen Monat abschließen.",role:"Sarah, the learner's manager in the Austrian Cloud & AI team. Direct, supportive, but pushes hard on forecast accuracy: commit vs upside, risks, next steps and what help is needed.",goal:"Gib einen klaren, ehrlichen Forecast mit Risiken und Hilfebedarf."}
+];
+const UNIT_ANGLES = ["an Austrian bank","a manufacturer in Upper Austria","a retail chain","an insurance company","a hospital group","a public administration","a logistics company","an energy provider","a software start-up in Vienna","a partner meeting","an internal team meeting","a Teams call with a CIO"];
+
+/* ================= Storage ================= */
+const KEY="dre-v2";
+const blank=()=>({cfg:{key:"",model:"claude-opus-5-5",voice:"",rate:1,sound:true,goal:30,hearts:true,level:"C1",autoSpeak:true},
+  hearts:{n:5,t:Date.now(),day:""},xp:{},days:[],units:{},box:{},lib:[],mistakes:[],
+  stats:{lessons:0,perfect:0,turns:0,texts:0,ai:0},updated:0});
+function fromSaved(o,key){const s=Object.assign(blank(),o);s.cfg=Object.assign(blank().cfg,o.cfg||{});if(key!==undefined)s.cfg.key=key;s.stats=Object.assign(blank().stats,o.stats||{});delete s.pre;return s;}
+let S=blank();
+try{
+  const raw=localStorage.getItem(KEY);
+  if(raw){ S=fromSaved(JSON.parse(raw)); }
+  else { const old=localStorage.getItem("dre-v1"); if(old){ const o=JSON.parse(old); if(o.box) S.box=o.box; if(o.days) S.days=o.days; } }
+}catch(e){}
+/* Prefetched AI lessons stay on this device only */
+let PRE={};try{PRE=JSON.parse(localStorage.getItem(KEY+"-pre")||"{}")||{};}catch(e){}
+function savePre(){try{localStorage.setItem(KEY+"-pre",JSON.stringify(PRE));}catch(e){}}
+function save(){
+  S.updated=Date.now();S.lib=S.lib.slice(-600);S.mistakes=S.mistakes.slice(-60);
+  try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(e){ if(!IN_CLAUDE) toast("Speichern fehlgeschlagen. Ist der Browser-Speicher voll oder gesperrt?"); }
+  pushSoon();
+}
+
+/* ================= claude.ai mode: Claude via `sample`, progress synced via `db` ================= */
+const IN_CLAUDE=!!(window.claude&&typeof window.claude.use==="function");
+let sampleFn=null,progRef=null,syncState=IN_CLAUDE?"connecting":"off",firstSnap=true;
+let pushTimer=null,pushing=false,pushAgain=false;
+function pushSoon(){if(!progRef)return;clearTimeout(pushTimer);pushTimer=setTimeout(push,1500);}
+async function push(){
+  if(!progRef)return;if(pushing){pushAgain=true;return;}pushing=true;clearTimeout(pushTimer);
+  try{const d=JSON.parse(JSON.stringify(S));d.cfg.key="";await progRef.set(d);syncState="on";}
+  catch(e){syncState="error";}
+  pushing=false;if(pushAgain){pushAgain=false;push();}
+}
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden"&&pushTimer)push();});
+async function initClaude(){
+  if(!IN_CLAUDE)return;
+  try{sampleFn=await window.claude.use("sample");}catch(e){sampleFn=null;}
+  let uid=null,dbNs=null;
+  try{const u=await window.claude.use("user");uid=u?await u.id():null;if(uid)dbNs=await window.claude.use("db");}catch(e){}
+  if(!dbNs||!uid){syncState="off";if(appReady)render();return;}
+  progRef=dbNs.doc("data/users/"+uid+"/progress");
+  progRef.onSnapshot(snap=>{
+    syncState="on";
+    if(snap.metadata.hasPendingWrites)return;
+    const r=snap.exists?snap.data():null;
+    if(r&&(r.updated||0)>(S.updated||0)){S=fromSaved(JSON.parse(JSON.stringify(r)),S.cfg.key);try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}if(!L)render();else renderHeader();}
+    else if(firstSnap&&(!r||(r.updated||0)<(S.updated||0))&&S.updated){pushSoon();}
+    firstSnap=false;
+  },()=>{syncState="error";if(appReady&&current==="einstellungen")render();});
+  if(appReady)render();
+}
+
+/* ================= Helpers ================= */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+const pick=(a,n)=>shuffle(a).slice(0,n);
+const dkey=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+const today=()=>dkey(new Date());
+const norm=s=>String(s).toLowerCase().replace(/[’‘`]/g,"'").replace(/[^a-z0-9'äöüß ]+/g," ").replace(/\s+/g," ").trim();
+function lev(a,b){const m=a.length,n=b.length;if(!m)return n;if(!n)return m;let p=Array.from({length:n+1},(_,i)=>i);for(let i=1;i<=m;i++){const c=[i];for(let j=1;j<=n;j++)c[j]=Math.min(p[j]+1,c[j-1]+1,p[j-1]+(a[i-1]===b[j-1]?0:1));p=c;}return p[n];}
+function toast(msg){const t=$("#toast");t.textContent=msg;t.hidden=false;clearTimeout(toast._t);toast._t=setTimeout(()=>t.hidden=true,2200);}
+function md(src){
+  const lines=String(src).trim().split(/\n/);let html="",inList=false;
+  const inline=s=>esc(s).replace(/\*\*(.+?)\*\*/g,"<b>$1</b>");
+  for(const raw of lines){const l=raw.trim();
+    if(/^[-*•]\s+/.test(l)){if(!inList){html+="<ul>";inList=true;}html+="<li>"+inline(l.replace(/^[-*•]\s+/,""))+"</li>";continue;}
+    if(inList){html+="</ul>";inList=false;}
+    if(!l)continue;
+    html+=/^#{1,4}\s+/.test(l)?"<h4>"+inline(l.replace(/^#+\s+/,""))+"</h4>":"<p>"+inline(l)+"</p>";}
+  if(inList)html+="</ul>";return html;
+}
+function copy(text){try{navigator.clipboard.writeText(text).then(()=>toast("Kopiert"),()=>toast("Kopieren nicht möglich"));}catch(e){toast("Kopieren nicht möglich");}}
+const unitColor=u=>`--uc:var(--u${UNITS[u].c});--ud:var(--u${UNITS[u].c}d)`;
+
+/* ================= Day, XP, hearts ================= */
+function xpToday(){return S.xp[today()]||0;}
+function addXP(n){S.xp[today()]=xpToday()+n;const keys=Object.keys(S.xp).sort();while(keys.length>120)delete S.xp[keys.shift()];markActive();}
+function markActive(){const t=today();if(!S.days.includes(t)){S.days.push(t);S.days=S.days.slice(-500);}save();renderHeader();}
+function streak(){const set=new Set(S.days);let n=0;const d=new Date();if(!set.has(today()))d.setDate(d.getDate()-1);while(set.has(dkey(d))){n++;d.setDate(d.getDate()-1);}return n;}
+const HEART_MAX=5,HEART_MS=30*60e3;
+function refillHearts(){const h=S.hearts;if(h.day!==today()){h.n=HEART_MAX;h.day=today();h.t=Date.now();}
+  while(h.n<HEART_MAX&&Date.now()-h.t>=HEART_MS){h.n++;h.t+=HEART_MS;} if(h.n>=HEART_MAX)h.t=Date.now();}
+function heartsOn(){return S.cfg.hearts;}
+function renderHeader(){
+  refillHearts();
+  $("#hstats").innerHTML=`<span class="hs streak" title="Tage in Folge">${IC.flame}${streak()}</span>
+   <span class="hs xp" title="XP heute / Tagesziel">${IC.bolt}${xpToday()}/${S.cfg.goal}</span>
+   ${heartsOn()?`<span class="hs heart" title="Herzen">${IC.heart}${S.hearts.n}</span>`:""}`;
+}
+setInterval(()=>{const n=S.hearts.n;refillHearts();if(n!==S.hearts.n){save();renderHeader();}},60e3);
+
+/* ================= Voice ================= */
+const canSpeak="speechSynthesis" in window;
+let voices=[];
+function loadVoices(){if(!canSpeak)return;voices=speechSynthesis.getVoices().filter(v=>/^en([-_]|$)/i.test(v.lang));if(appReady&&current==="einstellungen")render();}
+let appReady=false;
+if(canSpeak){loadVoices();speechSynthesis.onvoiceschanged=loadVoices;}
+const IS_IOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
+const NOVELTY=/Albert|Bad News|Bahh|Bells|Boing|Bubbles|Cellos|Good News|Jester|Organ|Superstar|Trinoids|Whisper|Wobble|Zarvox|Fred|Junior|Kathy|Ralph|Grandma|Grandpa|Eddy|Flo|Reed|Rocko|Sandy|Shelley/i;
+function voiceScore(v){let s=0;const n=v.name;
+  if(/premium/i.test(n))s+=75; if(/enhanced|erweitert/i.test(n))s+=60;
+  if(/natural|neural/i.test(n))s+=60; if(/online/i.test(n))s+=15; if(/google/i.test(n))s+=20;
+  if(/Sonia|Libby|Ryan|Maisie|Thomas|Aria|Jenny|Guy|Emma|Brian|Ava|Andrew|Natasha|William|Daniel|Arthur|Serena|Martha|Samantha|Karen|Moira|Kate|Oliver|Stephanie/i.test(n))s+=10;
+  if(/en-GB/i.test(v.lang))s+=4; if(/en-US/i.test(v.lang))s+=3; if(/desktop|zira|david|mark|hazel|george|susan/i.test(n))s-=10;
+  if(NOVELTY.test(n))s-=200; return s;}
+/* iOS only lets audio and speech start from a tap: unlock both on the first touch */
+let audioUnlocked=false;
+document.addEventListener("pointerdown",()=>{if(audioUnlocked)return;audioUnlocked=true;
+  try{if(canSpeak){const u=new SpeechSynthesisUtterance(" ");u.volume=0;speechSynthesis.speak(u);}}catch(e){}
+  try{actx=actx||new(window.AudioContext||window.webkitAudioContext)();if(actx.state==="suspended")actx.resume();}catch(e){}},{capture:true});
+function bestVoice(){if(S.cfg.voice){const v=voices.find(v=>v.name===S.cfg.voice);if(v)return v;}return voices.slice().sort((a,b)=>voiceScore(b)-voiceScore(a))[0]||null;}
+function speak(text,slow){if(!canSpeak||!text)return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);const v=bestVoice();if(v){u.voice=v;u.lang=v.lang;}else u.lang="en-GB";u.rate=(S.cfg.rate||1)*(slow?.7:1);speechSynthesis.speak(u);}catch(e){}}
+document.addEventListener("click",e=>{const s=e.target.closest("[data-say]");if(s){speak(s.dataset.say,s.dataset.slow==="1");return;}const c=e.target.closest("[data-copy]");if(c)copy(c.dataset.copy);});
+const sayBtn=t=>canSpeak?`<button class="btn ghost" data-say="${esc(t)}" title="Anhören" aria-label="Anhören">▶</button>`:"";
+
+/* ================= Sound effects ================= */
+let actx=null;
+function tones(seq){if(!S.cfg.sound)return;try{actx=actx||new(window.AudioContext||window.webkitAudioContext)();const t0=actx.currentTime+.02;
+  for(const [f,d,st,type,vol] of seq){const o=actx.createOscillator(),g=actx.createGain();o.type=type||"sine";o.frequency.value=f;
+    g.gain.setValueAtTime(0,t0+st);g.gain.linearRampToValueAtTime(vol||.16,t0+st+.012);g.gain.exponentialRampToValueAtTime(.0008,t0+st+d);
+    o.connect(g).connect(actx.destination);o.start(t0+st);o.stop(t0+st+d+.05);}}catch(e){}}
+const SND={ok:()=>tones([[740,.12,0],[1110,.22,.09]]),no:()=>tones([[196,.28,0,"triangle",.22],[147,.34,.13,"triangle",.2]]),
+  done:()=>tones([[523,.16,0],[659,.16,.12],[784,.16,.24],[1047,.45,.36]]),tap:()=>tones([[880,.05,0,"sine",.05]])};
+
+/* ================= Claude API ================= */
+const MODELS=[["claude-opus-5-5","Claude Opus 5.5 (beste Qualität)"],["claude-sonnet-5-5","Claude Sonnet 5.5 (schneller, günstiger)"],["claude-haiku-5-5","Claude Haiku 5.5 (am schnellsten, sehr günstig)"]];
+const hasAI=()=>IN_CLAUDE?!!sampleFn:!!S.cfg.key;
+/* One entry point for both modes: claude.ai viewer (sample) or local file (own API key) */
+async function aiText({system,messages,signal,effort="low",maxTokens=6000}){
+  if(IN_CLAUDE){
+    if(!sampleFn)throw{code:"not_granted"};
+    const input=system?[{role:"user",content:system},...messages]:messages;
+    const {text}=await sampleFn(input,{cache:false,modelTier:"default",signal});return text;
+  }
+  return callClaude({system,messages,signal,effort,maxTokens});
+}
+async function aiJSON(prompt,schema){
+  if(IN_CLAUDE){if(!sampleFn)throw{code:"not_granted"};return await sampleFn.json(prompt,{cache:false,modelTier:"default"});}
+  return callClaude({messages:[{role:"user",content:prompt}],schema,maxTokens:12000,effort:"low"});
+}
+async function callClaude(opts){
+  const {system,messages,schema,maxTokens=8000,effort="low",signal}=opts;
+  if(!S.cfg.key)throw{code:"nokey"};
+  const model=S.cfg.model||"claude-opus-5-5";
+  const body={model,max_tokens:maxTokens,messages,output_config:{effort}};
+  if(system)body.system=system;
+  if(schema)body.output_config.format={type:"json_schema",schema};
+  const headers={"content-type":"application/json","x-api-key":S.cfg.key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"};
+  const useFb=model!=="claude-haiku-5-5"&&!S.cfg.noFallback;
+  if(useFb){body.fallbacks="default";headers["anthropic-beta"]="server-side-fallback-2026-07-01";}
+  let res;
+  try{res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers,body:JSON.stringify(body),signal});}
+  catch(e){throw{code:e&&e.name==="AbortError"?"cancelled":"network"};}
+  let data=null;try{data=await res.json();}catch(e){}
+  if(!res.ok){const msg=(data&&data.error&&data.error.message)||"";
+    if(res.status===400&&useFb&&/fallback|beta/i.test(msg)){S.cfg.noFallback=true;save();return callClaude(opts);}
+    throw{code:res.status===401||res.status===403?"auth":res.status===429?"rate":res.status>=500?"server":"bad",message:msg};}
+  if(data.stop_reason==="refusal")throw{code:"refusal"};
+  const text=(data.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("");
+  if(schema){try{return JSON.parse(text);}catch(e){throw{code:"json"};}}
+  return text;
+}
+function aiErr(e){const c=e&&e.code;return({nokey:"Kein API-Key hinterlegt. Trage ihn in den Einstellungen ein.",auth:"Der API-Key wurde abgelehnt. Prüfe ihn in den Einstellungen.",
+  rate:"Zu viele Anfragen oder Guthaben aufgebraucht. Bitte kurz warten oder Guthaben in der Claude Console prüfen.",server:"Claude ist gerade überlastet. Bitte gleich nochmal versuchen.",
+  network:"Keine Verbindung zur Claude API. Bist du online?",refusal:"Claude hat diese Anfrage abgelehnt. Formuliere sie bitte anders.",json:"Die Antwort war unvollständig. Bitte nochmal versuchen.",
+  cancelled:"",bad:"Die Anfrage war ungültig"+(e&&e.message?": "+e.message:"."),
+  not_granted:"Claude ist für diese Seite nicht freigegeben. Erlaube Claude beim nächsten Versuch.",sampling_disabled:"Claude ist für dieses Konto nicht verfügbar.",
+  rate_limited:"Gerade zu viele Anfragen oder dein Claude-Limit ist erreicht. Bitte später nochmal versuchen.",session_expired:"Bitte neu bei Claude anmelden.",
+  refused:"Claude hat diese Anfrage abgelehnt. Formuliere sie bitte anders.",invalid_json:"Die Antwort war unvollständig. Bitte nochmal versuchen.",
+  empty_completion:"Claude hat nichts geantwortet. Bitte nochmal versuchen.",upstream_error:"Verbindung unterbrochen. Bitte nochmal versuchen."})[c]||"Unbekannter Fehler.";}
+
+/* ================= Exercise model =================
+   {type, prompt, text, options[], answer, pairs[], explanation, say?}
+   types: mc, fill, correct_sentence, listen_choose, listen_type, build, match */
+const EX_TYPES=["mc","fill","correct_sentence","listen_choose","listen_type","build","match"];
+const LESSON_SCHEMA={type:"object",additionalProperties:false,required:["title","new_terms","exercises"],properties:{
+  title:{type:"string"},
+  new_terms:{type:"array",items:{type:"object",additionalProperties:false,required:["term","de","definition","example"],properties:{term:{type:"string"},de:{type:"string"},definition:{type:"string"},example:{type:"string"}}}},
+  exercises:{type:"array",items:{type:"object",additionalProperties:false,required:["type","prompt","text","options","answer","pairs","explanation"],properties:{
+    type:{type:"string",enum:EX_TYPES},prompt:{type:"string"},text:{type:"string"},options:{type:"array",items:{type:"string"}},answer:{type:"string"},
+    pairs:{type:"array",items:{type:"object",additionalProperties:false,required:["en","de"],properties:{en:{type:"string"},de:{type:"string"}}}},explanation:{type:"string"}}}}}};
+
+function cleanEx(e){
+  if(!e||!EX_TYPES.includes(e.type))return null;
+  const x={type:e.type,prompt:String(e.prompt||"").trim(),text:String(e.text||"").trim(),options:(e.options||[]).map(o=>String(o).trim()).filter(Boolean),
+    answer:String(e.answer||"").trim(),pairs:(e.pairs||[]).filter(p=>p&&p.en&&p.de).map(p=>({en:String(p.en),de:String(p.de)})),explanation:String(e.explanation||"").trim(),say:e.say||""};
+  if(!canSpeak&&(x.type==="listen_choose"||x.type==="listen_type")){ if(x.type==="listen_type")return null; x.type="mc"; x.prompt="Welcher Satz ist korrekt geschrieben?"; }
+  if(["mc","fill","correct_sentence","listen_choose"].includes(x.type)){
+    if(x.type==="listen_choose"&&!x.answer)x.answer=x.text;
+    if(!x.answer)return null;
+    if(!x.options.some(o=>o===x.answer))x.options.push(x.answer);
+    x.options=shuffle([...new Set(x.options)]).slice(0,5); if(!x.options.includes(x.answer))x.options[0]=x.answer;
+    if(x.options.length<2)return null;
+    if(x.type==="fill"&&!/_{2,}/.test(x.text))return null;
+    if(x.type==="listen_choose"&&!x.text)x.text=x.answer;
+  }
+  if(x.type==="listen_type"){if(!x.answer)x.answer=x.text;if(!x.text)x.text=x.answer;if(!x.answer||x.answer.split(" ").length>16)return null;}
+  if(x.type==="build"){const w=x.answer.split(/\s+/).filter(Boolean);if(w.length<2||w.length>16)return null;
+    const ans=new Set(w.map(norm));x.options=x.options.filter(o=>!ans.has(norm(o))&&o.split(" ").length===1).slice(0,4);}
+  if(x.type==="match"){if(x.pairs.length<3)return null;x.pairs=x.pairs.slice(0,5);}
+  return x;
+}
+
+/* ---------- Local lesson generator ---------- */
+function unitTerms(u){return VOCAB.filter(v=>v.u===u).map(v=>({t:v.t,de:v.de,d:v.d,ex:v.ex})).concat(S.lib.filter(l=>l.u===u).map(l=>({t:l.t,de:l.de,d:l.d,ex:l.ex})));}
+function gapOf(sentence,term){const re=new RegExp(term.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"),"i");return re.test(sentence)?sentence.replace(re,"_____"):null;}
+function localLesson(uid){
+  const u=UNITS[uid];const ex=[];
+  if(u.kind==="vocab"){
+    const terms=unitTerms(uid);const others=t=>pick(terms.filter(x=>x!==t),3);
+    pick(terms,2).forEach(t=>ex.push({type:"mc",prompt:`Was bedeutet „${t.t}“?`,options:[t.d,...others(t).map(o=>o.d)],answer:t.d,explanation:`${t.t} = ${t.de}`}));
+    pick(terms,2).forEach(t=>ex.push({type:"mc",prompt:`Welcher Begriff passt zu „${t.de}“?`,options:[t.t,...others(t).map(o=>o.t)],answer:t.t,explanation:t.d}));
+    pick(terms.filter(t=>gapOf(t.ex,t.t)),2).forEach(t=>ex.push({type:"fill",prompt:"Ergänze die Lücke.",text:gapOf(t.ex,t.t),options:[t.t,...others(t).map(o=>o.t)],answer:t.t,explanation:t.ex}));
+    pick(terms,1).forEach(t=>ex.push({type:"listen_choose",prompt:"Was hörst du?",text:t.ex,options:[t.ex,...others(t).slice(0,2).map(o=>o.ex)],answer:t.ex,explanation:t.ex}));
+    pick(terms.filter(t=>t.ex.split(" ").length<=13),1).forEach(t=>ex.push({type:"build",prompt:"Hör zu und bilde den Satz.",text:"",say:t.ex,answer:t.ex,options:pick(others(t).flatMap(o=>o.ex.split(" ")),3),explanation:t.ex}));
+    pick(terms,1).forEach(t=>ex.push({type:"listen_type",prompt:"Schreib, was du hörst.",text:t.t,answer:t.t,explanation:`${t.t} = ${t.de}`}));
+    ex.push({type:"match",prompt:"Finde die Paare.",pairs:pick(terms,5).map(t=>({en:t.t,de:t.de})),explanation:""});
+  } else if(u.kind==="phrase"){
+    const ph=u.sits.flatMap(s=>SITUATIONS[s]).map(([en,de])=>({en,de}));
+    const others=p=>pick(ph.filter(x=>x!==p),2);
+    pick(ph,3).forEach(p=>ex.push({type:"mc",prompt:`Welche Formulierung passt? (${p.de})`,options:[p.en,...others(p).map(o=>o.en)],answer:p.en,explanation:p.de}));
+    pick(ph,2).forEach(p=>{const ws=p.en.split(" ");const cand=ws.map((w,i)=>[w.replace(/[^A-Za-z'-]/g,""),i]).filter(([w])=>w.length>=5);if(!cand.length)return;
+      const [w,i]=cand[Math.floor(Math.random()*cand.length)];const words=ph.flatMap(o=>o.en.split(" ").map(x=>x.replace(/[^A-Za-z'-]/g,""))).filter(x=>x.length>=5&&x.toLowerCase()!==w.toLowerCase());
+      const t=ws.slice();t[i]=t[i].replace(w,"_____");ex.push({type:"fill",prompt:"Ergänze die Lücke.",text:t.join(" "),options:[w,...pick([...new Set(words)],3)],answer:w,explanation:p.en});});
+    pick(ph,2).forEach(p=>ex.push({type:"listen_choose",prompt:"Was hörst du?",text:p.en,options:[p.en,...others(p).map(o=>o.en)],answer:p.en,explanation:p.de}));
+    pick(ph.filter(p=>p.en.split(" ").length<=14),2).forEach(p=>ex.push({type:"build",prompt:"Hör zu und bilde den Satz.",text:"",say:p.en,answer:p.en,options:pick(others(p).flatMap(o=>o.en.split(" ")),3),explanation:p.de}));
+    pick(ph.filter(p=>p.en.split(" ").length<=9),1).forEach(p=>ex.push({type:"listen_type",prompt:"Schreib, was du hörst.",text:p.en,answer:p.en,explanation:p.de}));
+  } else {
+    pick(FALSE_FRIENDS,5).forEach(([w,r,de])=>ex.push({type:"correct_sentence",prompt:"Welcher Satz ist korrekt?",options:[r,w],answer:r,explanation:de}));
+    pick(FALSE_FRIENDS,2).forEach(([w,r,de])=>ex.push({type:"build",prompt:`Korrigiere: „${w}“`,text:"",answer:r,options:pick(w.split(" ").filter(x=>!r.split(" ").includes(x)),2),explanation:de}));
+    pick(FALSE_FRIENDS,2).forEach(([w,r,de])=>ex.push({type:"listen_type",prompt:"Schreib, was du hörst.",text:r,answer:r,explanation:de}));
+    ex.push({type:"match",prompt:"Deutsches Wort und richtige Übersetzung",pairs:[["aktuell","current"],["eventuell","perhaps"],["bekommen","get"],["sensibel","sensitive"],["kontrollieren","check"],["Chef","manager"],["konsequent","consistent"]].sort(()=>Math.random()-.5).slice(0,5).map(([de,en])=>({en,de})),explanation:""});
+  }
+  const list=shuffle(ex).map(cleanEx).filter(Boolean);
+  return {title:u.title,exercises:list.slice(0,11),new_terms:[],source:"local"};
+}
+
+/* ---------- AI lesson generator ---------- */
+function knownTerms(uid){return unitTerms(uid).map(t=>t.t).concat(S.lib.map(l=>l.t)).slice(-200);}
+async function aiLesson(uid){
+  const u=UNITS[uid];const angle=pick(UNIT_ANGLES,2).join(" and ");
+  const prompt=`Create one gamified micro-lesson for a business English learning app.
+
+Learner: native German speaker from Austria, works as Solution Area Specialist for Cloud & AI at Microsoft Austria (sells Azure infrastructure, data and AI solutions to enterprise and public-sector customers, works with partners, reports forecasts to a manager). Target level: ${S.cfg.level}.
+Unit topic: ${u.topic}.
+Set this lesson in the context of ${angle}. Make the sentences realistic for this job and different from the usual textbook phrases.
+Terms the learner already knows (do not introduce these as new terms; you may reuse them): ${knownTerms(uid).join(", ")}.
+
+Introduce exactly 3 new useful terms or phrases in "new_terms" (term in English, de = short German translation, definition = one English sentence, example = one realistic sentence from this job). Use them in the exercises.
+
+Write exactly 12 exercises in this mix: 2 "mc", 2 "fill", 1 "correct_sentence", 2 "listen_choose", 2 "listen_type", 2 "build", 1 "match". Rules per type:
+- mc: prompt = question in German (e.g. what a term means, which phrase fits a situation); text = optional English context sentence or ""; options = 4 English options; answer = the correct option, copied exactly.
+- fill: prompt = "Ergänze die Lücke."; text = English sentence with the gap written as "_____"; options = 4 single words or short phrases; answer = correct option exactly.
+- correct_sentence: prompt = "Welcher Satz ist korrekt?"; options = 3 English sentences, two contain a typical German-speaker mistake (false friend, preposition, tense, word order); answer = the correct one exactly.
+- listen_choose: prompt = "Was hörst du?"; text = English sentence that will be read aloud; options = 3 similar-sounding or similar-looking sentences including the exact text; answer = text.
+- listen_type: prompt = "Schreib, was du hörst."; text = short English sentence (max 10 words) read aloud; answer = same as text.
+- build: prompt = "Übersetze ins Englische."; text = a German sentence; answer = natural English translation (max 12 words, no alternatives); options = 3 single distractor words that are NOT in the answer.
+- match: prompt = "Finde die Paare."; pairs = 5 pairs with en = English term, de = German meaning; options = []; text = ""; answer = "".
+For every exercise: unused fields are "" or []; explanation = one short German sentence that teaches why (e.g. the false friend or the nuance).
+title = short German lesson title.
+
+Reply with only one JSON object of this shape:
+{"title": string, "new_terms": [{"term": string, "de": string, "definition": string, "example": string}], "exercises": [{"type": string, "prompt": string, "text": string, "options": [string], "answer": string, "pairs": [{"en": string, "de": string}], "explanation": string}]}`;
+  const res=await aiJSON(prompt,LESSON_SCHEMA);
+  const ex=(res.exercises||[]).map(cleanEx).filter(Boolean);
+  if(ex.length<6)throw{code:"json"};
+  const nt=(res.new_terms||[]).filter(t=>t.term&&t.de).slice(0,5);
+  return {title:res.title||u.title,exercises:ex,new_terms:nt,source:"ai"};
+}
+const prefetching={};
+function prefetch(uid){
+  if(!hasAI()||prefetching[uid]||(PRE[uid]&&PRE[uid].length))return;
+  prefetching[uid]=true;
+  aiLesson(uid).then(l=>{PRE[uid]=[l];savePre();}).catch(()=>{}).finally(()=>{prefetching[uid]=false;});
+}
+
+/* ================= Lesson engine ================= */
+let L=null;
+function lessonEl(){return $("#lesson");}
+async function startLesson(uid,mode){
+  refillHearts();
+  if(mode!=="review"&&heartsOn()&&S.hearts.n<=0){showNoHearts();return;}
+  if(canSpeak)speechSynthesis.cancel();
+  let lesson;
+  if(mode==="review"){
+    const pool=shuffle(S.mistakes).slice(0,8);
+    const fill=pool.length<6?localLesson(Math.floor(Math.random()*UNITS.length)).exercises.slice(0,8-pool.length):[];
+    lesson={title:"Fehler wiederholen",exercises:pool.concat(fill).map(cleanEx).filter(Boolean),new_terms:[],source:"review"};
+  } else if(hasAI()){
+    if(PRE[uid]&&PRE[uid].length){lesson=PRE[uid].shift();savePre();}
+    else{
+      const ctl={cancel:false,mode};
+      showLoading(uid,ctl);
+      try{lesson=await aiLesson(uid);}catch(e){ if(ctl.cancel)return; toast(aiErr(e)+" Offline-Lektion wird verwendet.");lesson=localLesson(uid);}
+      if(ctl.cancel)return;
+    }
+    prefetch(uid);
+  } else lesson=localLesson(uid);
+  L={uid,mode,title:lesson.title,source:lesson.source,new_terms:lesson.new_terms||[],queue:lesson.exercises.slice(),idx:0,base:lesson.exercises.length,
+     correct:0,wrong:0,combo:0,maxCombo:0,start:Date.now(),requeued:new Set(),state:"answer",ans:null};
+  document.body.style.overflow="hidden";
+  renderEx();
+}
+function showLoading(uid,ctl){
+  const el=lessonEl();el.hidden=false;document.body.style.overflow="hidden";
+  el.innerHTML=`<div></div><div class="lbody"><div class="wrap center"><div class="spin"></div><h2>Neue Lektion wird erstellt …</h2>
+   <p class="lead">Claude schreibt gerade eine frische Lektion zu „${esc(UNITS[uid].title)}“. Das dauert meist 10 bis 30 Sekunden. Die nächste wird schon im Hintergrund vorbereitet.</p>
+   <div class="row" style="justify-content:center"><button class="btn" id="offl">Offline-Lektion starten</button><button class="btn ghost" id="cancelLoad">Abbrechen</button></div></div></div><div></div>`;
+  $("#offl").onclick=()=>{ctl.cancel=true;const l=localLesson(uid);L={uid,mode:ctl.mode,title:l.title,source:"local",new_terms:[],queue:l.exercises.slice(),idx:0,base:l.exercises.length,correct:0,wrong:0,combo:0,maxCombo:0,start:Date.now(),requeued:new Set(),state:"answer",ans:null};renderEx();};
+  $("#cancelLoad").onclick=()=>{ctl.cancel=true;closeLesson();};
+}
+function closeLesson(){L=null;lessonEl().hidden=true;lessonEl().innerHTML="";document.body.style.overflow="";if(canSpeak)speechSynthesis.cancel();render();}
+function showNoHearts(){
+  const el=lessonEl();el.hidden=false;document.body.style.overflow="hidden";
+  const mins=Math.ceil((HEART_MS-(Date.now()-S.hearts.t))/60e3);
+  el.innerHTML=`<div></div><div class="lbody"><div class="wrap center"><div class="bigicon" style="background:var(--bad)">${IC.heart.replace('class="i"','')}</div>
+   <h2>Keine Herzen mehr</h2><p class="lead">Das nächste Herz kommt in etwa ${mins} Minuten. Oder wiederhole deine Fehler: Jede abgeschlossene Wiederholung bringt ein Herz zurück.</p>
+   <div class="row" style="justify-content:center"><button class="btn primary big" id="rev">Fehler wiederholen</button><button class="btn" id="cl">Später</button></div></div></div><div></div>`;
+  $("#rev").onclick=()=>startLesson(null,"review");$("#cl").onclick=closeLesson;
+}
+function curEx(){return L.queue[L.idx];}
+function exHtml(x){
+  const listenBtns=t=>`<div class="speaker"><button class="sbtn" data-say="${esc(t)}" aria-label="Anhören">${IC.sound}</button><button class="sbtn slow" data-say="${esc(t)}" data-slow="1" aria-label="Langsam anhören">${IC.slow}</button></div>`;
+  const opts=()=>`<div class="opts">${x.options.map((o,i)=>`<button class="opt" data-i="${i}" aria-pressed="${L.ans===i}"><span class="k">${i+1}</span><span>${esc(o)}</span></button>`).join("")}</div>`;
+  const label={mc:"Wähle die richtige Antwort",fill:"Lückentext",correct_sentence:"Fehler finden",listen_choose:"Hörverständnis",listen_type:"Hören und schreiben",build:"Satz bauen",match:"Paare finden"}[x.type];
+  let h=`<div class="eyebrow">${label}${L.combo>=3?` · <span class="combo">${L.combo}er Serie</span>`:""}</div><p class="qtitle">${esc(x.prompt)}</p>`;
+  if(x.type==="mc"){ if(x.text)h+=`<p class="qtext">${esc(x.text)} ${sayBtn(x.text)}</p>`; h+=opts(); }
+  if(x.type==="fill"){ h+=`<p class="qtext">${esc(x.text).replace(/_{2,}/,'<span class="gap"></span>')}</p>`+opts(); }
+  if(x.type==="correct_sentence")h+=opts();
+  if(x.type==="listen_choose")h+=listenBtns(x.text)+opts();
+  if(x.type==="listen_type")h+=listenBtns(x.text)+`<input type="text" id="typed" autocomplete="off" spellcheck="false" placeholder="Auf Englisch schreiben …" value="${esc(L.ans||"")}">`;
+  if(x.type==="build"){
+    if(!L.tiles){const words=x.answer.split(/\s+/).map(w=>w.replace(/^[^\w']+|[^\w'%]+$/g,"")).filter(Boolean);L.tiles=shuffle(words.concat(x.options.map(o=>o.replace(/[^\w'%-]/g,"")).filter(Boolean)));L.sel=[];}
+    if(x.say)h+=listenBtns(x.say); if(x.text)h+=`<p class="qtext">${esc(x.text)}</p>`;
+    h+=`<div class="tiles answerline" id="aline">${L.sel.map(i=>`<button class="tile" data-out="${i}">${esc(L.tiles[i])}</button>`).join("")}</div>
+       <div class="tiles" id="bank">${L.tiles.map((t,i)=>`<button class="tile ${L.sel.includes(i)?"ghost":""}" data-in="${i}">${esc(t)}</button>`).join("")}</div>`;
+  }
+  if(x.type==="match"){
+    if(!L.m){L.m={left:shuffle(x.pairs.map((p,i)=>i)),right:shuffle(x.pairs.map((p,i)=>i)),done:new Set(),a:null,b:null,miss:0};}
+    const m=L.m;
+    h+=`<div class="match"><div class="col">${m.left.map(i=>`<button class="tile ${m.done.has(i)?"gone":""} ${m.a===i?"sel":""}" data-l="${i}" ${m.done.has(i)?"disabled":""}>${esc(x.pairs[i].en)}</button>`).join("")}</div>
+      <div class="col">${m.right.map(i=>`<button class="tile ${m.done.has(i)?"gone":""} ${m.b===i?"sel":""}" data-r="${i}" ${m.done.has(i)?"disabled":""}>${esc(x.pairs[i].de)}</button>`).join("")}</div></div>`;
+  }
+  return h;
+}
+function canCheck(){const x=curEx();if(x.type==="listen_type")return !!(L.ans&&L.ans.trim());if(x.type==="build")return L.sel&&L.sel.length>0;if(x.type==="match")return false;return L.ans!==null&&L.ans!==undefined;}
+function renderEx(){
+  const el=lessonEl();el.hidden=false;
+  if(L.idx>=L.queue.length){finishLesson();return;}
+  const x=curEx();const pct=Math.round(L.idx/L.queue.length*100);
+  const st=L.state;
+  el.innerHTML=`<div class="wrap lbar"><button class="btn ghost" id="lx" aria-label="Lektion beenden">${IC.x}</button><div class="lprog"><i style="width:${Math.max(3,pct)}%"></i></div>
+     ${heartsOn()&&L.mode!=="review"?`<span class="lhearts">${IC.heart}${S.hearts.n}</span>`:""}</div>
+   <div class="lbody"><div class="wrap" id="exw">${exHtml(x)}</div></div>
+   <div class="lfoot ${st==="ok"?"ok":st==="no"?"no":""}"><div class="wrap">
+     ${st==="answer"?`<button class="btn ghost" id="skip">Überspringen</button><button class="btn primary big" id="chk" ${canCheck()?"":"disabled"}>Prüfen</button>`:
+       `<div class="fb"><b>${st==="ok"?(L.fbTitle||"Richtig!"):"Nicht ganz."}</b>${st==="no"?`<span>Richtig: <b style="font-size:inherit;font-family:inherit">${esc(L.fbAnswer)}</b></span>`:""}${x.explanation?`<span>${esc(x.explanation)}</span>`:""}</div>
+        <button class="btn big ${st==="ok"?"good":"bad"}" id="nxt">Weiter</button>`}
+   </div></div>`;
+  wireEx();
+  if(st==="answer"&&(x.type==="listen_choose"||x.type==="listen_type"||(x.type==="build"&&x.say))&&!L.spoken){L.spoken=true;setTimeout(()=>speak(x.type==="build"?x.say:x.text),250);}
+  const t=$("#typed");if(t&&st==="answer")t.focus();
+}
+function wireEx(){
+  const x=curEx();
+  $("#lx").onclick=()=>{ if(confirmQuit())closeLesson(); };
+  const locked=L.state!=="answer";
+  document.querySelectorAll(".opt").forEach(b=>{b.onclick=()=>{if(locked)return;SND.tap();L.ans=+b.dataset.i;renderEx();};});
+  if(locked){ document.querySelectorAll(".opt").forEach(b=>{const i=+b.dataset.i;b.disabled=true;if(x.options[i]===x.answer)b.classList.add("ok");else if(i===L.ans)b.classList.add("no");}); }
+  const t=$("#typed");if(t){t.oninput=()=>{L.ans=t.value;const c=$("#chk");if(c)c.disabled=!canCheck();};t.disabled=locked;}
+  document.querySelectorAll("[data-in]").forEach(b=>b.onclick=()=>{if(locked)return;const i=+b.dataset.in;if(L.sel.includes(i))return;SND.tap();L.sel.push(i);renderEx();});
+  document.querySelectorAll("[data-out]").forEach(b=>b.onclick=()=>{if(locked)return;const i=+b.dataset.out;L.sel=L.sel.filter(s=>s!==i);renderEx();});
+  document.querySelectorAll("[data-l],[data-r]").forEach(b=>b.onclick=()=>{
+    if(locked)return;const m=L.m;if(b.dataset.l!==undefined)m.a=+b.dataset.l;else m.b=+b.dataset.r;
+    if(m.a!==null&&m.b!==null){
+      if(m.a===m.b){m.done.add(m.a);SND.ok();speak(x.pairs[m.a].en);m.a=m.b=null;
+        if(m.done.size===x.pairs.length){L.fbTitle=m.miss?"Alle Paare gefunden!":"Alle Paare auf Anhieb!";grade(true,true);return;}}
+      else{SND.no();m.miss++;const a=m.a,bb=m.b;m.a=m.b=null;renderEx();
+        document.querySelector(`[data-l="${a}"]`)?.classList.add("wrong");document.querySelector(`[data-r="${bb}"]`)?.classList.add("wrong");return;}
+    } else SND.tap();
+    renderEx();
+  });
+  const chk=$("#chk");if(chk)chk.onclick=check;
+  const sk=$("#skip");if(sk)sk.onclick=()=>{L.ans=null;grade(false);};
+  const nx=$("#nxt");if(nx){nx.onclick=next;nx.focus();}
+}
+function confirmQuit(){ if(L.idx===0)return true; const el=$("#exw"); if(L.quitAsk)return true; L.quitAsk=true; toast("Nochmal auf ✕ tippen, um die Lektion ohne XP zu beenden."); setTimeout(()=>{if(L)L.quitAsk=false;},3000); return false; }
+function check(){
+  const x=curEx();let ok=false;L.fbTitle="";
+  if(["mc","fill","correct_sentence","listen_choose"].includes(x.type))ok=x.options[L.ans]===x.answer;
+  if(x.type==="listen_type"){const a=norm(L.ans),b=norm(x.answer);ok=a===b;if(!ok&&lev(a,b)<=Math.max(1,Math.floor(b.length*.08))){ok=true;L.fbTitle="Fast perfekt! Kleiner Tippfehler.";}}
+  if(x.type==="build"){ok=norm(L.sel.map(i=>L.tiles[i]).join(" "))===norm(x.answer);}
+  grade(ok);
+}
+function grade(ok,fromMatch){
+  const x=curEx();if(!fromMatch)L.fbTitle=L.fbTitle||"";
+  if(ok){L.correct++;L.combo++;L.maxCombo=Math.max(L.maxCombo,L.combo);SND.ok();if(!L.fbTitle)L.fbTitle=L.combo>=5&&L.combo%5===0?`${L.combo} richtig in Folge!`:pick(["Richtig!","Super!","Stark!","Genau so!","Perfekt!"],1)[0];
+    if(L.mode==="review"){const k=JSON.stringify([x.type,x.answer,x.text]);S.mistakes=S.mistakes.filter(m=>JSON.stringify([m.type,m.answer,m.text])!==k);}
+    L.state="ok";
+  } else {
+    L.wrong++;L.combo=0;SND.no();
+    if(heartsOn()&&L.mode!=="review"){S.hearts.n=Math.max(0,S.hearts.n-1);if(S.hearts.n<HEART_MAX&&S.hearts.n===HEART_MAX-1)S.hearts.t=Date.now();}
+    const k=JSON.stringify([x.type,x.answer,x.text]);
+    if(!S.mistakes.some(m=>JSON.stringify([m.type,m.answer,m.text])===k)){S.mistakes.push(x);S.mistakes=S.mistakes.slice(-80);}
+    if(!L.requeued.has(L.idx)){L.requeued.add(L.queue.length);L.queue.push(x);}
+    L.fbAnswer=x.type==="match"?"alle Paare richtig zuordnen":x.answer;L.state="no";
+    save();
+  }
+  if(fromMatch&&ok){L.state="ok";}
+  renderEx();
+}
+function next(){
+  if(L.state==="no"&&heartsOn()&&L.mode!=="review"&&S.hearts.n<=0){failLesson();return;}
+  L.idx++;L.state="answer";L.ans=null;L.tiles=null;L.sel=null;L.m=null;L.spoken=false;renderHeader();renderEx();
+}
+function failLesson(){
+  save();const el=lessonEl();
+  el.innerHTML=`<div></div><div class="lbody"><div class="wrap center"><div class="bigicon" style="background:var(--bad)">${IC.heart.replace('class="i"','')}</div><h2>Keine Herzen mehr</h2>
+   <p class="lead">Deine Fehler sind gespeichert. Wiederhole sie, um ein Herz zurückzubekommen, und versuch die Lektion dann nochmal.</p>
+   <div class="row" style="justify-content:center"><button class="btn primary big" id="rev">Fehler wiederholen</button><button class="btn" id="cl">Zum Lernpfad</button></div></div></div><div></div>`;
+  $("#rev").onclick=()=>startLesson(null,"review");$("#cl").onclick=closeLesson;
+}
+function finishLesson(){
+  const secs=Math.round((Date.now()-L.start)/1000);const acc=Math.round(L.correct/Math.max(1,L.correct+L.wrong)*100);
+  const perfect=L.wrong===0;let xp=10+(perfect?5:0)+Math.floor(L.maxCombo/5)*2;
+  addXP(xp);S.stats.lessons++;if(perfect)S.stats.perfect++;if(L.source==="ai")S.stats.ai++;
+  if(L.mode==="path"){S.units[L.uid]=Math.min(LESSONS_PER_UNIT,(S.units[L.uid]||0)+1);}
+  if(L.mode==="review"&&S.hearts.n<HEART_MAX)S.hearts.n++;
+  const added=[];
+  for(const t of L.new_terms){const k=t.term.trim().toLowerCase();if(!VOCAB.some(v=>v.t.toLowerCase()===k)&&!S.lib.some(l=>l.t.toLowerCase()===k)){S.lib.push({t:t.term.trim(),de:t.de,d:t.definition,ex:t.example,u:L.uid??0,added:today()});added.push(t);}}
+  save();SND.done();
+  const goalHit=xpToday()>=S.cfg.goal&&xpToday()-xp<S.cfg.goal;
+  const el=lessonEl();
+  el.innerHTML=`<div></div><div class="lbody"><div class="wrap center"><div class="bigicon" style="background:var(--gold)">${perfect?IC.star:IC.trophy}</div>
+   <h2>${perfect?"Fehlerfrei! Lektion geschafft.":"Lektion geschafft!"}</h2>
+   ${goalHit?`<p class="lead" style="color:var(--gold);font-weight:700">Tagesziel erreicht. Serie: ${streak()} ${streak()===1?"Tag":"Tage"}.</p>`:`<p class="lead">${esc(L.title)}</p>`}
+   <div class="resgrid"><div class="res" style="--c:var(--gold)"><b>XP</b><span>+${xp}</span></div><div class="res" style="--c:var(--good)"><b>Treffer</b><span>${acc}%</span></div><div class="res" style="--c:var(--u1)"><b>Zeit</b><span>${Math.floor(secs/60)}:${String(secs%60).padStart(2,"0")}</span></div></div>
+   ${added.length?`<div class="newterms"><div class="eyebrow" style="border:0;background:none;padding:0">Neu in deinem Wortschatz</div>${added.map(t=>`<div><b>${esc(t.term)}</b> <span class="de">${esc(t.de)}</span><br><span class="ex">${esc(t.example)}</span></div>`).join("")}</div>`:""}
+   <button class="btn primary big" id="cont">Weiter</button></div></div><div></div>`;
+  $("#cont").onclick=closeLesson;$("#cont").focus();
+}
+document.addEventListener("keydown",e=>{
+  if(!L||lessonEl().hidden)return;
+  if(e.key==="Enter"){const n=$("#nxt");if(n){e.preventDefault();n.click();return;}const c=$("#chk");if(c&&!c.disabled){e.preventDefault();c.click();}return;}
+  if(document.activeElement&&document.activeElement.id==="typed")return;
+  const d=parseInt(e.key,10);if(d>=1&&d<=9&&L.state==="answer"){const b=document.querySelector(`.opt[data-i="${d-1}"]`);if(b)b.click();}
+});
+
+/* ================= Views ================= */
+const VIEWS=["pfad","wortschatz","rollenspiel","textcheck","einstellungen"];
+let current=VIEWS.includes(location.hash.slice(1))?location.hash.slice(1):"pfad";let lastView=null;
+function go(v){current=v;try{history.replaceState(null,"","#"+v);}catch(e){}render();window.scrollTo(0,0);}
+$("#tabs").addEventListener("click",e=>{const b=e.target.closest(".tab");if(b)go(b.dataset.v);});
+function render(){
+  document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",t.dataset.v===current));
+  renderHeader();
+  ({pfad:vPath,wortschatz:vVocab,rollenspiel:vRole,textcheck:vWrite,einstellungen:vSettings})[current]($("#main"),lastView!==current);
+  lastView=current;
+}
+
+/* ---------- Lernpfad ---------- */
+function vPath(m){
+  const x=xpToday(),g=S.cfg.goal,p=Math.min(1,x/g),C=2*Math.PI*26;
+  const total=UNITS.length*LESSONS_PER_UNIT,done=UNITS.reduce((a,u)=>a+(S.units[u.id]||0),0);
+  const offs=[0,56,84,56,0];
+  m.innerHTML=`<section class="view">
+   <div class="panel today">
+     <svg class="ring" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="26" stroke="var(--line)"/><circle cx="32" cy="32" r="26" stroke="var(--gold)" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C*(1-p)}" transform="rotate(-90 32 32)"/></svg>
+     <div><div class="eyebrow">Tagesziel</div><b style="font-family:var(--f-display);font-size:20px">${x} von ${g} XP</b><div class="note">${x>=g?"Geschafft. Jede weitere Lektion zählt trotzdem.":`Noch ${g-x} XP, etwa ${Math.ceil((g-x)/12)} ${Math.ceil((g-x)/12)===1?"Lektion":"Lektionen"}.`} · ${done}/${total} Pfad-Lektionen</div></div>
+     <button class="btn ${S.mistakes.length?"primary":""}" id="review" ${S.mistakes.length?"":"disabled"}>Fehler wiederholen (${S.mistakes.length})</button>
+   </div>
+   ${hasAI()||IN_CLAUDE?"":`<div class="banner"><span style="flex:1;min-width:220px"><b>KI ist aus.</b> Lektionen kommen aus dem eingebauten Kurs. Mit einem eigenen Claude API-Key erstellt die App unbegrenzt neue Lektionen und Begriffe.</span><button class="btn" data-goto="einstellungen">API-Key eintragen</button></div>`}
+   ${UNITS.map((u,ui)=>{const d=S.units[u.id]||0;const dir=ui%2?-1:1;
+     return `<div class="unit" style="${unitColor(u.id)}">
+       <div class="uhead" style="background:var(--uc)"><div class="eyebrow">Einheit ${ui+1} · ${d}/${LESSONS_PER_UNIT}</div><h2>${esc(u.title)}</h2><p>${esc(u.desc)}</p>
+         <button class="btn" data-practice="${u.id}" title="Freies Üben, zählt nicht zum Pfad">${hasAI()?"Neue Lektion":"Üben"}</button></div>
+       <div class="nodes">${Array.from({length:LESSONS_PER_UNIT},(_,i)=>{const s=i<d?"done":i===d?"cur":"lock";
+         return `<button class="node ${s}" style="transform:translateX(${offs[i]*dir}px)" data-node="${u.id}" ${s==="lock"?"disabled":""} aria-label="Lektion ${i+1} ${s==="done"?"abgeschlossen":s==="cur"?"starten":"gesperrt"}">
+           ${s==="cur"?`<span class="tip">START</span>`:""}${s==="done"?IC.check:s==="cur"?IC.star:IC.lock}</button>`;}).join("")}</div>
+       ${d>=LESSONS_PER_UNIT?`<p class="note" style="text-align:center">Einheit abgeschlossen. Über „${hasAI()?"Neue Lektion":"Üben"}“ geht es endlos weiter.</p>`:""}
+     </div>`;}).join("")}
+  </section>`;
+  m.querySelectorAll("[data-node]").forEach(b=>b.onclick=()=>startLesson(+b.dataset.node,"path"));
+  m.querySelectorAll("[data-practice]").forEach(b=>b.onclick=()=>startLesson(+b.dataset.practice,"practice"));
+  m.querySelectorAll("[data-goto]").forEach(b=>b.onclick=()=>go(b.dataset.goto));
+  const r=$("#review");if(r)r.onclick=()=>startLesson(null,"review");
+  if(hasAI()){const nextU=UNITS.find(u=>(S.units[u.id]||0)<LESSONS_PER_UNIT);if(nextU)prefetch(nextU.id);}
+}
+
+/* ---------- Wortschatz ---------- */
+let vMode="cards",vUnit=-1,vCard=null,vFlip=false,vQ="";
+function allTerms(){return VOCAB.map(v=>({...v,ai:false})).concat(S.lib.map(l=>({...l,ai:true})));}
+function vDeck(){return allTerms().filter(t=>(vUnit<0||t.u===vUnit)&&(!vQ||(t.t+" "+t.de).toLowerCase().includes(vQ.toLowerCase())));}
+function nextCard(){const d=vDeck();if(!d.length){vCard=null;return;}const min=Math.min(...d.map(v=>S.box[v.t]||0));const pool=d.filter(v=>(S.box[v.t]||0)<=min+1&&(!vCard||v.t!==vCard.t));vCard=shuffle(pool.length?pool:d)[0];vFlip=false;}
+function vVocab(m,fresh){
+  if(!vCard||!vDeck().some(t=>t.t===vCard.t))nextCard();
+  const d=vDeck(),mastered=d.filter(v=>(S.box[v.t]||0)>=3).length,aiN=S.lib.length;
+  const units=[...new Set(allTerms().map(t=>t.u))].sort();
+  let body="";
+  if(!d.length)body=`<p class="note">Keine Begriffe gefunden.</p>`;
+  else if(vMode==="cards"){const b=S.box[vCard.t]||0;
+    body=`<div class="flash" id="flash" tabindex="0" role="button" aria-label="Karte umdrehen"><span class="cat eyebrow">${esc(UNITS[vCard.u]?.title||"")}${vCard.ai?'<span class="tag">KI</span>':""}</span>
+      <span class="boxes" title="Lernstufe ${b} von 5">${[1,2,3,4,5].map(i=>`<i class="${i<=b?"on":""}"></i>`).join("")}</span>
+      <h2>${esc(vCard.t)}</h2>${vFlip?`<div class="back"><div class="de">${esc(vCard.de)}</div><p>${esc(vCard.d)}</p><p class="ex">“${esc(vCard.ex)}”</p></div>`:`<p class="note">Erst überlegen, dann umdrehen.</p>`}</div>
+      <div class="row" style="justify-content:center">${vFlip?`<button class="btn bad" id="again">Nochmal</button><button class="btn good" id="know">Gewusst</button>`:`<button class="btn primary" id="flip">Umdrehen</button>`}${sayBtn(vCard.t+". "+vCard.ex)}</div>
+      <p class="note" style="text-align:center">${mastered} von ${d.length} sicher (ab Stufe 3)</p>`;}
+  else body=`<div class="vlist">${d.map(v=>`<div class="vitem"><div><b>${esc(v.t)}</b>${v.ai?'<span class="tag">KI</span>':""} ${sayBtn(v.t+". "+v.ex)}<div class="de">${esc(v.de)}</div></div><div><p>${esc(v.d)}</p><p class="ex">“${esc(v.ex)}”</p></div></div>`).join("")}</div>`;
+  m.innerHTML=`<section class="view">
+    <div style="display:grid;gap:6px"><div class="eyebrow">Wortschatz</div><h2 style="font-size:28px">${allTerms().length} Begriffe</h2>
+    <p class="lead">${VOCAB.length} aus dem Grundkurs${aiN?`, ${aiN} neu aus KI-Lektionen`:""}. Begriffe, die du nicht weißt, kommen öfter dran.</p></div>
+    <div class="row"><button class="chip" data-u="-1" aria-pressed="${vUnit<0}">Alle</button>${units.map(u=>`<button class="chip" data-u="${u}" aria-pressed="${vUnit===u}">${esc(UNITS[u].title)}</button>`).join("")}</div>
+    <div class="row"><input type="search" id="vq" placeholder="Suchen …" value="${esc(vQ)}" style="max-width:260px"><button class="chip" id="mC" aria-pressed="${vMode==="cards"}">Karteikarten</button><button class="chip" id="mL" aria-pressed="${vMode==="list"}">Liste</button></div>
+    ${body}</section>`;
+  m.querySelectorAll("[data-u]").forEach(b=>b.onclick=()=>{vUnit=+b.dataset.u;nextCard();render();});
+  $("#mC").onclick=()=>{vMode="cards";render();};$("#mL").onclick=()=>{vMode="list";render();};
+  const q=$("#vq");q.oninput=()=>{vQ=q.value;clearTimeout(q._t);q._t=setTimeout(()=>{nextCard();render();const n=$("#vq");n.focus();n.setSelectionRange(n.value.length,n.value.length);},250);};
+  if(vMode==="cards"&&vCard){const flip=()=>{if(!vFlip){vFlip=true;render();}};$("#flash").onclick=flip;$("#flash").onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();flip();}};
+    if($("#flip"))$("#flip").onclick=flip;
+    if($("#know"))$("#know").onclick=()=>{S.box[vCard.t]=Math.min(5,(S.box[vCard.t]||0)+1);SND.ok();addXP(1);nextCard();render();};
+    if($("#again"))$("#again").onclick=()=>{S.box[vCard.t]=0;save();nextCard();render();};}
+}
+
+/* ---------- Rollenspiel ---------- */
+let R=null;
+const LEVELS={B2:"B2 (fokussiere auf klare Fehler)",C1:"C1 (achte auch auf Stil und Idiomatik)",C2:"C2 (feinste Nuancen, wie Muttersprachler)"};
+const Rec=IN_CLAUDE?null:(window.SpeechRecognition||window.webkitSpeechRecognition);
+function aiOff(what){return IN_CLAUDE
+  ?(sampleFn===null&&syncState==="connecting"?"":`<div class="banner"><span style="flex:1;min-width:220px">${what} braucht Claude. Öffne die App bei claude.ai angemeldet und erlaube Claude, wenn danach gefragt wird.</span></div>`)
+  :`<div class="banner"><span style="flex:1;min-width:220px">${what} braucht einen Claude API-Key.</span><button class="btn" data-goto="einstellungen">API-Key eintragen</button></div>`;}
+function rolePrompt(sc){return `You are running a business English role-play for a native German speaker from Austria who works as a Solution Area Specialist for Cloud & AI at Microsoft Austria (selling Azure infrastructure, data and AI solutions to enterprise customers).
+
+You play: ${sc.role}
+The learner's goal in this conversation: ${sc.goal}
+
+Rules:
+1. Stay fully in character. Reply in natural spoken business English, 2 to 4 sentences. Be realistic: ask follow-up questions, push back sometimes, don't agree too quickly.
+2. After your in-character reply, write a line containing exactly ###COACH### and then coaching in German for the learner's LAST message only, at level ${LEVELS[S.cfg.level]}:
+   - Up to 2 corrections as bullet points: **"original"** → **"better"** (short reason in German)
+   - 1 bullet starting with "Tipp:" with a more natural or persuasive phrase for this sales situation.
+   If the English was excellent, say so in one short line instead of corrections.
+3. For your very first line, write ###COACH### followed by one German sentence with a hint on how to open well.
+Never break character above the ###COACH### line.`;}
+const splitCoach=t=>{const i=t.indexOf("###COACH###");return i<0?[t.trim(),""]:[t.slice(0,i).trim(),t.slice(i+11).trim()];};
+async function askRole(){
+  R.busy=true;R.err="";render();R.ctl=new AbortController();
+  try{const text=await aiText({system:rolePrompt(R.sc),messages:R.turns.slice(-30).map(t=>({role:t.role,content:t.content})),maxTokens:4000,signal:R.ctl.signal});
+    R.turns.push({role:"assistant",content:text});if(S.cfg.autoSpeak)speak(splitCoach(text)[0]);}
+  catch(e){R.err=aiErr(e);}
+  R.busy=false;render();
+}
+async function reviewRole(){
+  R.busy=true;R.review="";R.err="";render();R.ctl=new AbortController();
+  const tr=R.turns.filter(t=>!t.hidden).map(t=>(t.role==="user"?"LEARNER: ":"COUNTERPART: ")+splitCoach(t.content)[0]).join("\n");
+  try{R.review=await aiText({messages:[{role:"user",content:`You are an experienced business English coach for a native German speaker (Austria) working as a Solution Area Specialist for Cloud & AI at Microsoft Austria. Evaluate the LEARNER's English and sales communication in this role-play. Scenario: ${R.sc.title}. Goal: ${R.sc.goal}
+
+Write in German, with these markdown headings (####):
+#### Gesamteindruck (1-2 Sätze plus geschätztes Niveau B1-C2)
+#### Was gut war (2-3 bullets)
+#### Die 3 wichtigsten Verbesserungen (bullets: **"original"** → **"better"** + kurze Begründung)
+#### Gesprächsführung (1-3 bullets)
+#### 5 Phrasen zum Merken (English phrases as bullets)
+
+Transcript:
+${tr.slice(-14000)}`}],maxTokens:6000,effort:"medium",signal:R.ctl.signal});addXP(5);}
+  catch(e){R.err=aiErr(e);}
+  R.busy=false;render();
+}
+function startRole(sc){R={sc,turns:[{role:"user",content:"(Start the conversation now with your opening line.)",hidden:true}],busy:false,err:"",review:""};render();if(hasAI())askRole();}
+function vRole(m,fresh){
+  if(!R){
+    m.innerHTML=`<section class="view"><div style="display:grid;gap:6px"><div class="eyebrow">Rollenspiel mit KI-Coach</div><h2 style="font-size:28px">Kundengespräche auf Englisch üben</h2>
+      <p class="lead">Claude spielt dein Gegenüber und liest die Antworten vor. Unter jeder Antwort bekommst du Korrekturen und einen Tipp auf Deutsch.${Rec?" Du kannst auch per Mikrofon antworten.":""}</p></div>
+      ${hasAI()?"":aiOff("Das Rollenspiel")}
+      <div class="scen">${SCENARIOS.map(s=>`<button class="sc" data-sc="${s.id}"><span class="who">${esc(s.who)}</span><h3>${esc(s.title)}</h3><p>${esc(s.desc)}</p></button>`).join("")}</div>
+      <div class="panel set"><label for="own">Eigenes Szenario</label><textarea id="own" placeholder="z. B. Der CIO eines Tiroler Seilbahnbetreibers will wissen, ob sich Copilot für seine 300 Mitarbeitenden lohnt."></textarea>
+      <div class="row"><button class="btn primary" id="ownGo">Szenario starten</button></div></div></section>`;
+    m.querySelectorAll("[data-goto]").forEach(b=>b.onclick=()=>go(b.dataset.goto));
+    m.querySelectorAll("[data-sc]").forEach(b=>b.onclick=()=>startRole(SCENARIOS.find(s=>s.id===b.dataset.sc)));
+    $("#ownGo").onclick=()=>{const v=$("#own").value.trim();if(!v){toast("Beschreibe zuerst die Situation.");return;}startRole({id:"own",who:"Eigenes Szenario",title:v.slice(0,60),desc:v,role:"The counterpart described in this situation (stay realistic and consistent): "+v,goal:"Führe das Gespräch professionell und vereinbare einen konkreten nächsten Schritt."});};
+    return;
+  }
+  const draft=fresh?"":($("#say")?.value||"");const userTurns=R.turns.filter(t=>t.role==="user"&&!t.hidden).length;
+  m.innerHTML=`<section class="view">
+    <div class="row" style="justify-content:space-between"><button class="btn ghost" id="back">← Szenarien</button><label class="note row"><input type="checkbox" id="auto" ${S.cfg.autoSpeak?"checked":""}> Antworten vorlesen</label></div>
+    <div class="brief"><b>${esc(R.sc.who)}: ${esc(R.sc.title)}</b><span>Dein Ziel: ${esc(R.sc.goal)}</span></div>
+    <div class="msgs">${R.turns.filter(t=>!t.hidden).map(t=>{if(t.role==="user")return `<div class="msg me"><div class="who">Du</div><div class="bubble">${esc(t.content)}</div></div>`;
+      const [say,coach]=splitCoach(t.content);return `<div class="msg"><div class="who">${esc(R.sc.who)}</div><div class="bubble">${esc(say)}</div>${coach?`<div class="coach"><div class="eyebrow">Coach</div><div class="md">${md(coach)}</div></div>`:""}<div class="row">${sayBtn(say)}</div></div>`;}).join("")}
+      ${R.busy&&!R.review?`<div class="msg"><div class="who">${esc(R.sc.who)}</div><div class="bubble">Denkt nach …</div></div>`:""}</div>
+    ${R.err?`<p class="err">${esc(R.err)}</p>`:""}
+    ${R.review?`<div class="panel"><div class="eyebrow" style="margin-bottom:8px">Auswertung</div><div class="md">${md(R.review)}</div></div>`:""}
+    <div class="composer"><label for="say" class="note">Deine Antwort (Strg + Enter zum Senden)</label>
+      <textarea id="say" placeholder="Type your answer in English …" ${hasAI()?"":"disabled"}>${esc(draft)}</textarea>
+      <div class="row"><button class="btn primary" id="send" ${R.busy||!hasAI()?"disabled":""}>Senden</button>
+        ${Rec?`<button class="btn" id="mic" ${R.busy||!hasAI()?"disabled":""}>${IC.mic} Sprechen</button>`:""}
+        ${R.busy?`<button class="btn" id="stop">Stopp</button>`:""}
+        <button class="btn" id="eval" ${R.busy||userTurns<2?"disabled":""}>Gespräch auswerten</button><button class="btn ghost" id="restart" ${R.busy?"disabled":""}>Neu starten</button></div></div>
+  </section>`;
+  $("#back").onclick=()=>{R.ctl?.abort();R=null;if(canSpeak)speechSynthesis.cancel();render();};
+  $("#auto").onchange=e=>{S.cfg.autoSpeak=e.target.checked;save();};
+  $("#restart").onclick=()=>startRole(R.sc);
+  if($("#stop"))$("#stop").onclick=()=>R.ctl?.abort();
+  $("#eval").onclick=reviewRole;
+  const send=()=>{const v=$("#say").value.trim();if(!v||R.busy)return;R.turns.push({role:"user",content:v});$("#say").value="";S.stats.turns++;addXP(2);R.review="";askRole();};
+  $("#send").onclick=send;$("#say").onkeydown=e=>{if(e.key==="Enter"&&(e.ctrlKey||e.metaKey)){e.preventDefault();send();}};
+  const mic=$("#mic");if(mic)mic.onclick=()=>{try{const r=new Rec();r.lang="en-GB";r.interimResults=true;const box=$("#say");const base=box.value?box.value+" ":"";
+    mic.textContent="Höre zu …";r.onresult=ev=>{let t="";for(const res of ev.results)t+=res[0].transcript;box.value=base+t;};r.onend=()=>{mic.innerHTML=IC.mic+" Sprechen";};r.onerror=()=>toast("Mikrofon nicht verfügbar oder nicht erlaubt.");r.start();}catch(e){toast("Spracherkennung wird hier nicht unterstützt.");}};
+  const last=m.querySelector(".msgs > :last-child");if(last&&!R.review)last.scrollIntoView({block:"nearest"});
+}
+
+/* ---------- Textcheck ---------- */
+const SAMPLE_TEXT="Dear Mr. Huber,\n\nlike discussed in our meeting I send you the informations about the Azure OpenAI pilot. Eventually we can make a workshop with your team until end of November. Please give me a feedback if this is ok for you.\n\nBest regards";
+let W={text:SAMPLE_TEXT,kind:"E-Mail an Kunden",tone:"professionell, freundlich",out:"",busy:false,err:"",isSample:true};
+function vWrite(m){
+  const t=W.out,a=t.indexOf("###VERSION###"),b=t.indexOf("###NOTES###");
+  const ver=a<0?t:t.slice(a+13,b<0?undefined:b).trim(),notes=b<0?"":t.slice(b+11).trim();
+  m.innerHTML=`<section class="view"><div style="display:grid;gap:6px"><div class="eyebrow">Textcheck mit KI-Coach</div><h2 style="font-size:28px">E-Mails und Nachrichten verbessern</h2>
+    <p class="lead">Füge deinen Entwurf ein. Du bekommst eine verbesserte Version und jede Änderung auf Deutsch erklärt.</p></div>
+    ${hasAI()?"":aiOff("Der Textcheck")}
+    <div class="grid2"><div class="panel set">
+      <div class="row"><label class="note" for="wk">Art</label><select id="wk">${["E-Mail an Kunden","Teams-Nachricht","Interne E-Mail an Management","Meeting-Zusammenfassung","LinkedIn-Post"].map(k=>`<option ${k===W.kind?"selected":""}>${k}</option>`).join("")}</select>
+        <label class="note" for="wt">Ton</label><select id="wt">${["professionell, freundlich","formell","locker, kollegial","überzeugend"].map(k=>`<option ${k===W.tone?"selected":""}>${k}</option>`).join("")}</select></div>
+      <label for="wtext" class="note">${W.isSample?"Beispiel mit typischen Fehlern. Ersetze ihn durch deinen eigenen Text.":"Dein Entwurf"}</label>
+      <textarea id="wtext" style="min-height:220px">${esc(W.text)}</textarea>
+      <div class="row"><button class="btn primary" id="wgo" ${W.busy||!hasAI()?"disabled":""}>${W.busy?"Prüft …":"Text prüfen"}</button></div></div>
+    <div class="panel set" style="align-content:start"><div class="row" style="justify-content:space-between"><div class="eyebrow">Verbesserte Version</div>${ver&&!W.busy?`<button class="btn ghost" data-copy="${esc(ver)}">Kopieren</button>`:""}</div>
+      <div class="out">${W.busy?"Claude prüft deinen Text …":ver?esc(ver):'<span class="note">Hier erscheint dein überarbeiteter Text.</span>'}</div>
+      ${notes?`<div class="eyebrow">Was geändert wurde</div><div class="md">${md(notes)}</div>`:""}${W.err?`<p class="err">${esc(W.err)}</p>`:""}</div></div></section>`;
+  m.querySelectorAll("[data-goto]").forEach(b=>b.onclick=()=>go(b.dataset.goto));
+  $("#wtext").oninput=e=>{W.text=e.target.value;W.isSample=false;};$("#wk").onchange=e=>W.kind=e.target.value;$("#wt").onchange=e=>W.tone=e.target.value;
+  $("#wgo").onclick=async()=>{const txt=W.text.trim();if(!txt)return;W.busy=true;W.err="";W.out="";render();
+    try{W.out=await aiText({messages:[{role:"user",content:`You are a business English editor for a native German speaker from Austria working as a Solution Area Specialist for Cloud & AI at Microsoft Austria.
+Improve the following text. Type: ${W.kind}. Desired tone: ${W.tone}. Keep meaning and facts, keep it concise, use natural international business English, keep product names unchanged.
+
+Reply in exactly this format:
+###VERSION###
+(the improved text only)
+###NOTES###
+(in German: bullet points, one per important change: **"original"** → **"new"**: short reason. Point out typical German-speaker mistakes such as false friends. Max 8 bullets. End with a line "Niveau: " and the estimated CEFR level of the original.)
+
+Text:
+"""
+${txt.slice(0,8000)}
+"""`}],maxTokens:6000,effort:"low"});S.stats.texts++;addXP(3);}
+    catch(e){W.err=aiErr(e);}
+    W.busy=false;render();};
+}
+
+/* ---------- Einstellungen ---------- */
+function vSettings(m){
+  const sorted=voices.slice().sort((a,b)=>voiceScore(b)-voiceScore(a));const bv=bestVoice();
+  const natural=voices.some(v=>/natural|neural/i.test(v.name));
+  m.innerHTML=`<section class="view"><div style="display:grid;gap:6px"><div class="eyebrow">Einstellungen</div><h2 style="font-size:28px">App einrichten</h2></div>
+   ${IN_CLAUDE?`<div class="panel set"><h3>Claude &amp; Synchronisierung</h3>
+     <p class="note">Neue Lektionen, Rollenspiele und Textchecks laufen über dein Claude-Konto, du brauchst keinen API-Key. Beim ersten Mal fragt Claude, ob du das erlaubst.${sampleFn?"":" <b>Claude ist in dieser Ansicht gerade nicht verfügbar.</b>"}</p>
+     <p class="note"><b>Fortschritt:</b> ${syncState==="on"?"wird mit deinem Claude-Konto synchronisiert. Öffne die App auf iPhone und PC über denselben Link, dann hast du überall denselben Stand.":syncState==="connecting"?"Verbindung zum Speicher wird aufgebaut …":syncState==="error"?"Synchronisierung gerade gestört. Dein Fortschritt bleibt auf diesem Gerät und wird später nachgeholt.":"wird nur auf diesem Gerät gespeichert (bitte bei claude.ai anmelden)."}</p>
+     <label for="lvl">Dein Niveau</label><select id="lvl">${Object.keys(LEVELS).map(k=>`<option value="${k}" ${S.cfg.level===k?"selected":""}>${k}</option>`).join("")}</select></div>`:`
+   <div class="panel set"><h3>Claude API-Key</h3>
+     <p class="note">Damit erstellt die App unbegrenzt neue Lektionen, Rollenspiele und Textchecks. Einen Key bekommst du in der Claude Console unter console.anthropic.com → API Keys. Die Nutzung wird über dein API-Guthaben abgerechnet (eine Lektion kostet mit Opus 5.5 etwa 3 bis 6 Cent, mit Haiku deutlich weniger). Der Key wird nur in diesem Browser gespeichert und direkt an die Claude API geschickt.</p>
+     <label for="key">API-Key</label><input type="password" id="key" value="${esc(S.cfg.key)}" placeholder="sk-ant-…" autocomplete="off">
+     <label for="model">Modell</label><select id="model">${MODELS.map(([id,n])=>`<option value="${id}" ${S.cfg.model===id?"selected":""}>${n}</option>`).join("")}</select>
+     <label for="lvl">Dein Niveau</label><select id="lvl">${Object.keys(LEVELS).map(k=>`<option value="${k}" ${S.cfg.level===k?"selected":""}>${k}</option>`).join("")}</select>
+     <div class="row"><button class="btn primary" id="saveKey">Speichern</button><button class="btn" id="testKey">Verbindung testen</button><span class="note" id="keyMsg"></span></div></div>`}
+   <div class="panel set"><h3>Stimme</h3>
+     ${!canSpeak?`<p class="err">Dieser Browser hat keine Sprachausgabe.</p>`:`
+     <p class="note">${IS_IOS?"Auf dem iPhone klingen die Stimmen „Erweitert“ oder „Premium“ am natürlichsten. Lade sie einmalig unter <b>Einstellungen → Bedienungshilfen → Gesprochene Inhalte → Stimmen → Englisch</b>, z. B. „Daniel“, „Arthur“ oder „Serena“ (britisch). Danach hier auswählen.":natural?"Natürliche Stimmen gefunden. Die beste ist automatisch ausgewählt.":"Für die natürlichsten Stimmen öffne die App in <b>Microsoft Edge</b>. Edge bringt kostenlose neuronale Stimmen mit, z. B. „Sonia“, „Ryan“ (britisch) oder „Aria“, „Andrew“ (amerikanisch)."}</p>
+     <label for="voice">Stimme</label><select id="voice" style="width:100%"><option value="">Automatisch (${esc(bv?bv.name:"Standard")})</option>${sorted.map(v=>`<option value="${esc(v.name)}" ${S.cfg.voice===v.name?"selected":""}>${esc(v.name)} · ${esc(v.lang)}${/natural|neural/i.test(v.name)?" · natürlich":""}</option>`).join("")}</select>
+     <label for="rate">Tempo: <span id="rateV">${(S.cfg.rate||1).toFixed(2)}</span></label><input type="range" id="rate" min="0.6" max="1.3" step="0.05" value="${S.cfg.rate||1}">
+     <div class="row"><button class="btn" id="testVoice">Probe hören</button></div>`}</div>
+   <div class="panel set"><h3>Lernen</h3>
+     <label for="goal">Tagesziel</label><select id="goal">${[[20,"Locker: 20 XP"],[30,"Normal: 30 XP"],[50,"Ernsthaft: 50 XP"],[80,"Intensiv: 80 XP"]].map(([v,n])=>`<option value="${v}" ${S.cfg.goal==v?"selected":""}>${n}</option>`).join("")}</select>
+     <label class="row"><input type="checkbox" id="hearts" ${S.cfg.hearts?"checked":""}> Herzen verwenden (Fehler kosten ein Herz)</label>
+     <label class="row"><input type="checkbox" id="sound" ${S.cfg.sound?"checked":""}> Soundeffekte</label></div>
+   <div class="panel set"><h3>Fortschritt sichern</h3>
+     <p class="note">${IN_CLAUDE?`Stand: ${S.stats.lessons} Lektionen, ${S.lib.length} KI-Begriffe, ${streak()} Tage Serie. Hast du schon mit der Datei auf dem PC gelernt? Lade dort ein Backup herunter und hier mit „Backup laden“ hoch.`:`Dein Fortschritt wird automatisch in diesem Browser gespeichert (${S.stats.lessons} Lektionen, ${S.lib.length} KI-Begriffe, ${streak()} Tage Serie). Lösche die Browserdaten nicht, oder lade regelmäßig ein Backup herunter. Das Backup enthält keinen API-Key.`}</p>
+     <div class="row">${IN_CLAUDE?"":`<button class="btn primary" id="exp">Backup herunterladen</button>`}<label class="btn" for="imp" style="cursor:pointer">Backup laden</label><input type="file" id="imp" accept="application/json,.json" hidden>
+       <button class="btn ghost" id="reset">${resetArm?"Wirklich alles löschen? Nochmal tippen":"Fortschritt zurücksetzen"}</button></div></div>
+  </section>`;
+  if(IN_CLAUDE)$("#lvl").onchange=e=>{S.cfg.level=e.target.value;PRE={};savePre();save();toast("Gespeichert");};
+  if(!IN_CLAUDE){
+  $("#saveKey").onclick=()=>{S.cfg.key=$("#key").value.trim();S.cfg.model=$("#model").value;S.cfg.level=$("#lvl").value;S.cfg.noFallback=false;PRE={};savePre();save();toast("Gespeichert");render();};
+  $("#testKey").onclick=async()=>{S.cfg.key=$("#key").value.trim();S.cfg.model=$("#model").value;save();const msg=$("#keyMsg");msg.textContent="Teste …";
+    try{const t=await callClaude({messages:[{role:"user",content:"Reply with exactly: Ready"}],maxTokens:2000,effort:"low"});msg.textContent="Verbindung steht ("+t.trim().slice(0,20)+")";msg.style.color="var(--good)";}
+    catch(e){msg.textContent=aiErr(e);msg.style.color="var(--bad)";}};
+  }
+  if(canSpeak){$("#voice").onchange=e=>{S.cfg.voice=e.target.value;save();speak("Thanks for making the time today. Let's look at your cloud roadmap.");};
+    $("#rate").oninput=e=>{S.cfg.rate=+e.target.value;$("#rateV").textContent=S.cfg.rate.toFixed(2);save();};
+    $("#testVoice").onclick=()=>speak("Thanks for making the time today. Could you walk me through your priorities for the next twelve months?");}
+  $("#goal").onchange=e=>{S.cfg.goal=+e.target.value;save();renderHeader();};
+  $("#hearts").onchange=e=>{S.cfg.hearts=e.target.checked;save();renderHeader();};
+  $("#sound").onchange=e=>{S.cfg.sound=e.target.checked;save();};
+  if($("#exp"))$("#exp").onclick=()=>{const data=JSON.parse(JSON.stringify(S));data.cfg.key="";
+    const blob=new Blob([JSON.stringify(data,null,1)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="deal-room-english-backup-"+today()+".json";document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},500);toast("Backup gespeichert");};
+  $("#imp").onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const o=JSON.parse(r.result);if(!o||!o.cfg||!o.stats)throw 0;const key=S.cfg.key;
+      S=fromSaved(o,key);save();toast("Backup geladen");render();}catch(err){toast("Diese Datei ist kein gültiges Backup.");}};r.readAsText(f);};
+  $("#reset").onclick=()=>{if(!resetArm){resetArm=true;render();setTimeout(()=>{resetArm=false;if(current==="einstellungen")render();},4000);return;}
+    const cfg=S.cfg;S=blank();S.cfg=cfg;resetArm=false;save();toast("Fortschritt zurückgesetzt");render();};
+}
+let resetArm=false;
+
+appReady=true;
+render();
+initClaude();
+/* Installed as a home-screen app: cache the app so it also starts offline */
+if("serviceWorker" in navigator&&/^https?:$/.test(location.protocol)&&!IN_CLAUDE){navigator.serviceWorker.register("sw.js").catch(()=>{});}
+</script>
+</body>
+</html>
