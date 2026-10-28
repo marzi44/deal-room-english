@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Deal Room English</title>
+<title>Talktrack</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Deal Room">
+<meta name="apple-mobile-web-app-title" content="Talktrack">
 <meta name="theme-color" content="#F5F6F7" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0D0E10" media="(prefers-color-scheme: dark)">
 <link rel="manifest" href="manifest.webmanifest">
@@ -334,44 +334,6 @@ textarea.field{resize:vertical;min-height:110px;line-height:1.45}
 .list details[open] .chv{transform:rotate(90deg)}
 .list .body{padding:0 16px 16px;display:grid;gap:8px}
 
-/* Coach */
-.scen{display:grid;background:var(--surface);border:.5px solid var(--line);border-radius:var(--r);overflow:hidden;margin-bottom:6px}
-.sc{display:flex;gap:14px;align-items:center;text-align:left;background:none;border:0;border-top:.5px solid var(--line);padding:14px 16px;cursor:pointer}
-.sc:first-child{border-top:0}
-.sc:active{background:var(--surface-2)}
-.av{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:var(--surface);font-weight:600;font-size:13.5px;flex:none}
-.av svg{width:18px;height:18px}
-.sc div{flex:1;min-width:0;display:grid;gap:1px}
-.sc .who{font-family:var(--f-mono);font-size:10.5px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
-.sc b{font-size:16px;font-weight:600}
-.sc span{font-size:14px;color:var(--muted);line-height:1.35}
-.sc .chv{width:18px;height:18px;color:var(--line-2)}
-.locked{display:grid;gap:14px;justify-items:start;background:var(--surface);border:.5px solid var(--line);border-radius:var(--r-lg);padding:22px}
-.locked .sic{width:44px;height:44px;border-radius:14px;background:var(--surface-2);color:var(--accent);display:grid;place-items:center}
-.locked .sic svg{width:22px;height:22px}
-.locked ul{margin:0;padding-left:18px;display:grid;gap:6px;color:var(--ink-2)}
-.brief{display:flex;gap:12px;align-items:center;background:var(--surface);border:.5px solid var(--line);border-radius:var(--r);padding:12px 14px}
-.brief div{flex:1;min-width:0;font-size:14px}
-.msgs{display:grid;gap:14px;padding:8px 0}
-.msg{max-width:min(540px,88%);display:grid;gap:6px;animation:fbUp .25s}
-.msg.me{justify-self:end}
-.bubble{background:var(--surface);border:.5px solid var(--line);padding:11px 15px;border-radius:20px 20px 20px 6px;white-space:pre-wrap;overflow-wrap:anywhere;font-size:16px}
-.msg.me .bubble{background:var(--btn);color:var(--on-btn);border-color:var(--btn);border-radius:20px 20px 6px 20px}
-.mmeta{display:flex;gap:8px;align-items:center}
-.coachnote{border-left:2px solid var(--accent);padding:4px 0 4px 12px;font-size:14.5px}
-.coachnote summary{cursor:pointer;font-family:var(--f-mono);font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);list-style:none;display:flex;align-items:center;gap:6px}
-.coachnote summary::-webkit-details-marker{display:none}
-.coachnote summary svg{width:13px;height:13px}
-.md{display:grid;gap:8px;font-size:15px;margin-top:8px}
-.md h4{font-family:var(--f-display);font-weight:600;font-size:16px;margin:6px 0 0}
-.md ul{margin:0;padding-left:18px;display:grid;gap:4px}
-.composer{position:sticky;bottom:calc(var(--tab-h) + env(safe-area-inset-bottom,0px));background:var(--bg);padding:10px 0 12px;display:grid;gap:8px}
-@media (min-width:900px){.composer{bottom:96px}}
-.composer .row{flex-wrap:nowrap}
-.composer textarea{min-height:50px;max-height:160px}
-.out{white-space:pre-wrap;background:var(--surface-2);border-radius:var(--r-sm);padding:16px;overflow-wrap:anywhere;font-size:16px}
-.err{color:var(--bad);font-size:15px;font-weight:500}
-
 /* Profile */
 .prof{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center}
 .flamebig{width:56px;height:56px;border-radius:50%;background:var(--orange-soft);color:var(--orange);display:grid;place-items:center}
@@ -429,7 +391,7 @@ button.it:active{background:var(--surface-2)}
 </head>
 <body>
 <div class="topbar" id="topbar"><div class="wrap topin">
-  <div class="logo"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="var(--btn)"/><path d="M8.5 8.5h15a3 3 0 0 1 3 3v7a3 3 0 0 1-3 3h-8.2L10.5 25v-3.5h-2a3 3 0 0 1-3-3v-7a3 3 0 0 1 3-3z" fill="var(--on-btn)"/><text x="16" y="18.3" text-anchor="middle" font-family="Geist,Segoe UI,sans-serif" font-weight="700" font-size="8.2" fill="var(--btn)">EN</text></svg>Deal Room</div>
+  <div class="logo"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="var(--btn)"/><rect x="9" y="9" width="14" height="3" rx="1.5" fill="var(--on-btn)"/><rect x="14.5" y="9" width="3" height="14.5" rx="1.5" fill="var(--on-btn)"/><circle cx="22.3" cy="22" r="1.9" fill="var(--accent)"/></svg>Talktrack</div>
   <div class="pills" id="pills"></div>
 </div></div>
 <main class="wrap" id="main"></main>
@@ -477,7 +439,7 @@ const IC={
   sound:svg('<path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor"/><path d="M15.5 9a4 4 0 0 1 0 6"/>'),
   globe:svg('<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.5 2.5 3.5 5.5 3.5 8.5s-1 6-3.5 8.5c-2.5-2.5-3.5-5.5-3.5-8.5s1-6 3.5-8.5z"/>')
 };
-const LOGO=`<svg class="hlogo" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="var(--btn)"/><path d="M8.5 8.5h15a3 3 0 0 1 3 3v7a3 3 0 0 1-3 3h-8.2L10.5 25v-3.5h-2a3 3 0 0 1-3-3v-7a3 3 0 0 1 3-3z" fill="var(--on-btn)"/><text x="16" y="18.3" text-anchor="middle" font-family="Geist,Segoe UI,sans-serif" font-weight="700" font-size="8.2" fill="var(--btn)">EN</text></svg>`;
+const LOGO=`<svg class="hlogo" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="var(--btn)"/><rect x="9" y="9" width="14" height="3" rx="1.5" fill="var(--on-btn)"/><rect x="14.5" y="9" width="3" height="14.5" rx="1.5" fill="var(--on-btn)"/><circle cx="22.3" cy="22" r="1.9" fill="var(--accent)"/></svg>`;
 
 /* ================= Built-in content ================= */
 const VOCAB = [
@@ -590,20 +552,6 @@ async function loadChapters(){
     if(Array.isArray(j.chapters)){const before=JSON.stringify(REMOTE);REMOTE=j.chapters;try{localStorage.setItem("dre-v2-chapters",JSON.stringify(REMOTE));}catch(e){}
       if(before!==JSON.stringify(REMOTE)&&appReady&&!L)render();}}catch(e){}
 }
-const SCENARIOS = [
- {id:"ciso",c:0,ini:"KS",who:"CISO · Bank, Wien",title:"Datenhoheit & DORA",desc:"Die CISO einer Wiener Bank ist skeptisch, Kerndaten in die Cloud zu bringen.",role:"Dr. Katharina Steiner, CISO of a mid-sized Austrian bank in Vienna. Sceptical, precise, regulation-focused (GDPR, DORA, FMA supervision). Worried about data residency, concentration risk, exit strategy and who can access the data.",goal:"Verstehe ihre Bedenken und vereinbare einen Workshop mit dem Security-Team."},
- {id:"cfo",c:2,ini:"TG",who:"CFO · Industrie, Oberösterreich",title:"Kosten planbar machen",desc:"Der CFO eines Maschinenbauers fürchtet unkontrollierte Cloud-Kosten.",role:"Thomas Gruber, CFO of a machinery manufacturer in Upper Austria with 2,000 employees. Numbers-driven, impatient with buzzwords, afraid of runaway cloud bills, wants predictable costs and a clear ROI.",goal:"Baue einen Business Case auf und erkläre, wie Kosten steuerbar bleiben."},
- {id:"ai",c:3,ini:"LH",who:"Head of Innovation · Versicherung",title:"Vom PoC in die Produktion",desc:"Ein GenAI-Pilot war erfolgreich, steckt aber fest.",role:"Lisa Hofer, Head of Innovation at an Austrian insurance company. Enthusiastic about GenAI but frustrated: the claims-assistant pilot worked, yet the works council, compliance and IT operations are blocking the rollout.",goal:"Finde die echten Blocker und schlage einen Weg zur Produktion vor."},
- {id:"public",c:1,ini:"AB",who:"IT-Leiter · Verwaltung",title:"Souveränität & Lock-in",desc:"Ein IT-Leiter im öffentlichen Sektor sorgt sich um Abhängigkeit.",role:"Mag. Andreas Berger, head of IT at a regional public administration in Austria. Cautious, politically aware, worried about vendor lock-in, digital sovereignty and public procurement rules.",goal:"Gehe auf Lock-in-Bedenken ein und kläre den nächsten Schritt."},
- {id:"partner",c:0,ini:"MW",who:"Partner · Systemintegrator",title:"Co-Sell-Planung",desc:"Mit einem Partner planst du gemeinsame Kunden-Accounts.",role:"Markus Wagner, practice lead at an Austrian systems integrator partner. Friendly but commercially sharp; wants clarity on who owns the customer relationship, funding for workshops and how leads are shared.",goal:"Vereinbare drei Ziel-Accounts und klare Verantwortlichkeiten."},
- {id:"manager",c:2,ini:"S",who:"Deine Managerin · intern",title:"Forecast-Call",desc:"Deine Managerin will wissen, welche Deals diesen Monat abschließen.",role:"Sarah, the learner's manager in the Austrian Cloud & AI team. Direct, supportive, but pushes hard on forecast accuracy: commit vs upside, risks, next steps and what help is needed.",goal:"Gib einen klaren, ehrlichen Forecast mit Risiken und Hilfebedarf."},
- {id:"coffee-dublin",casual:true,c:0,ini:"AO",who:"Kollegin · Dublin",title:"Kaffeepause beim Offsite",desc:"Du triffst eine Kollegin aus Irland zum ersten Mal an der Kaffeemaschine.",role:"Aoife, a friendly, chatty Customer Success Manager from Dublin, meeting the learner for the first time at the coffee machine during a European team offsite. Uses relaxed Irish-English phrases now and then, asks about Vienna, talks about her weekend, the weather and travel.",goal:"Führe ein lockeres Gespräch, stell Gegenfragen und finde ein gemeinsames Thema."},
- {id:"virtual-coffee-sg",casual:true,c:1,ini:"WL",who:"Kollege · Singapur",title:"Virtueller Kaffee",desc:"Ein 15-Minuten-Teams-Call zum Kennenlernen mit einem Kollegen in Singapur.",role:"Wei Lin, a solution architect in Singapore who joined the global AI team recently. Polite, curious and a little reserved at first. It is late afternoon for him and early morning for the learner. Interested in how people work in Austria, food and holidays.",goal:"Brich das Eis, sprich über Zeitzonen und Arbeitsalltag und vereinbare einen nächsten Austausch."},
- {id:"call-start-us",casual:true,c:2,ini:"JR",who:"Kollege · Seattle",title:"Small Talk vor dem Call",desc:"Ein US-Kollege ist schon im Call, die anderen fehlen noch.",role:"Jordan, an upbeat program manager in Seattle. The two of you are waiting for others to join a Teams call. Makes typical American small talk about the weekend, sports, the weather and the time difference, very enthusiastic and fast-talking.",goal:"Überbrücke die Wartezeit locker und natürlich, ohne steif zu wirken."},
- {id:"dinner-madrid",casual:true,c:3,ini:"LM",who:"Kollegin · Madrid",title:"Teamessen nach dem Workshop",desc:"Beim Abendessen sitzt du neben einer Kollegin aus Spanien.",role:"Lucía, a partner manager from Madrid, sitting next to the learner at a team dinner after a workshop. Warm, humorous, loves talking about food, travel and how different countries do lunch and dinner times. Occasionally asks what the learner recommends in Vienna.",goal:"Plaudere entspannt, erzähl etwas über dich und lade sie ein, dich in Wien zu besuchen."},
- {id:"new-colleague-in",casual:true,c:0,ini:"AR",who:"Neuer Kollege · Bangalore",title:"Neuer Kollege im Team",desc:"Ein neuer Kollege aus Indien ist seit einer Woche im virtuellen Team.",role:"Arjun, an engineer in Bangalore who joined the learner's virtual team a week ago. Friendly but still finding his way, asks practical questions about who is who, team habits and Austrian working culture.",goal:"Heiß ihn willkommen, erklär ein paar Teamgewohnheiten und biete Hilfe an."}
-];
-const UNIT_ANGLES = ["an Austrian bank","a manufacturer in Upper Austria","a retail chain","an insurance company","a hospital group","a public administration","a logistics company","an energy provider","a software start-up in Vienna","a partner meeting","an internal team meeting","a Teams call with a CIO"];
 const LEVELS={B2:["B2","Ich verstehe viel, suche aber oft nach Worten"],C1:["C1","Ich arbeite sicher auf Englisch, will natürlicher klingen"],C2:["C2","Fast muttersprachlich, es geht um Feinheiten"]};
 const GOALS=[[20,"5 Minuten","Locker"],[30,"10 Minuten","Normal"],[50,"15 Minuten","Ernsthaft"],[80,"20 Minuten","Intensiv"]];
 
@@ -620,8 +568,7 @@ try{
   else{const old=localStorage.getItem("dre-v1");if(old){const o=JSON.parse(old);if(o.box)S.box=o.box;if(o.days)S.days=o.days;}}
 }catch(e){}
 if(!S.onboarded&&(S.stats.lessons>0||S.days.length))S.onboarded=true;
-let PRE={};try{PRE=JSON.parse(localStorage.getItem(KEY+"-pre")||"{}")||{};}catch(e){}
-function savePre(){try{localStorage.setItem(KEY+"-pre",JSON.stringify(PRE));}catch(e){}}
+if(S.cfg.key||S.cfg.model){S.cfg.key="";delete S.cfg.model;delete S.cfg.noFallback;}try{localStorage.removeItem(KEY+"-pre");}catch(e){}
 function save(){
   S.updated=Date.now();S.lib=S.lib.slice(-600);S.mistakes=S.mistakes.slice(-60);
   try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){toast("Speichern fehlgeschlagen. Ist der Speicher voll?");}
@@ -761,48 +708,10 @@ function pillSheet(kind){
       s=>{const r=s.querySelector("#sRev");if(r)r.onclick=()=>{closeSheet();startLesson(null,"review");};});}
 }
 
-/* ================= Claude API (optional, own key) ================= */
-const MODELS=[["claude-opus-5-5","Opus 5.5","beste Qualität"],["claude-sonnet-5-5","Sonnet 5.5","schneller, günstiger"],["claude-haiku-5-5","Haiku 5.5","am schnellsten, sehr günstig"]];
-const hasAI=()=>!!S.cfg.key;
-async function callClaude(opts){
-  const {system,messages,schema,maxTokens=8000,effort="low",signal}=opts;
-  if(!S.cfg.key)throw{code:"nokey"};
-  const model=S.cfg.model||"claude-opus-5-5";
-  const body={model,max_tokens:maxTokens,messages,output_config:{effort}};
-  if(system)body.system=system;
-  if(schema)body.output_config.format={type:"json_schema",schema};
-  const headers={"content-type":"application/json","x-api-key":S.cfg.key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"};
-  const useFb=model!=="claude-haiku-5-5"&&!S.cfg.noFallback;
-  if(useFb){body.fallbacks="default";headers["anthropic-beta"]="server-side-fallback-2026-07-01";}
-  let res;
-  try{res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers,body:JSON.stringify(body),signal});}
-  catch(e){throw{code:e&&e.name==="AbortError"?"cancelled":"network"};}
-  let data=null;try{data=await res.json();}catch(e){}
-  if(!res.ok){const msg=(data&&data.error&&data.error.message)||"";
-    if(res.status===400&&useFb&&/fallback|beta/i.test(msg)){S.cfg.noFallback=true;save();return callClaude(opts);}
-    throw{code:res.status===401||res.status===403?"auth":res.status===429?"rate":res.status>=500?"server":"bad",message:msg};}
-  if(data.stop_reason==="refusal")throw{code:"refusal"};
-  const text=(data.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("");
-  if(schema){try{return JSON.parse(text);}catch(e){throw{code:"json"};}}
-  return text;
-}
-const aiText=o=>callClaude(o);
-const aiJSON=(prompt,schema)=>callClaude({messages:[{role:"user",content:prompt}],schema,maxTokens:12000,effort:"low"});
-function aiErr(e){const c=e&&e.code;return({nokey:"Kein API-Key hinterlegt.",auth:"Der API-Key wurde abgelehnt. Prüfe ihn im Profil.",
-  rate:"Zu viele Anfragen oder Guthaben aufgebraucht. Bitte kurz warten.",server:"Claude ist gerade überlastet. Bitte gleich nochmal versuchen.",
-  network:"Keine Internetverbindung.",refusal:"Diese Anfrage wurde abgelehnt. Formuliere sie bitte anders.",json:"Die Antwort war unvollständig. Bitte nochmal versuchen.",
-  cancelled:"",bad:"Die Anfrage war ungültig"+(e&&e.message?": "+e.message:".")})[c]||"Unbekannter Fehler.";}
-
 /* ================= Exercises ================= */
 const EX_TYPES=["mc","fill","correct_sentence","listen_choose","listen_type","build","match"];
 const EX_META={mc:["Auswahl","var(--accent)",IC.target],fill:["Lückentext","var(--u2)",IC.pen],correct_sentence:["Fehler finden","var(--coral)",IC.search],
   listen_choose:["Hören","var(--blue)",IC.wave],listen_type:["Diktat","var(--blue)",IC.wave],build:["Satz bauen","var(--u3)",IC.cards],match:["Paare finden","var(--gold-2)",IC.spark]};
-const LESSON_SCHEMA={type:"object",additionalProperties:false,required:["title","new_terms","exercises"],properties:{
-  title:{type:"string"},
-  new_terms:{type:"array",items:{type:"object",additionalProperties:false,required:["term","de","definition","example"],properties:{term:{type:"string"},de:{type:"string"},definition:{type:"string"},example:{type:"string"}}}},
-  exercises:{type:"array",items:{type:"object",additionalProperties:false,required:["type","prompt","text","options","answer","pairs","explanation"],properties:{
-    type:{type:"string",enum:EX_TYPES},prompt:{type:"string"},text:{type:"string"},options:{type:"array",items:{type:"string"}},answer:{type:"string"},
-    pairs:{type:"array",items:{type:"object",additionalProperties:false,required:["en","de"],properties:{en:{type:"string"},de:{type:"string"}}}},explanation:{type:"string"}}}}}};
 function cleanEx(e){
   if(!e||!EX_TYPES.includes(e.type))return null;
   const x={type:e.type,prompt:String(e.prompt||"").trim(),text:String(e.text||"").trim(),options:(e.options||[]).map(o=>String(o).trim()).filter(Boolean),
@@ -869,82 +778,6 @@ function localLesson(uid){
   }
   return {title:u.title,exercises:shuffle(ex).map(cleanEx).filter(Boolean).slice(0,11),new_terms:[],source:"local"};
 }
-function knownTerms(uid){return unitTerms(uid).map(t=>t.t).concat(S.lib.map(l=>l.t)).slice(-200);}
-async function aiLesson(uid){
-  const u=U(uid);const angle=pick(UNIT_ANGLES,2).join(" and ");
-  const prompt=`Create one gamified micro-lesson for a business English learning app.
-
-Learner: native German speaker from Austria, works as Solution Area Specialist for Cloud & AI at Microsoft Austria (sells Azure infrastructure, data and AI solutions to enterprise and public-sector customers, works with partners, reports forecasts to a manager). Target level: ${S.cfg.level}.
-Unit topic: ${u.topic}.${u.kind==="chapter"?`
-Core vocabulary of this unit (practise these): ${u.terms.map(t=>t.t).join(", ")}.`:""}
-Set this lesson in the context of ${angle}. Make the sentences realistic for this job and different from the usual textbook phrases.
-Terms the learner already knows (do not introduce these as new terms; you may reuse them): ${knownTerms(uid).join(", ")}.
-
-Introduce exactly 3 new useful terms or phrases in "new_terms" (term in English, de = short German translation, definition = one English sentence, example = one realistic sentence from this job). Use them in the exercises.
-
-Write exactly 12 exercises in this mix: 2 "mc", 2 "fill", 1 "correct_sentence", 2 "listen_choose", 2 "listen_type", 2 "build", 1 "match". Rules per type:
-- mc: prompt = question in German (e.g. what a term means, which phrase fits a situation); text = optional English context sentence or ""; options = 4 English options; answer = the correct option, copied exactly.
-- fill: prompt = "Ergänze die Lücke."; text = English sentence with the gap written as "_____"; options = 4 single words or short phrases; answer = correct option exactly.
-- correct_sentence: prompt = "Welcher Satz ist korrekt?"; options = 3 English sentences, two contain a typical German-speaker mistake (false friend, preposition, tense, word order); answer = the correct one exactly.
-- listen_choose: prompt = "Was hörst du?"; text = English sentence that will be read aloud; options = 3 similar sentences including the exact text; answer = text.
-- listen_type: prompt = "Schreib, was du hörst."; text = short English sentence (max 10 words) read aloud; answer = same as text.
-- build: prompt = "Übersetze ins Englische."; text = a German sentence; answer = natural English translation (max 12 words, no alternatives); options = 3 single distractor words that are NOT in the answer.
-- match: prompt = "Finde die Paare."; pairs = 5 pairs with en = English term, de = German meaning; options = []; text = ""; answer = "".
-For every exercise: unused fields are "" or []; explanation = one short German sentence that teaches why (e.g. the false friend or the nuance).
-title = short German lesson title.`;
-  const res=await aiJSON(prompt,LESSON_SCHEMA);
-  const ex=(res.exercises||[]).map(cleanEx).filter(Boolean);
-  if(ex.length<6)throw{code:"json"};
-  return {title:res.title||u.title,exercises:ex,new_terms:(res.new_terms||[]).filter(t=>t.term&&t.de).slice(0,5),source:"ai"};
-}
-const prefetching={};
-function prefetch(uid){
-  if(!hasAI()||prefetching[uid]||(PRE[uid]&&PRE[uid].length))return;
-  prefetching[uid]=true;
-  aiLesson(uid).then(l=>{PRE[uid]=[l];savePre();}).catch(()=>{}).finally(()=>{prefetching[uid]=false;});
-}
-
-/* ---------- AI chapters (own API key): a new chapter with fresh vocabulary ---------- */
-const CHAPTER_SCHEMA={type:"object",additionalProperties:false,required:["title","desc","topic","terms","phrases"],properties:{
-  title:{type:"string"},desc:{type:"string"},topic:{type:"string"},
-  terms:{type:"array",items:{type:"object",additionalProperties:false,required:["t","de","d","ex"],properties:{t:{type:"string"},de:{type:"string"},d:{type:"string"},ex:{type:"string"}}}},
-  phrases:{type:"array",items:{type:"array",items:{type:"string"}}}}};
-let chapterBusy=false;
-async function aiChapter(){
-  const titles=allUnits().map(u=>u.title).join("; "),known=allTerms().map(t=>t.t).slice(-400).join(", ");
-  const prompt=`Design one new chapter for a business English learning app.
-
-Learner: native German speaker from Austria, Solution Area Specialist for Cloud & AI at Microsoft Austria (sells Azure infrastructure, data and AI solutions to enterprise and public-sector customers, works with partners, reports forecasts to a manager). Level: ${S.cfg.level}.
-Existing chapters (choose a clearly different topic from this job): ${titles}.
-Terms the learner already has (do not repeat any of them): ${known}.
-
-Return:
-- title: short German chapter title (2 to 4 words)
-- desc: German subtitle listing 3 to 4 subtopics, separated by commas
-- topic: one English sentence describing the chapter topic
-- terms: exactly 10 English terms or short expressions useful in this job, each with t = the term, de = short German meaning, d = one-sentence English definition, ex = one realistic example sentence from this job that contains the term exactly as written in t
-- phrases: exactly 6 items, each an array of two strings: [useful English sentence for a real conversation in this topic, short German note when to use it]
-
-Reply with only one JSON object: {"title": string, "desc": string, "topic": string, "terms": [{"t": string, "de": string, "d": string, "ex": string}], "phrases": [[string, string]]}`;
-  const r=await aiJSON(prompt,CHAPTER_SCHEMA);
-  const ch=normChapter({id:"ai-"+Date.now().toString(36),title:r.title,desc:r.desc,topic:r.topic,terms:r.terms,phrases:r.phrases,added:new Date().toISOString().slice(0,16)},"ai");
-  const have=new Set(allTerms().map(t=>t.t.toLowerCase()));ch.terms=ch.terms.filter(t=>!have.has(t.t.toLowerCase()));
-  if(ch.terms.length<6)throw{code:"json"};
-  return ch;
-}
-async function addAIChapter(manual){
-  if(chapterBusy||!hasAI())return;chapterBusy=true;if(manual)render();
-  try{const ch=await aiChapter();S.chapters=(S.chapters||[]).concat([ch]);save();if(manual)toast(`Neues Kapitel: ${ch.title}`);}
-  catch(e){if(manual)toast(aiErr(e));}
-  chapterBusy=false;if(!L)render();
-}
-/* Keep one unstarted chapter ready once the learner gets close to the end of the path */
-function ensureNextChapter(){
-  if(!hasAI()||chapterBusy)return;
-  const open=allUnits().filter(u=>(S.units[u.id]||0)<LESSONS_PER_UNIT);
-  if(open.length<=1&&!open.some(u=>u.kind==="chapter"&&!S.units[u.id]))addAIChapter(false);
-}
-
 /* ================= Lesson engine ================= */
 let L=null;
 const LZ=()=>$("#lesson");
@@ -961,25 +794,9 @@ async function startLesson(uid,mode){
     const pool=shuffle(S.mistakes).slice(0,8);
     const fill=pool.length<6?localLesson(randUnit()).exercises.slice(0,8-pool.length):[];
     lesson={title:"Fehler wiederholen",exercises:pool.concat(fill).map(cleanEx).filter(Boolean),new_terms:[],source:"review"};
-  } else if(hasAI()){
-    if(PRE[uid]&&PRE[uid].length){lesson=PRE[uid].shift();savePre();}
-    else{
-      const ctl={cancel:false};showLoading(uid,mode,ctl);
-      try{lesson=await aiLesson(uid);}catch(e){if(ctl.cancel)return;toast(aiErr(e)+" Ich nehme eine Lektion aus dem Grundkurs.");lesson=localLesson(uid);}
-      if(ctl.cancel)return;
-    }
-    prefetch(uid);
   } else lesson=localLesson(uid);
   if(noAudio()||!canSpeak){const rest=lesson.exercises.filter(x=>!needsAudio(x));if(rest.length>=4)lesson={...lesson,exercises:rest};}
   L=makeL(uid,mode,lesson);openLayer();renderEx();
-}
-function showLoading(uid,mode,ctl){
-  openLayer();
-  LZ().innerHTML=`<div></div><div class="lbody"><div class="center"><div class="dots"><i></i><i></i><i></i></div><h1>Neue Lektion wird erstellt</h1>
-   <p class="muted">Claude schreibt gerade eine frische Lektion zu „${esc(U(uid).title)}“. Das dauert meist 10 bis 30 Sekunden. Die nächste wird schon im Hintergrund vorbereitet.</p>
-   <button class="btn block" id="offl">Lektion aus dem Grundkurs starten</button><button class="btn ghost" id="cancelLoad">Abbrechen</button></div></div><div></div>`;
-  $("#offl").onclick=()=>{ctl.cancel=true;L=makeL(uid,mode,localLesson(uid));renderEx();};
-  $("#cancelLoad").onclick=()=>{ctl.cancel=true;closeLesson();};
 }
 function closeLesson(){L=null;LZ().hidden=true;LZ().innerHTML="";document.body.classList.remove("lock");
   try{if(canSpeak&&(speechSynthesis.speaking||speechSynthesis.pending))speechSynthesis.cancel();}catch(e){}
@@ -1105,14 +922,14 @@ function failLesson(){
   $("#rev").onclick=()=>startLesson(null,"review");$("#cl").onclick=closeLesson;
 }
 /* The summary is computed and booked once (L.result); every later call only redraws it.
-   Side effects that can fail (sound, confetti, chapter prefetch) run after the screen is on, each guarded. */
+   Side effects that can fail (sound, confetti) run after the screen is on, each guarded. */
 function finishLesson(){
   if(!L.result){
     const secs=Math.round((Date.now()-L.start)/1000),acc=Math.round(L.correct/Math.max(1,L.correct+L.wrong)*100);
     const perfect=L.wrong===0,xp=10+(perfect?5:0)+Math.floor(L.maxCombo/5)*2,before=xpToday();
     const r={secs,acc,perfect,xp,added:[],newDay:!L.wasActive,goalHit:false,unitDone:false};
     try{
-      addXP(xp);S.stats.lessons++;if(perfect)S.stats.perfect++;if(L.source==="ai")S.stats.ai++;
+      addXP(xp);S.stats.lessons++;if(perfect)S.stats.perfect++;
       if(L.mode==="path"&&L.uid!==null)S.units[L.uid]=Math.min(LESSONS_PER_UNIT,(S.units[L.uid]||0)+1);
       if(L.mode==="review"&&S.hearts.n<HEART_MAX)S.hearts.n++;
       for(const t of (L.new_terms||[])){const k=String(t.term||"").trim().toLowerCase();if(k&&!VOCAB.some(v=>v.t.toLowerCase()===k)&&!S.lib.some(l=>l.t.toLowerCase()===k)){S.lib.push({t:t.term.trim(),de:t.de,d:t.definition,ex:t.example,u:L.uid===null?0:L.uid,added:today()});r.added.push(t);}}
@@ -1120,7 +937,7 @@ function finishLesson(){
       r.goalHit=before<S.cfg.goal&&xpToday()>=S.cfg.goal;r.unitDone=L.mode==="path"&&L.uid!==null&&S.units[L.uid]===LESSONS_PER_UNIT;
     }catch(e){reportErr(e);}
     L.result=r;
-    setTimeout(()=>{try{SND.done();}catch(e){}try{confetti();}catch(e){}try{ensureNextChapter();}catch(e){}},60);
+    setTimeout(()=>{try{SND.done();}catch(e){}try{confetti();}catch(e){}},60);
   }
   const r=L.result;let title="";try{title=r.unitDone?U(L.uid).title:"";}catch(e){}
   const head=r.unitDone?`„${esc(title)}“ abgeschlossen`:r.perfect?"Fehlerfrei":"Lektion abgeschlossen";
@@ -1145,14 +962,14 @@ document.addEventListener("keydown",e=>{
 });
 
 /* ================= Shell & navigation ================= */
-const TABS=[["lernen","Lernen",IC.path],["woerter","Wörter",IC.cards],["coach","Coach",IC.chat],["profil","Profil",IC.user]];
+const TABS=[["lernen","Lernen",IC.path],["woerter","Wörter",IC.cards],["profil","Profil",IC.user]];
 let current=TABS.some(t=>t[0]===location.hash.slice(1))?location.hash.slice(1):"lernen",lastView=null;
 function go(v){if(current===v){window.scrollTo({top:0,behavior:"smooth"});return;}current=v;try{history.replaceState(null,"","#"+v);}catch(e){}render();window.scrollTo(0,0);}
 function render(){
   $("#tabs").innerHTML=TABS.map(([id,l,ic])=>`<button class="tb" data-tab="${id}" ${current===id?'aria-current="page"':""}><span class="ic">${ic}</span>${l}</button>`).join("");
   $$("[data-tab]").forEach(b=>b.onclick=()=>go(b.dataset.tab));
   renderTop();
-  ({lernen:vLearn,woerter:vWords,coach:vCoach,profil:vProfile})[current]($("#main"),lastView!==current);
+  ({lernen:vLearn,woerter:vWords,profil:vProfile})[current]($("#main"),lastView!==current);
   lastView=current;
 }
 
@@ -1170,7 +987,7 @@ function vLearn(m){
      <h2>${esc(cu.title)}</h2><p>${esc(cu.desc)}</p>
      <div class="segs">${Array.from({length:LESSONS_PER_UNIT},(_,i)=>`<i class="${i<done?"on":""}"></i>`).join("")}</div>
      <button class="btn primary block" id="cont">${done||S.stats.lessons?"Weiterlernen":"Erste Lektion starten"}</button></section>`
-   :`<section class="hero" style="${ucol(1)}"><div class="kicker">Alle Einheiten abgeschlossen</div><h2>Starke Leistung</h2><p>Übe frei weiter. ${hasAI()?"Jede Lektion ist neu erstellt.":"Mit einem API-Key im Profil bekommst du unbegrenzt neue Lektionen."}</p>
+   :`<section class="hero" style="${ucol(1)}"><div class="kicker">Alle Einheiten abgeschlossen</div><h2>Starke Leistung</h2><p>Übe frei weiter. Neue Kapitel kommen regelmäßig per Update dazu.</p>
      <button class="btn primary block" id="free">Freies Training</button></section>`}
    <div class="card today">
      <div class="ring"><svg viewBox="0 0 66 66"><circle cx="33" cy="33" r="28" stroke="var(--surface-2)"/><circle cx="33" cy="33" r="28" stroke="var(--accent)" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C*(1-p)}"/></svg><b>${x>=g?IC.check:IC.bolt}</b></div>
@@ -1192,15 +1009,12 @@ function vLearn(m){
          return `<button class="node ${s}" data-node="${u.id}" data-i="${i}" data-s="${s}" aria-label="Lektion ${i+1}: ${s==="done"?"abgeschlossen":s==="cur"?"als Nächstes":"gesperrt"}">${s==="done"?IC.check:`<span>${i+1}</span>`}</button>`;}).join('<i class="link"></i>')}
          <i class="link"></i><button class="node trophy ${d>=LESSONS_PER_UNIT?"won":""}" data-trophy="${u.id}" aria-label="Abschluss">${IC.trophy}</button></div>
      </section>`;}).join("")}
-   <div class="card endcard"><div class="sic">${IC.spark}</div><h2>Mehr Kapitel</h2>
-     ${hasAI()?`<p class="muted">Die App erstellt automatisch ein neues Kapitel mit frischen Vokabeln, sobald du dich dem Ende des Pfads näherst. Du kannst auch jetzt gleich eines anlegen.</p>
-       <button class="btn primary block" id="genCh" ${chapterBusy?"disabled":""}>${chapterBusy?"Kapitel wird erstellt …":IC.spark+" Neues Kapitel erstellen"}</button>`
-     :`<p class="muted">Neue Kapitel mit neuen Vokabeln kommen regelmäßig per Update dazu. ${chapters().length?`Zuletzt hinzugefügt: „${esc(chapters().slice(-1)[0].title)}“.`:""} Mit einem API-Key im Profil erstellt die App zusätzlich jederzeit eigene Kapitel.</p>`}
+   <div class="card endcard"><div class="sic">${IC.spark}</div><h2>Mehr Kapitel</h2><p class="muted">Neue Kapitel mit neuen Vokabeln kommen regelmäßig per Update dazu. ${chapters().length?`Zuletzt hinzugefügt: „${esc(chapters().slice(-1)[0].title)}“.`:""}</p>
+
    </div>`;
   const nb=$("#newCh");if(nb)nb.onclick=()=>{const id=nb.dataset.uid;S.seenCh=(S.seenCh||[]).concat(allUnits().filter(isNewCh).map(u=>String(u.id))).slice(-300);save();render();
     const t=document.getElementById("unit-"+id);if(t)t.scrollIntoView({behavior:"smooth",block:"start"});};
-  const gc=$("#genCh");if(gc)gc.onclick=()=>addAIChapter(true);
-  ensureNextChapter();
+
   const c=$("#cont");if(c)c.onclick=()=>startLesson(cu.id,"path");
   const f=$("#free");if(f)f.onclick=()=>startLesson(randUnit(),"practice");
   const r=$("#rev");if(r)r.onclick=()=>startLesson(null,"review");
@@ -1212,7 +1026,6 @@ function vLearn(m){
     openSheet(`<div class="sic" style="background:${d>=LESSONS_PER_UNIT?"var(--gold)":"var(--line-2)"}">${IC.trophy}</div><h2>${d>=LESSONS_PER_UNIT?"Einheit abgeschlossen":"Einheitsabschluss"}</h2>
       <p class="muted">${d>=LESSONS_PER_UNIT?`Du hast alle ${LESSONS_PER_UNIT} Lektionen von „${esc(u.title)}“ geschafft. Über „Üben“ kannst du jederzeit weitertrainieren.`:`Noch ${plural(LESSONS_PER_UNIT-d,"Lektion","Lektionen")}, dann ist „${esc(u.title)}“ geschafft.`}</p>
       <button class="btn primary block" data-close>Okay</button>`);});
-  if(hasAI()&&cu)prefetch(cu.id);
 }
 function nodeSheet(uid,i,s){
   const u=U(uid);
@@ -1220,7 +1033,7 @@ function nodeSheet(uid,i,s){
   const n=u.kind==="ff"?10:11;
   openSheet(`<div class="sic" style="${unitColor(uid)};background:var(--uc)">${s==="done"?IC.check:IC.star}</div>
     <div><div class="kicker">${esc(u.title)} · Lektion ${i+1}</div><h2>${s==="done"?"Schon geschafft":"Bereit?"}</h2></div>
-    <div class="facts"><span class="fact">${IC.target}${n} Übungen</span><span class="fact">${IC.bolt}+10 XP</span><span class="fact">${hasAI()?IC.spark+"Neu erstellt":IC.cards+"Grundkurs"}</span></div>
+    <div class="facts"><span class="fact">${IC.target}${n} Übungen</span><span class="fact">${IC.bolt}+10 XP</span><span class="fact">${IC.cards}Grundkurs</span></div>
     <p class="muted">${s==="done"?"Wiederhole die Lektion, um die Begriffe zu festigen. Das bringt XP, ändert aber den Pfad nicht.":esc(u.desc)+"."}</p>
     <button class="btn primary block" id="go">${IC.play} ${s==="done"?"Wiederholen":"Los geht’s"}</button>`,
     sh=>sh.querySelector("#go").onclick=()=>startLesson(uid,s==="done"?"practice":"path"));
@@ -1259,7 +1072,7 @@ function vWords(m){
       <div class="row" style="justify-content:space-between"><div class="seg" role="group"><button id="mC" aria-pressed="${vMode==="cards"}">Karteikarten</button><button id="mL" aria-pressed="${vMode==="list"}">Liste</button></div></div>
       <div class="chips"><button class="chip" data-u="" aria-pressed="${vUnit===null}">Alle</button>${units.map(u=>`<button class="chip" data-u="${esc(u.id)}" aria-pressed="${vUnit!==null&&String(vUnit)===String(u.id)}">${esc(u.title)}</button>`).join("")}</div>
       ${body}
-      ${S.lib.length?"":`<p class="muted small">${hasAI()?"Neue Begriffe aus KI-Lektionen landen automatisch hier.":"Tipp: Begriffe, die du nicht weißt, kommen öfter dran. Ab Stufe 3 gilt ein Begriff als sicher."}</p>`}
+      ${S.lib.length?"":`<p class="muted small">Tipp: Begriffe, die du nicht weißt, kommen öfter dran. Ab Stufe 3 gilt ein Begriff als sicher.</p>`}
     </div>`;
   $$("[data-u]").forEach(b=>b.onclick=()=>{vUnit=b.dataset.u===""?null:idOf(b.dataset.u);nextCard();render();});
   $("#mC").onclick=()=>{vMode="cards";render();};$("#mL").onclick=()=>{vMode="list";render();};
@@ -1270,137 +1083,6 @@ function vWords(m){
     $("#know").onclick=()=>{S.box[vCard.t]=Math.min(5,(S.box[vCard.t]||0)+1);SND.ok();addXP(1);nextCard();render();};
     $("#again").onclick=()=>{S.box[vCard.t]=0;save();nextCard();render();};
   }
-}
-
-/* ---------- Coach ---------- */
-let coachTab="role",R=null;
-const LEVEL_TXT={B2:"B2 (fokussiere auf klare Fehler)",C1:"C1 (achte auch auf Stil und Idiomatik)",C2:"C2 (feinste Nuancen, wie Muttersprachler)"};
-const Rec=window.SpeechRecognition||window.webkitSpeechRecognition;
-function rolePrompt(sc){return `You are running a business English role-play for a native German speaker from Austria who works as a Solution Area Specialist for Cloud & AI at Microsoft Austria (selling Azure infrastructure, data and AI solutions to enterprise customers).
-
-You play: ${sc.role}
-The learner's goal in this conversation: ${sc.goal}
-
-Rules:
-${sc.casual?`This is a relaxed, friendly conversation between colleagues, not a sales meeting.
-1. Stay fully in character. Reply in natural, informal spoken English, 1 to 3 sentences, like a real colleague: warm, curious, a little humour, share something about yourself and ask questions back. Do not steer the conversation towards selling or business decisions.`:`1. Stay fully in character. Reply in natural spoken business English, 2 to 4 sentences. Be realistic: ask follow-up questions, push back sometimes, don't agree too quickly.`}
-2. After your in-character reply, write a line containing exactly ###COACH### and then coaching in German for the learner's LAST message only, at level ${LEVEL_TXT[S.cfg.level]}:
-   - Up to 2 corrections as bullet points: **"original"** → **"better"** (short reason in German)
-   - 1 bullet starting with "Tipp:" with a more natural or ${sc.casual?"friendlier, more idiomatic phrase for this casual chat":"persuasive phrase for this sales situation"}.
-   If the English was excellent, say so in one short line instead of corrections.
-3. For your very first line, write ###COACH### followed by one German sentence with a hint on how to open well.
-Never break character above the ###COACH### line.`;}
-const splitCoach=t=>{const i=t.indexOf("###COACH###");return i<0?[t.trim(),""]:[t.slice(0,i).trim(),t.slice(i+11).trim()];};
-async function askRole(){
-  R.busy=true;R.err="";render();R.ctl=new AbortController();
-  try{const text=await aiText({system:rolePrompt(R.sc),messages:R.turns.slice(-30).map(t=>({role:t.role,content:t.content})),maxTokens:4000,signal:R.ctl.signal});
-    R.turns.push({role:"assistant",content:text});if(S.cfg.autoSpeak)speak(splitCoach(text)[0]);}
-  catch(e){R.err=aiErr(e);}
-  R.busy=false;render();
-}
-async function reviewRole(){
-  R.busy=true;R.review="";R.err="";render();R.ctl=new AbortController();
-  const tr=R.turns.filter(t=>!t.hidden).map(t=>(t.role==="user"?"LEARNER: ":"COUNTERPART: ")+splitCoach(t.content)[0]).join("\n");
-  try{R.review=await aiText({messages:[{role:"user",content:`You are an experienced business English coach for a native German speaker (Austria) working as a Solution Area Specialist for Cloud & AI at Microsoft Austria. Evaluate the LEARNER's English and ${R.sc.casual?"informal small talk with an international colleague (naturalness, warmth, asking questions back, keeping the conversation going)":"sales communication"} in this role-play. Scenario: ${R.sc.title}. Goal: ${R.sc.goal}
-
-Write in German, with these markdown headings (####):
-#### Gesamteindruck (1-2 Sätze plus geschätztes Niveau B1-C2)
-#### Was gut war (2-3 bullets)
-#### Die 3 wichtigsten Verbesserungen (bullets: **"original"** → **"better"** + kurze Begründung)
-#### Gesprächsführung (1-3 bullets)
-#### 5 Phrasen zum Merken (English phrases as bullets)
-
-Transcript:
-${tr.slice(-14000)}`}],maxTokens:6000,effort:"medium",signal:R.ctl.signal});addXP(5);}
-  catch(e){R.err=aiErr(e);}
-  R.busy=false;render();
-}
-function startRole(sc){R={sc,turns:[{role:"user",content:"(Start the conversation now with your opening line.)",hidden:true}],busy:false,err:"",review:""};render();askRole();}
-function vCoach(m,fresh){
-  if(!hasAI()){
-    m.innerHTML=`<div class="page-h"><span class="muted">Optional</span><h1>Coach</h1></div>
-     <div class="locked" style="margin-top:16px"><div class="sic">${IC.spark}</div><h2>Dein persönlicher KI-Coach</h2>
-       <ul><li>Kundengespräche üben: Bank-CISO, CFO, Forecast-Call und eigene Szenarien</li><li>E-Mails und Teams-Nachrichten verbessern lassen, mit Erklärung jeder Änderung</li><li>Unbegrenzt neue Lektionen statt nur Grundkurs</li></ul>
-       <p class="muted small">Dafür brauchst du einen eigenen Claude API-Key. Die Kosten liegen bei wenigen Cent pro Lektion. Ohne Key funktioniert der Rest der App ganz normal.</p>
-       <button class="btn primary" id="setup">${IC.key} API-Key einrichten</button></div>`;
-    $("#setup").onclick=apiSheet;return;
-  }
-  if(R){vChat(m,fresh);return;}
-  m.innerHTML=`<div class="page-h"><span class="muted">Mit Live-Feedback</span><h1>Coach</h1></div>
-   <div class="stack" style="margin-top:14px"><div><div class="seg"><button id="tR" aria-pressed="${coachTab==="role"}">Rollenspiel</button><button id="tW" aria-pressed="${coachTab==="write"}">Textcheck</button></div></div>
-   <div id="cbody" class="stack"></div></div>`;
-  $("#tR").onclick=()=>{coachTab="role";render();};$("#tW").onclick=()=>{coachTab="write";render();};
-  coachTab==="role"?vScenarios($("#cbody")):vWrite($("#cbody"));
-}
-function vScenarios(el){
-  el.innerHTML=`<p class="muted">Claude spielt dein Gegenüber und liest die Antworten vor. Unter jeder Antwort bekommst du Korrekturen auf Deutsch.</p>
-    ${[["Kund*innen & Management",SCENARIOS.filter(s=>!s.casual)],["Mit Kolleg*innen",SCENARIOS.filter(s=>s.casual)]].map(([h,list])=>`<div class="kicker" style="margin-top:6px">${h}</div>
-    <div class="scen">${list.map(s=>`<button class="sc" data-sc="${s.id}"><span class="av" style="background:var(--u${s.c})">${esc(s.ini)}</span><div><span class="who">${esc(s.who)}</span><b>${esc(s.title)}</b><span>${esc(s.desc)}</span></div><span class="chv">${IC.chev}</span></button>`).join("")}</div>`).join("")}
-    <div class="scen">
-     <button class="sc" id="own"><span class="av" style="background:var(--ink-2)">${IC.pen}</span><div><span class="who">Frei</span><b>Eigenes Szenario</b><span>Beschreibe eine Situation aus deinem Kalender.</span></div><span class="chv">${IC.chev}</span></button></div>`;
-  $$("[data-sc]").forEach(b=>b.onclick=()=>startRole(SCENARIOS.find(s=>s.id===b.dataset.sc)));
-  $("#own").onclick=()=>openSheet(`<h2>Eigenes Szenario</h2><p class="muted">Wer ist dein Gegenüber, und worum geht es?</p>
-    <textarea class="field" id="ownT" placeholder="z. B. Der CIO eines Tiroler Seilbahnbetreibers will wissen, ob sich Copilot für 300 Mitarbeitende lohnt."></textarea>
-    <button class="btn primary block" id="ownGo">${IC.play} Gespräch starten</button>`,s=>s.querySelector("#ownGo").onclick=()=>{const v=s.querySelector("#ownT").value.trim();if(!v){toast("Beschreibe zuerst die Situation.");return;}closeSheet();
-      startRole({id:"own",c:3,ini:"?",who:"Eigenes Szenario",title:v.slice(0,60),desc:v,role:"The counterpart described in this situation (stay realistic and consistent): "+v,goal:"Führe das Gespräch professionell und vereinbare einen konkreten nächsten Schritt."});});
-}
-function vChat(m,fresh){
-  const draft=fresh?"":($("#say")?.value||"");const userTurns=R.turns.filter(t=>t.role==="user"&&!t.hidden).length;
-  m.innerHTML=`<div class="row" style="justify-content:space-between;margin:2px 0 10px"><button class="btn ghost" id="back" style="padding-left:0">${IC.back} Szenarien</button>
-     <button class="btn ghost" id="eval" ${R.busy||userTurns<2?"disabled":""}>Auswerten</button></div>
-    <div class="brief"><span class="av" style="background:var(--u${R.sc.c})">${esc(R.sc.ini)}</span><div><b>${esc(R.sc.who)}</b><br><span class="muted">Ziel: ${esc(R.sc.goal)}</span></div></div>
-    <div class="msgs">${R.turns.filter(t=>!t.hidden).map(t=>{if(t.role==="user")return `<div class="msg me"><div class="bubble">${esc(t.content)}</div></div>`;
-      const [say,coach]=splitCoach(t.content);return `<div class="msg"><div class="bubble">${esc(say)}</div><div class="mmeta">${sayBtn(say)}</div>${coach?`<details class="coachnote" open><summary>${IC.spark}Coach</summary><div class="md">${md(coach)}</div></details>`:""}</div>`;}).join("")}
-      ${R.busy&&!R.review?`<div class="msg"><div class="bubble"><div class="dots"><i></i><i></i><i></i></div></div></div>`:""}</div>
-    ${R.err?`<p class="err">${esc(R.err)}</p>`:""}
-    ${R.review?`<div class="card"><div class="kicker">Auswertung</div><div class="md">${md(R.review)}</div></div>`:""}
-    <div class="composer"><div class="row">
-      <textarea class="field" id="say" rows="1" placeholder="Antwort auf Englisch …" aria-label="Deine Antwort">${esc(draft)}</textarea>
-      ${Rec?`<button class="iconbtn" id="mic" aria-label="Sprechen" ${R.busy?"disabled":""}>${IC.mic}</button>`:""}
-      <button class="btn primary" id="send" ${R.busy?"disabled":""} aria-label="Senden" style="padding:0 16px">${IC.play}</button></div>
-      <div class="row small muted" style="justify-content:space-between"><label class="row" style="gap:8px"><input type="checkbox" class="sw" id="auto" ${S.cfg.autoSpeak?"checked":""}>Vorlesen</label>${R.busy?`<button class="btn ghost" id="stop">Stopp</button>`:`<button class="btn ghost" id="restart">Neu starten</button>`}</div></div>`;
-  $("#back").onclick=()=>{R.ctl?.abort();R=null;if(canSpeak)speechSynthesis.cancel();render();};
-  $("#auto").onchange=e=>{S.cfg.autoSpeak=e.target.checked;save();};
-  const rs=$("#restart");if(rs)rs.onclick=()=>startRole(R.sc);
-  const sp=$("#stop");if(sp)sp.onclick=()=>R.ctl?.abort();
-  $("#eval").onclick=reviewRole;
-  const send=()=>{const v=$("#say").value.trim();if(!v||R.busy)return;R.turns.push({role:"user",content:v});$("#say").value="";S.stats.turns++;addXP(2);R.review="";askRole();};
-  $("#send").onclick=send;$("#say").onkeydown=e=>{if(e.key==="Enter"&&(e.ctrlKey||e.metaKey)){e.preventDefault();send();}};
-  const mic=$("#mic");if(mic)mic.onclick=()=>{try{const r=new Rec();r.lang="en-GB";r.interimResults=true;const box=$("#say");const base=box.value?box.value+" ":"";
-    mic.style.color="var(--coral)";r.onresult=ev=>{let t="";for(const res of ev.results)t+=res[0].transcript;box.value=base+t;};r.onend=()=>{mic.style.color="";};r.onerror=()=>toast("Mikrofon nicht verfügbar oder nicht erlaubt.");r.start();}catch(e){toast("Spracheingabe wird hier nicht unterstützt.");}};
-  const last=$(".msgs > :last-child");if(last&&!R.review)last.scrollIntoView({block:"nearest",behavior:"smooth"});
-}
-const SAMPLE_TEXT="Dear Mr. Huber,\n\nlike discussed in our meeting I send you the informations about the Azure OpenAI pilot. Eventually we can make a workshop with your team until end of November. Please give me a feedback if this is ok for you.\n\nBest regards";
-let W={text:SAMPLE_TEXT,kind:"E-Mail an Kunden",tone:"professionell, freundlich",out:"",busy:false,err:"",isSample:true};
-function vWrite(el){
-  const t=W.out,a=t.indexOf("###VERSION###"),b=t.indexOf("###NOTES###");
-  const ver=a<0?t:t.slice(a+13,b<0?undefined:b).trim(),notes=b<0?"":t.slice(b+11).trim();
-  el.innerHTML=`<p class="muted">Füge deinen Entwurf ein. Du bekommst eine verbesserte Version, und jede Änderung wird auf Deutsch erklärt.</p>
-    <div class="row"><select class="field" id="wk" style="flex:1;min-width:150px">${["E-Mail an Kunden","Teams-Nachricht","Interne E-Mail an Management","Meeting-Zusammenfassung","LinkedIn-Post"].map(k=>`<option ${k===W.kind?"selected":""}>${k}</option>`).join("")}</select>
-      <select class="field" id="wt" style="flex:1;min-width:150px">${["professionell, freundlich","formell","locker, kollegial","überzeugend"].map(k=>`<option ${k===W.tone?"selected":""}>${k}</option>`).join("")}</select></div>
-    <textarea class="field" id="wtext" style="min-height:200px" aria-label="Dein Text">${esc(W.text)}</textarea>
-    ${W.isSample?`<p class="muted small" style="margin-top:-4px">Das ist ein Beispiel mit typischen Fehlern. Ersetze es durch deinen Text.</p>`:""}
-    <button class="btn primary block" id="wgo" ${W.busy?"disabled":""}>${W.busy?"Wird geprüft …":IC.spark+" Text verbessern"}</button>
-    ${W.err?`<p class="err">${esc(W.err)}</p>`:""}
-    ${W.busy?`<div class="card"><div class="dots"><i></i><i></i><i></i></div></div>`:ver?`<div class="card stack"><div class="row" style="justify-content:space-between"><span class="kicker">Verbesserte Version</span><button class="btn ghost" data-copy="${esc(ver)}">${IC.copy} Kopieren</button></div><div class="out">${esc(ver)}</div>
-      ${notes?`<span class="kicker">Was geändert wurde</span><div class="md">${md(notes)}</div>`:""}</div>`:""}`;
-  $("#wtext").oninput=e=>{W.text=e.target.value;W.isSample=false;};$("#wk").onchange=e=>W.kind=e.target.value;$("#wt").onchange=e=>W.tone=e.target.value;
-  $("#wgo").onclick=async()=>{const txt=W.text.trim();if(!txt)return;W.busy=true;W.err="";W.out="";render();
-    try{W.out=await aiText({messages:[{role:"user",content:`You are a business English editor for a native German speaker from Austria working as a Solution Area Specialist for Cloud & AI at Microsoft Austria.
-Improve the following text. Type: ${W.kind}. Desired tone: ${W.tone}. Keep meaning and facts, keep it concise, use natural international business English, keep product names unchanged.
-
-Reply in exactly this format:
-###VERSION###
-(the improved text only)
-###NOTES###
-(in German: bullet points, one per important change: **"original"** → **"new"**: short reason. Point out typical German-speaker mistakes such as false friends. Max 8 bullets. End with a line "Niveau: " and the estimated CEFR level of the original.)
-
-Text:
-"""
-${txt.slice(0,8000)}
-"""`}],maxTokens:6000,effort:"low"});S.stats.texts++;addXP(3);}
-    catch(e){W.err=aiErr(e);}
-    W.busy=false;render();};
 }
 
 /* ---------- Profil ---------- */
@@ -1417,7 +1099,6 @@ function vProfile(m){
      <div class="sg"><b style="color:var(--orange)">${IC.star}${S.stats.perfect}</b><span>fehlerfrei</span></div>
    </div>
    <div class="gt">Lernen</div><div class="group">
-     <div class="it"><span class="ii" style="background:var(--accent)">${IC.globe}</span><span class="lb"><b>Mein Niveau</b></span><select id="lvl" aria-label="Niveau">${Object.keys(LEVELS).map(k=>`<option value="${k}" ${S.cfg.level===k?"selected":""}>${k}</option>`).join("")}</select></div>
      <div class="it"><span class="ii" style="background:var(--gold)">${IC.target}</span><span class="lb"><b>Tagesziel</b></span><select id="goal" aria-label="Tagesziel">${GOALS.map(([v,t])=>`<option value="${v}" ${S.cfg.goal==v?"selected":""}>${t} · ${v} XP</option>`).join("")}</select></div>
      <label class="it"><span class="ii" style="background:var(--coral)">${IC.heart}</span><span class="lb"><b>Herzen</b><span>Fehler kosten ein Herz</span></span><input type="checkbox" class="sw" id="hearts" ${S.cfg.hearts?"checked":""}></label>
      <label class="it"><span class="ii" style="background:var(--u3)">${IC.sound}</span><span class="lb"><b>Soundeffekte</b></span><input type="checkbox" class="sw" id="sound" ${S.cfg.sound?"checked":""}></label>
@@ -1430,17 +1111,13 @@ function vProfile(m){
      :`<div class="it"><span class="lb"><b>Keine Sprachausgabe</b><span>Dieser Browser kann nicht vorlesen.</span></span></div>`}
    </div>
    <p class="muted small" style="margin:8px 4px 0">${IS_IOS?"Natürlichere Stimmen: iPhone-Einstellungen → Bedienungshilfen → Gesprochene Inhalte → Stimmen → Englisch. Lade z. B. „Daniel“ oder „Serena“ als „Erweitert“ oder „Premium“ und wähle sie hier aus.":"Am natürlichsten klingen die kostenlosen „Natural“-Stimmen in Microsoft Edge."}</p>
-   <div class="gt">KI-Coach (optional)</div><div class="group">
-     <button class="it" id="api"><span class="ii" style="background:var(--ink-2)">${IC.key}</span><span class="lb"><b>Claude API-Key</b><span>${hasAI()?"Aktiv · "+esc((MODELS.find(x=>x[0]===S.cfg.model)||MODELS[0])[1]):"Nicht eingerichtet"}</span></span><span class="chv">${IC.chev}</span></button>
-   </div>
-   <div class="gt">Daten</div><div class="group">
+<div class="gt">Daten</div><div class="group">
      <button class="it" id="exp"><span class="ii" style="background:var(--good)">${IC.share}</span><span class="lb"><b>Backup sichern</b><span>${bAge===null?"Noch nie gesichert":bAge===0?"Heute gesichert":`Zuletzt vor ${plural(bAge,"Tag","Tagen")}`}</span></span><span class="chv">${IC.chev}</span></button>
      <label class="it" for="imp" style="cursor:pointer"><span class="ii" style="background:var(--good)">${IC.download}</span><span class="lb"><b>Backup laden</b><span>Fortschritt von einem anderen Gerät übernehmen</span></span><span class="chv">${IC.chev}</span></label>
      <button class="it" id="reset"><span class="ii" style="background:var(--coral)">${IC.trash}</span><span class="lb"><b style="color:var(--coral)">Fortschritt zurücksetzen</b></span></button>
    </div>
    <input type="file" id="imp" accept="application/json,.json" hidden>
-   <p class="foot">Dein Fortschritt bleibt auf diesem Gerät. Deal Room English · für Cloud &amp; AI Sales</p>`;
-  $("#lvl").onchange=e=>{S.cfg.level=e.target.value;PRE={};savePre();save();toast("Niveau gespeichert");};
+   <p class="foot">Dein Fortschritt bleibt auf diesem Gerät. Talktrack · Business English für Cloud &amp; AI Sales</p>`;
   $("#goal").onchange=e=>{S.cfg.goal=+e.target.value;save();renderTop();toast("Tagesziel gespeichert");};
   $("#hearts").onchange=e=>{S.cfg.hearts=e.target.checked;save();renderTop();};
   $("#sound").onchange=e=>{S.cfg.sound=e.target.checked;save();if(S.cfg.sound)SND.ok();};
@@ -1449,60 +1126,36 @@ function vProfile(m){
     $("#rate").onchange=()=>speak("Could you walk me through your priorities?");
     $("#testVoice").onclick=()=>speak("Thanks for making the time today. Could you walk me through your priorities for the next twelve months?");
     const ao=$("#audOn");if(ao)ao.onclick=()=>{S.noAudioUntil=0;save();toast("Hörübungen sind wieder an");render();};}
-  $("#api").onclick=apiSheet;
   $("#exp").onclick=exportBackup;
   $("#imp").onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const o=JSON.parse(r.result);if(!o||!o.cfg||!o.stats)throw 0;
       S=fromSaved(o,S.cfg.key);S.onboarded=true;save();toast("Backup geladen");render();}catch(err){toast("Diese Datei ist kein gültiges Backup.");}};r.readAsText(f);e.target.value="";};
-  $("#reset").onclick=()=>openSheet(`<div class="sic" style="background:var(--coral)">${IC.trash}</div><h2>Alles zurücksetzen?</h2><p class="muted">XP, Serie, Lernpfad und Wortschatz werden gelöscht. Einstellungen und API-Key bleiben. Das lässt sich nicht rückgängig machen, außer mit einem Backup.</p>
+  $("#reset").onclick=()=>openSheet(`<div class="sic" style="background:var(--coral)">${IC.trash}</div><h2>Alles zurücksetzen?</h2><p class="muted">XP, Serie, Lernpfad und Wortschatz werden gelöscht. Deine Einstellungen bleiben. Das lässt sich nicht rückgängig machen, außer mit einem Backup.</p>
     <button class="btn bad block" id="doReset">Ja, zurücksetzen</button><button class="btn block" data-close>Abbrechen</button>`,s=>s.querySelector("#doReset").onclick=()=>{const cfg=S.cfg;S=blank();S.cfg=cfg;S.onboarded=true;save();closeSheet();toast("Fortschritt zurückgesetzt");render();});
 }
 async function exportBackup(){
   const data=JSON.parse(JSON.stringify(S));data.cfg.key="";
-  const name="deal-room-english-backup-"+today()+".json",json=JSON.stringify(data,null,1);
+  const name="talktrack-backup-"+today()+".json",json=JSON.stringify(data,null,1);
   const done=()=>{S.lastBackup=Date.now();save();render();};
   try{const file=new File([json],name,{type:"application/json"});
-    if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],title:"Deal Room English Backup"});done();toast("Backup gesichert");return;}}
+    if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],title:"Talktrack Backup"});done();toast("Backup gesichert");return;}}
   catch(e){if(e&&e.name==="AbortError")return;}
   const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([json],{type:"application/json"}));a.download=name;document.body.appendChild(a);a.click();
   setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},800);done();toast("Backup gespeichert");
 }
-function apiSheet(){
-  openSheet(`<div class="sic" style="background:var(--ink-2)">${IC.key}</div><h2>KI-Coach einrichten</h2>
-    <p class="muted">Mit einem eigenen Claude API-Key bekommst du unbegrenzt neue Lektionen, Rollenspiele und den Textcheck. Einen Key erstellst du in der Claude Console (console.anthropic.com → API Keys). Abgerechnet wird über dein API-Guthaben, grob 3 bis 6 Cent pro Lektion mit Opus, mit Haiku deutlich weniger. Der Key bleibt nur auf diesem Gerät.</p>
-    <input class="field" type="password" id="key" value="${esc(S.cfg.key)}" placeholder="sk-ant-…" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="API-Key">
-    <div class="choice">${MODELS.map(([id,n,d])=>`<button class="ch" data-model="${id}" aria-pressed="${S.cfg.model===id}"><div><b>${n}</b><span>${d}</span></div></button>`).join("")}</div>
-    <p class="small" id="keyMsg" aria-live="polite"></p>
-    <button class="btn primary block" id="saveKey">Speichern und testen</button>
-    ${S.cfg.key?`<button class="btn ghost" id="rmKey" style="color:var(--coral)">Key entfernen</button>`:""}`,
-  s=>{let model=S.cfg.model;
-    s.querySelectorAll("[data-model]").forEach(b=>b.onclick=()=>{model=b.dataset.model;s.querySelectorAll("[data-model]").forEach(o=>o.setAttribute("aria-pressed",o===b));});
-    s.querySelector("#saveKey").onclick=async()=>{const k=s.querySelector("#key").value.trim(),msg=s.querySelector("#keyMsg");
-      S.cfg.key=k;S.cfg.model=model;S.cfg.noFallback=false;PRE={};savePre();save();
-      if(!k){closeSheet();render();return;}
-      msg.textContent="Verbindung wird getestet …";msg.style.color="var(--muted)";
-      try{await callClaude({messages:[{role:"user",content:"Reply with exactly: Ready"}],maxTokens:2000,effort:"low"});closeSheet();toast("KI-Coach ist aktiv");render();}
-      catch(e){msg.textContent=aiErr(e);msg.style.color="var(--bad)";}};
-    const rm=s.querySelector("#rmKey");if(rm)rm.onclick=()=>{S.cfg.key="";PRE={};savePre();save();closeSheet();toast("Key entfernt");render();};});
-}
-
 /* ---------- Onboarding ---------- */
 let OB={step:0,level:"C1",goal:30};
 function showOnb(){
   const el=$("#onb");el.hidden=false;document.body.classList.add("lock");
-  const dots=`<div class="steps">${[0,1,2].map(i=>`<i class="${i<=OB.step?"on":""}"></i>`).join("")}</div>`;
-  if(OB.step===0)el.innerHTML=`<div class="center">${LOGO}<h1>Deal Room English</h1><p class="lead">Business English für deinen Job als Solution Area Specialist Cloud &amp; AI. Kurze Lektionen mit echten Situationen aus Kundenterminen, Deals und Forecasts.</p>
+  const dots=`<div class="steps">${[0,1].map(i=>`<i class="${i<=OB.step?"on":""}"></i>`).join("")}</div>`;
+  if(OB.step===0)el.innerHTML=`<div class="center">${LOGO}<h1>Talktrack</h1><p class="lead">Business English für deinen Job als Solution Area Specialist Cloud &amp; AI. Kurze Lektionen mit echten Situationen aus Kundenterminen, Deals und Forecasts.</p>
     <div class="facts" style="justify-content:center"><span class="fact">${IC.bolt}5 bis 10 Minuten am Tag</span><span class="fact">${IC.speaker}Mit Aussprache</span><span class="fact">${IC.flame}Serie halten</span></div>
     <button class="btn primary block" id="ob">Los geht’s</button>${dots}</div>`;
-  if(OB.step===1)el.innerHTML=`<div class="center"><h1>Wie gut ist dein Englisch?</h1><p class="lead">Danach richten sich Lektionen und Feedback. Du kannst das später im Profil ändern.</p>
-    <div class="choice">${Object.entries(LEVELS).map(([k,[n,d]])=>`<button class="ch" data-lv="${k}" aria-pressed="${OB.level===k}"><span class="big">${n}</span><div><span>${d}</span></div></button>`).join("")}</div>
-    <button class="btn primary block" id="ob">Weiter</button>${dots}</div>`;
-  if(OB.step===2)el.innerHTML=`<div class="center"><h1>Wie viel Zeit pro Tag?</h1><p class="lead">Dein Tagesziel. Kleine, regelmäßige Einheiten wirken am besten.</p>
+  if(OB.step===1)el.innerHTML=`<div class="center"><h1>Wie viel Zeit pro Tag?</h1><p class="lead">Dein Tagesziel. Kleine, regelmäßige Einheiten wirken am besten.</p>
     <div class="choice">${GOALS.map(([v,t,n])=>`<button class="ch" data-gl="${v}" aria-pressed="${OB.goal===v}"><span class="big">${IC.bolt.replace("<svg",'<svg style="width:26px;height:26px;color:var(--gold)"')}</span><div><b>${t}</b><span>${n} · ${v} XP</span></div></button>`).join("")}</div>
     <button class="btn primary block" id="ob">Erste Lektion starten</button><button class="btn ghost" id="obLater">Erst umsehen</button>${dots}</div>`;
-  el.querySelectorAll("[data-lv]").forEach(b=>b.onclick=()=>{OB.level=b.dataset.lv;showOnb();});
   el.querySelectorAll("[data-gl]").forEach(b=>b.onclick=()=>{OB.goal=+b.dataset.gl;showOnb();});
-  const finish=start=>{S.cfg.level=OB.level;S.cfg.goal=OB.goal;S.onboarded=true;save();el.hidden=true;el.innerHTML="";document.body.classList.remove("lock");render();if(start)startLesson(0,"path");};
-  $("#ob").onclick=()=>{if(OB.step<2){OB.step++;showOnb();}else finish(true);};
+  const finish=start=>{S.cfg.goal=OB.goal;S.onboarded=true;save();el.hidden=true;el.innerHTML="";document.body.classList.remove("lock");render();if(start)startLesson(0,"path");};
+  $("#ob").onclick=()=>{if(OB.step<1){OB.step++;showOnb();}else finish(true);};
   const later=$("#obLater");if(later)later.onclick=()=>finish(false);
   el.scrollTo(0,0);
 }
