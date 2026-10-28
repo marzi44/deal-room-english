@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-28",
+  "updated": "2026-10-29",
   "chapters": [
     {
       "id": "c01-finops", "added": "2026-10-28T01", "title": "Kosten im Griff",
@@ -288,6 +288,106 @@
         ["I don't want to keep you, but could I send you a short note next week?", "Höflich abschließen"],
         ["It was great meeting you; I'll follow up as promised.", "Nachfassen ankündigen"],
         ["Would you mind introducing me to your colleague in IT?", "Um Kontakt bitten"]
+      ]
+    },
+    {
+      "id": "c13-coffee-chat", "added": "2026-10-28T13", "title": "Kaffeepause & Smalltalk",
+      "desc": "Wochenende, Urlaub, Hobbys, lockere Antworten",
+      "topic": "casual small talk with colleagues in the office kitchen or before a meeting: weekends, holidays, hobbies and relaxed everyday replies",
+      "terms": [
+        {"t": "grab a coffee", "de": "auf einen Kaffee gehen", "d": "To get a quick coffee, often together and informally.", "ex": "Do you want to grab a coffee before the all-hands?"},
+        {"t": "how was your weekend", "de": "wie war dein Wochenende", "d": "A friendly Monday question to start a conversation.", "ex": "Morning! How was your weekend, did you get out at all?"},
+        {"t": "time off", "de": "Urlaub, freie Tage", "d": "Days when you are not working.", "ex": "Are you taking any time off over Christmas?"},
+        {"t": "keeping busy", "de": "viel zu tun haben", "d": "A light way to ask or say that someone has a lot going on.", "ex": "Are you keeping busy, or is it a bit calmer this week?"},
+        {"t": "can't complain", "de": "kann mich nicht beklagen", "d": "A relaxed answer meaning things are fine.", "ex": "Busy but good, I can't complain."},
+        {"t": "fair enough", "de": "verständlich, passt", "d": "A casual way of saying you accept or understand something.", "ex": "You're heading to Lisbon again? Fair enough, I'd go too."},
+        {"t": "no worries", "de": "kein Problem", "d": "A friendly reply to thanks or an apology.", "ex": "No worries, take your time with the slides."},
+        {"t": "how's it going", "de": "wie läuft's", "d": "An informal greeting asking how someone is doing.", "ex": "Hey Priya, how's it going with the new team?"},
+        {"t": "small world", "de": "die Welt ist klein", "d": "Said when you discover an unexpected connection with someone.", "ex": "You studied in Graz too? Small world!"},
+        {"t": "touch wood", "de": "toi, toi, toi", "d": "Said to avoid bad luck after mentioning something good.", "ex": "The demo has worked every time so far, touch wood."}
+      ],
+      "phrases": [
+        ["Morning! Did you have a good weekend?", "Lockerer Einstieg am Montag"],
+        ["I'm grabbing a coffee, can I get you anything?", "Freundliches Angebot in der Kaffeeküche"],
+        ["Any plans for the summer yet?", "Urlaubsthema anstoßen"],
+        ["That sounds amazing, how was it?", "Interesse zeigen"],
+        ["I don't think we've met properly, I'm on the Cloud & AI team in Vienna.", "Sich selbst vorstellen"],
+        ["Anyway, I'd better get back to it. Good chatting!", "Gespräch freundlich beenden"]
+      ]
+    },
+    {
+      "id": "c14-global-colleagues", "added": "2026-10-28T14", "title": "Kolleg*innen weltweit",
+      "desc": "Zeitzonen, Herkunft, Feiertage, kulturelle Unterschiede",
+      "topic": "relaxed conversations with international colleagues: time zones, where people are from, holidays, cultural differences and avoiding misunderstandings",
+      "terms": [
+        {"t": "time zone", "de": "Zeitzone", "d": "A region of the world that uses the same local time.", "ex": "Which time zone are you in at the moment?"},
+        {"t": "where are you based", "de": "wo arbeitest du / wo ist dein Standort", "d": "A common question about the city or office someone works from.", "ex": "So where are you based, Dublin or Amsterdam?"},
+        {"t": "originally from", "de": "ursprünglich aus", "d": "Used to say where someone was born or grew up.", "ex": "I'm based in Vienna, but I'm originally from Salzburg."},
+        {"t": "accent", "de": "Akzent", "d": "The way someone pronounces a language, often showing where they are from.", "ex": "Don't worry about your accent, everyone on this team has one."},
+        {"t": "public holiday", "de": "Feiertag", "d": "A day when most people in a country do not work.", "ex": "Tomorrow is a public holiday in Austria, so I'm off."},
+        {"t": "lost in translation", "de": "beim Übersetzen verloren gegangen", "d": "When meaning or humour does not work in another language.", "ex": "I think that joke got a bit lost in translation."},
+        {"t": "back home", "de": "bei mir zuhause (im Heimatland)", "d": "In the country or place where you come from.", "ex": "Back home we'd call that a Jause, a sort of afternoon snack."},
+        {"t": "cultural difference", "de": "kultureller Unterschied", "d": "A way of behaving or communicating that varies between cultures.", "ex": "Being very direct is a cultural difference, not rudeness."},
+        {"t": "jet lag", "de": "Jetlag", "d": "Tiredness after flying across several time zones.", "ex": "Sorry if I'm slow today, the jet lag is real."},
+        {"t": "early bird", "de": "Frühaufsteher/in", "d": "Someone who likes to start the day early.", "ex": "As an early bird, the morning calls with Singapore don't bother me."}
+      ],
+      "phrases": [
+        ["What time is it for you right now?", "Zeitzonen-Smalltalk"],
+        ["How do you usually celebrate that back home?", "Interesse an der Kultur zeigen"],
+        ["In Austria we can be quite direct, so tell me if I sound blunt.", "Eigene Kultur ansprechen"],
+        ["Is it still summer where you are?", "Lockerer Einstieg mit der Südhalbkugel"],
+        ["I hope I'm pronouncing your name correctly.", "Respekt zeigen"],
+        ["Sorry, could you say that again? I missed the last part.", "Höflich nachfragen"]
+      ]
+    },
+    {
+      "id": "c15-hybrid-calls", "added": "2026-10-28T15", "title": "Teams-Calls & Homeoffice",
+      "desc": "Ton und Kamera, virtueller Kaffee, Unterbrechungen, Chat",
+      "topic": "informal language in Teams calls and hybrid work: audio problems, cameras, virtual coffees, interrupting politely and chatting with remote colleagues",
+      "terms": [
+        {"t": "you're on mute", "de": "du bist stummgeschaltet", "d": "What you say when someone talks without their microphone on.", "ex": "Sorry, you're on mute, we can't hear you."},
+        {"t": "virtual coffee", "de": "virtueller Kaffee", "d": "A short, informal video call to chat with a colleague.", "ex": "Shall we set up a virtual coffee next week?"},
+        {"t": "camera off", "de": "Kamera aus", "d": "Joining a video call without showing your video.", "ex": "Do you mind if I keep my camera off? My connection is shaky."},
+        {"t": "working from home", "de": "im Homeoffice arbeiten", "d": "Doing your job from your home instead of the office.", "ex": "I'm working from home today, so ping me on Teams."},
+        {"t": "bad connection", "de": "schlechte Verbindung", "d": "When audio or video keeps freezing or cutting out.", "ex": "You're freezing a bit, I think it's a bad connection on my side."},
+        {"t": "go ahead", "de": "bitte, du zuerst", "d": "A polite way to let someone else speak first.", "ex": "Sorry, we both started talking, go ahead."},
+        {"t": "drop off", "de": "aus dem Call aussteigen", "d": "To leave an online meeting before it ends.", "ex": "I need to drop off in five minutes for another call."},
+        {"t": "quick question", "de": "kurze Frage", "d": "A friendly way to start a short request.", "ex": "Quick question before you go: are you joining the offsite?"},
+        {"t": "out of office", "de": "abwesend", "d": "Not at work, for example on holiday.", "ex": "I'll be out of office on Friday, so let's sort it out tomorrow."},
+        {"t": "ping", "de": "kurz anschreiben", "d": "To send someone a quick message.", "ex": "Just ping me if anything comes up."}
+      ],
+      "phrases": [
+        ["Can everyone hear me okay?", "Call starten"],
+        ["Sorry, you broke up a little there.", "Tonprobleme ansprechen"],
+        ["You go first, I'll keep mine short.", "Höflich den Vortritt lassen"],
+        ["I have to jump to another call, but let's continue in the chat.", "Call verlassen"],
+        ["Nice background! Is that the real view?", "Lockerer Kommentar"],
+        ["Let's do this over a proper coffee next time you're in Vienna.", "Persönliches Treffen vorschlagen"]
+      ]
+    },
+    {
+      "id": "c16-team-events", "added": "2026-10-28T16", "title": "Team-Events & Dienstreisen",
+      "desc": "Teamessen, After-Work, Reisen, Abschied",
+      "topic": "socialising with colleagues at team events and on business trips: dinners, after-work drinks, travel small talk, accepting and declining invitations",
+      "terms": [
+        {"t": "team dinner", "de": "Teamessen", "d": "An evening meal with your team, often during an event.", "ex": "The team dinner is at eight, just round the corner from the hotel."},
+        {"t": "offsite", "de": "Teamklausur außer Haus", "d": "A team meeting held away from the usual office.", "ex": "Are you coming to the offsite in Munich next month?"},
+        {"t": "after-work drinks", "de": "After-Work-Treffen", "d": "Going for a drink with colleagues after work.", "ex": "A few of us are going for after-work drinks, want to join?"},
+        {"t": "my treat", "de": "ich lade dich ein", "d": "A friendly way to say you will pay.", "ex": "Put your card away, this one's my treat."},
+        {"t": "split the bill", "de": "die Rechnung teilen", "d": "To share the cost of a meal between people.", "ex": "Shall we just split the bill?"},
+        {"t": "red-eye", "de": "Nachtflug", "d": "A flight that leaves late at night and arrives early in the morning.", "ex": "I'm taking the red-eye back, so I'll be a bit tired tomorrow."},
+        {"t": "layover", "de": "Zwischenstopp", "d": "A stop between two flights.", "ex": "I have a three-hour layover in Frankfurt."},
+        {"t": "farewell", "de": "Abschied, Abschiedsfeier", "d": "An event or moment to say goodbye to someone who is leaving.", "ex": "We're having a small farewell for Tom on Thursday."},
+        {"t": "make it", "de": "es schaffen (zu kommen)", "d": "To manage to attend something.", "ex": "Sorry, I can't make it tonight, but have fun."},
+        {"t": "raincheck", "de": "auf später verschieben", "d": "Politely postponing an invitation to another time.", "ex": "Can I take a raincheck? This week is really full."}
+      ],
+      "phrases": [
+        ["Any tips for what to see while I'm in town?", "Reise-Smalltalk"],
+        ["Cheers, it's great to finally meet in person!", "Anstoßen beim Teamessen"],
+        ["I'd love to, but I've got an early flight tomorrow.", "Höflich absagen"],
+        ["What's good here? I'll trust your recommendation.", "Im Restaurant"],
+        ["If you're ever in Vienna, let me know and I'll show you around.", "Gegeneinladung"],
+        ["Safe travels, and let's stay in touch!", "Verabschiedung"]
       ]
     }
   ]
