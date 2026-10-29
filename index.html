@@ -277,6 +277,15 @@ textarea.field{resize:vertical;min-height:110px;line-height:1.45}
 .fbt p{font-size:15px;overflow-wrap:anywhere}
 .fbt .ans{color:var(--ink);font-weight:600}
 .fbt .why{color:var(--ink-2)}
+.fbt .mine{color:var(--ink-2)}
+.fbt del{color:var(--bad-2);text-decoration:line-through;text-decoration-thickness:1.5px}
+.fbt mark{background:none;color:var(--ink);font-weight:650;text-decoration:underline;text-decoration-color:var(--good);text-decoration-thickness:2px;text-underline-offset:3px}
+.risk{display:flex;gap:8px;align-items:flex-start;margin-top:8px;font-size:14.5px;color:var(--ink-2)}
+.risk svg{width:16px;height:16px;color:var(--orange);margin-top:3px}
+.verdict{font-size:15.5px;color:var(--ink-2);max-width:36ch;text-wrap:pretty}
+.goalline{width:100%;display:grid;gap:8px;text-align:left;margin-top:4px}
+.goalline .bar{height:5px}
+#lesson:not([hidden]) ~ .toast{bottom:auto;top:calc(env(safe-area-inset-top,0px) + 64px)}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .fbt b{color:var(--good)} :root:not([data-theme="light"]) .no .fbt b{color:var(--bad)}}
 :root[data-theme="dark"] .fbt b{color:var(--good)} :root[data-theme="dark"] .no .fbt b{color:var(--bad)}
 @media (min-width:700px){.fb{grid-template-columns:1fr auto;align-items:center}.fb .btn{min-width:180px}}
@@ -836,10 +845,15 @@ function exHtml(x){
 function canCheck(){const x=curEx();if(x.type==="listen_type")return !!(L.ans&&L.ans.trim());if(x.type==="build")return !!(L.sel&&L.sel.length);if(x.type==="match")return false;return L.ans!==null&&L.ans!==undefined;}
 function footHtml(x,st){
   if(st==="answer")return `<div class="lfin">${x.type==="match"?`<p class="muted small grow" style="text-align:center">Tippe links und rechts auf zusammengehörige Begriffe.</p>`:`<button class="btn ghost" id="skip">Überspringen</button>${needsAudio(x)?`<button class="btn ghost" id="noaud" style="padding:0 8px">Kein Ton</button>`:""}<button class="btn primary grow" id="chk" ${canCheck()?"":"disabled"}>Prüfen</button>`}</div>`;
-  const ok=st==="ok";
-  return `<div class="lfin fb"><div class="fbhead"><span class="fbi">${ok?IC.check:IC.x}</span><div class="fbt"><b>${ok?esc(L.fbTitle||"Richtig!"):"Nicht ganz."}</b>
-    ${!ok?`<p>Richtig ist: <span class="ans">${esc(L.fbAnswer)}</span></p>`:""}${x.explanation?`<p class="why">${esc(x.explanation)}</p>`:""}</div>
-    ${!ok&&x.type!=="match"&&canSpeak&&/[a-z]/i.test(L.fbAnswer)?sayBtn(L.fbAnswer):""}</div>
+  const ok=st==="ok",f=L.fb||{};
+  // Wrong: what you gave (with the differing words marked), the right answer (with what was missing marked), then why or a tip.
+  const body=ok
+    ?`${f.diff?`<p>Richtig geschrieben: <span class="ans">${f.diff.c}</span></p>`:""}${x.explanation&&x.type!=="match"?`<p class="why">${esc(x.explanation)}</p>`:""}`
+    :`${f.given?`<p class="mine">Deine Antwort: ${f.diff?f.diff.g:esc(f.given)}</p>`:""}
+      ${x.type!=="match"?`<p>Richtig: <span class="ans">${f.diff?f.diff.c:esc(x.answer)}</span></p>`:""}
+      <p class="why">${esc(x.explanation||TIPS[x.type]||"")}</p>`;
+  return `<div class="lfin fb"><div class="fbhead"><span class="fbi">${ok?IC.check:IC.x}</span><div class="fbt"><b>${esc(ok?(L.fbTitle||"Richtig"):(f.title||"Nicht ganz"))}</b>${body}</div>
+    ${!ok&&x.type!=="match"&&canSpeak&&/[a-z]/i.test(x.answer)?sayBtn(x.answer):""}</div>
     <button class="btn ${ok?"good":"bad"} block" id="nxt">Weiter</button></div>`;
 }
 function renderEx(){
@@ -873,7 +887,7 @@ function wireEx(){
     renderEx();
   });
   const chk=$("#chk");if(chk)chk.onclick=check;
-  const sk=$("#skip");if(sk)sk.onclick=()=>{L.ans=null;grade(false);};
+  const sk=$("#skip");if(sk)sk.onclick=()=>{L.ans=null;L.fb={title:"Übersprungen"};grade(false);};
   const na=$("#noaud");if(na)na.onclick=()=>{
     S.noAudioUntil=Date.now()+60*60e3;save();if(canSpeak)speechSynthesis.cancel();
     L.queue=L.queue.filter((q,i)=>i<L.idx||!needsAudio(q));
@@ -886,11 +900,29 @@ function askQuit(){
   openSheet(`<h2>Lektion beenden?</h2><p class="muted">Du bist schon ${Math.round(L.idx/L.queue.length*100)} % weit. Wenn du jetzt aufhörst, bekommst du keine XP für diese Lektion.</p>
     <button class="btn primary block" data-close>Weiterlernen</button><button class="btn block" id="quitNow">Beenden</button>`,s=>s.querySelector("#quitNow").onclick=()=>{closeSheet();closeLesson();});
 }
+/* Generic hints for when an exercise has no explanation of its own */
+const TIPS={mc:"Lies alle Antworten einmal ganz, bevor du wählst.",fill:"Lies den ganzen Satz: Oft verrät der Rest, welches Wort passt.",
+  correct_sentence:"Achte auf falsche Freunde, Präpositionen und die Zeitform.",listen_choose:"Hör dir den Satz mit „Langsam“ noch einmal an.",
+  listen_type:"Mit „Langsam“ hörst du jedes Wort einzeln. Auf Groß- und Kleinschreibung kommt es nicht an.",
+  build:"Englisch folgt fast immer Subjekt, Verb, Objekt. Bau zuerst diesen Kern.",match:"Starte mit den Paaren, die du sicher weißt, dann bleiben weniger übrig."};
+/* Word-level diff: marks words in the given answer that are wrong and words in the correct answer that were missing */
+function wordDiff(given,correct){
+  const a=String(given||"").split(/\s+/).filter(Boolean),b=String(correct).split(/\s+/).filter(Boolean);
+  const na=a.map(norm),nb=b.map(norm),m=a.length,n=b.length;
+  const dp=Array.from({length:m+1},()=>new Array(n+1).fill(0));
+  for(let i=m-1;i>=0;i--)for(let j=n-1;j>=0;j--)dp[i][j]=na[i]===nb[j]?dp[i+1][j+1]+1:Math.max(dp[i+1][j],dp[i][j+1]);
+  const ka=new Array(m).fill(false),kb=new Array(n).fill(false);let i=0,j=0;
+  while(i<m&&j<n){if(na[i]===nb[j]){ka[i]=kb[j]=true;i++;j++;}else if(dp[i+1][j]>=dp[i][j+1])i++;else j++;}
+  return {g:a.map((w,k)=>ka[k]?esc(w):`<del>${esc(w)}</del>`).join(" "),c:b.map((w,k)=>kb[k]?esc(w):`<mark>${esc(w)}</mark>`).join(" ")};
+}
 function check(){
-  const x=curEx();let ok=false;L.fbTitle="";
-  if(["mc","fill","correct_sentence","listen_choose"].includes(x.type))ok=x.options[L.ans]===x.answer;
-  if(x.type==="listen_type"){const a=norm(L.ans),b=norm(x.answer);ok=a===b;if(!ok&&lev(a,b)<=Math.max(1,Math.floor(b.length*.08))){ok=true;L.fbTitle="Fast perfekt! Kleiner Tippfehler.";}}
-  if(x.type==="build")ok=norm(L.sel.map(i=>L.tiles[i]).join(" "))===norm(x.answer);
+  const x=curEx();let ok=false;L.fbTitle="";L.fb={};
+  if(["mc","fill","correct_sentence","listen_choose"].includes(x.type)){ok=x.options[L.ans]===x.answer;L.fb.given=x.options[L.ans];}
+  if(x.type==="listen_type"){const a=norm(L.ans),b=norm(x.answer);ok=a===b;L.fb.given=L.ans;
+    if(!ok&&lev(a,b)<=Math.max(1,Math.floor(b.length*.08))){ok=true;L.fbTitle="Fast perfekt";L.fb.diff=wordDiff(L.ans,x.answer);}
+    else if(!ok)L.fb.diff=wordDiff(L.ans,x.answer);}
+  if(x.type==="build"){const g=L.sel.map(i=>L.tiles[i]).join(" ");ok=norm(g)===norm(x.answer);L.fb.given=g;if(!ok)L.fb.diff=wordDiff(g,x.answer);}
+  if(!ok){const close=L.fb.diff&&(L.fb.diff.c.match(/<mark>/g)||[]).length<=1;L.fb.title=close?"Knapp daneben":"Nicht ganz";}
   grade(ok);
 }
 const mkey=x=>JSON.stringify([x.type,x.answer,x.text]);
@@ -905,13 +937,14 @@ function grade(ok){
     if(heartsOn()&&L.mode!=="review"){if(S.hearts.n===HEART_MAX)S.hearts.t=Date.now();S.hearts.n=Math.max(0,S.hearts.n-1);}
     const k=mkey(x);if(!S.mistakes.some(m=>mkey(m)===k))S.mistakes.push(x);
     if(!L.requeued.has(L.idx)){L.requeued.add(L.queue.length);L.queue.push(x);}
-    L.fbAnswer=x.type==="match"?"alle Paare richtig zuordnen":x.answer;L.state="no";save();
+    if(!(L.missed||(L.missed=[])).some(m=>mkey(m.x)===k))L.missed.push({x,given:(L.fb&&L.fb.given)||""});
+    L.state="no";save();
   }
   renderEx();
 }
 function next(){
   if(L.state==="no"&&heartsOn()&&L.mode!=="review"&&S.hearts.n<=0){failLesson();return;}
-  L.idx++;L.state="answer";L.ans=null;L.tiles=null;L.sel=null;L.m=null;L.spoken=false;L.fresh=true;
+  L.idx++;L.state="answer";L.ans=null;L.tiles=null;L.sel=null;L.m=null;L.spoken=false;L.fresh=true;L.fb={};L.fbTitle="";
   try{renderTop();}catch(e){}renderEx();
 }
 function failLesson(){
@@ -946,8 +979,22 @@ function finishLesson(){
    <div class="badge">${r.newDay?IC.flame:r.unitDone?IC.trophy:r.perfect?IC.star:IC.check}</div>
    <h1>${head}</h1><p class="muted">${sub}</p>
    <div class="tiles3"><div class="st"><b>XP</b><span>+${r.xp}</span></div><div class="st"><b>Treffer</b><span>${r.acc}%</span></div><div class="st"><b>Zeit</b><span>${Math.floor(r.secs/60)}:${String(r.secs%60).padStart(2,"0")}</span></div></div>
-   ${r.added.length?`<div class="newwords"><div class="kicker">Neu in deinem Wortschatz</div>${r.added.map(t=>`<div class="nw"><b>${esc(t.term)}</b><span>${esc(t.de)}</span></div>`).join("")}</div>`:""}
-   <button class="btn primary block" id="cont" data-act="close">Weiter</button></div></div><div></div>`;
+   <p class="verdict">${esc(verdict(r,L))}</p>
+   <div class="goalline"><div class="row" style="justify-content:space-between"><span class="kicker">Tagesziel</span><span class="small muted">${Math.min(xpToday(),S.cfg.goal)} / ${S.cfg.goal} XP</span></div><div class="bar"><i style="width:${Math.min(100,xpToday()/S.cfg.goal*100)}%"></i></div></div>
+   ${(L.missed||[]).length?`<div class="newwords"><div class="kicker">Daran arbeitest du</div>${L.missed.slice(0,3).map(m=>`<div class="nw"><b>${esc(m.x.type==="match"?"Paare zuordnen":m.x.answer)}</b><span>${esc(m.x.explanation&&m.x.explanation!==m.x.answer?m.x.explanation:(TIPS[m.x.type]||""))}</span></div>`).join("")}
+     <p class="small muted">Diese Aufgaben liegen jetzt unter „Fehler wiederholen“ für dich bereit.</p></div>`:""}
+   <button class="btn primary block" id="cont" data-act="close">Weiter</button>
+   ${(L.missed||[]).length&&L.mode!=="review"?`<button class="btn ghost block" id="revNow">Fehler gleich wiederholen</button>`:""}</div></div><div></div>`;
+  const rv=$("#revNow");if(rv)rv.onclick=()=>startLesson(null,"review");
+}
+/* Honest, specific encouragement based on how the lesson actually went */
+function verdict(r,L){
+  const n=(L.missed||[]).length;
+  if(r.perfect&&L.maxCombo>=8)return `Alle ${L.correct} Aufgaben auf Anhieb richtig. Das sitzt.`;
+  if(r.perfect)return "Keine einzige falsche Antwort. Genau so baut sich Sicherheit auf.";
+  if(r.acc>=80)return `${n===1?"Eine Aufgabe":n+" Aufgaben"} noch nicht ganz sicher, der Rest saß. Wiederhole sie bald, dann bleiben sie hängen.`;
+  if(r.acc>=60)return "Solide Basis. Die markierten Punkte unten sind dein nächster Schritt.";
+  return "Das war eine schwere Runde, und genau aus solchen lernst du am meisten. Wiederhole die Fehler noch heute.";
 }
 function reportErr(e){try{console.error(e);toast("Fehler: "+(e&&e.message?e.message:String(e)).slice(0,120));}catch(x){}}
 window.addEventListener("error",ev=>reportErr(ev.error||ev.message));
@@ -981,7 +1028,8 @@ function vLearn(m){
   const done=cu?(S.units[cu.id]||0):0;
   const needBackup=S.stats.lessons>=5&&Date.now()-(S.lastBackup||0)>14*864e5;
   m.innerHTML=`
-   <div class="greet"><span class="muted">${greet}</span><h1>${x>=g?"Tagesziel erreicht":S.days.includes(today())?"Weiter geht’s":"Bereit für ein paar Minuten?"}</h1></div>
+   <div class="greet"><span class="muted">${greet}</span><h1>${x>=g?"Tagesziel erreicht":S.days.includes(today())?"Weiter geht’s":"Bereit für ein paar Minuten?"}</h1>
+     ${streak()>0&&!S.days.includes(today())?`<p class="risk">${IC.flame}<span>Deine Serie von ${plural(streak(),"Tag","Tagen")} läuft heute um Mitternacht ab. Eine Lektion reicht, um sie zu halten.</span></p>`:""}</div>
    ${cu?`<section class="hero" style="${unitColor(cu.id)}">
      <div class="kicker"><i class="udot"></i>${cu.kind==="chapter"?"Kapitel":"Einheit"} ${allUnits().indexOf(cu)+1} · Lektion ${done+1} von ${LESSONS_PER_UNIT}</div>
      <h2>${esc(cu.title)}</h2><p>${esc(cu.desc)}</p>
