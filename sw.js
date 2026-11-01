@@ -1,5 +1,5 @@
 // Keeps Talktrack usable offline once it has been opened.
-const CACHE = "dre-app-v9";
+const CACHE = "dre-app-v10";
 const CORE = ["./", "./index.html", "./chapters.json", "./manifest.webmanifest", "./icon-180.png", "./icon-192.png", "./icon-512.png"];
 
 self.addEventListener("install", e => {
@@ -19,7 +19,7 @@ self.addEventListener("fetch", e => {
     // Network first, so updates arrive; the cache answers when offline.
     e.respondWith(
       fetch(e.request)
-        .then(res => { const copy = res.clone(); caches.open(CACHE).then(c => c.put(e.request, copy)); return res; })
+        .then(res => { const copy = res.clone(); caches.open(CACHE).then(c => c.put(url.origin + url.pathname, copy)); return res; })
         .catch(() => caches.match(e.request, { ignoreSearch: true }).then(r => r || caches.match("./index.html")))
     );
   } else if (/^fonts\.(googleapis|gstatic)\.com$/.test(url.hostname)) {

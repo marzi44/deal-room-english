@@ -2,29 +2,26 @@
 <html lang="de">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <title>Talktrack</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Talktrack">
-<meta name="theme-color" content="#F5F6F7" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0D0E10" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#F2F2F7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="icon" type="image/png" href="icon-192.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@500&display=swap">
 <style>
 /* Layout: quiet iOS-style shell. Blurred top bar, one 640px column of hairline cards, bottom tab bar
    (floating on wide screens). Lessons, sheets and onboarding are full-screen layers.
-   Direction: monochrome ink on cool neutral, one deep green accent, Geist type, hairlines instead of shadows. */
+   Direction: iOS grouped lists, system font, one deep green tint, hairlines instead of shadows. */
 :root{
-  --bg:#F5F6F7; --surface:#FFFFFF; --surface-2:#EEF0F2; --ink:#111417; --ink-2:#3E444B; --muted:#7B828A;
-  --line:#E4E7EA; --line-2:#CFD4D9;
+  --bg:#F2F2F7; --surface:#FFFFFF; --surface-2:#E9E9EE; --ink:#0B0C0E; --ink-2:#3C3C43; --muted:#6C6C70;
+  --line:#D8D8DC; --line-2:#C7C7CC;
   --accent:#1E6B57; --accent-2:#17513F; --accent-soft:#E6F0EC; --on-accent:#FFFFFF;
-  --btn:#111417; --on-btn:#FFFFFF;
+  --btn:#0B0C0E; --on-btn:#FFFFFF;
   --gold:#A87B22; --gold-2:#8A6418; --gold-soft:#F5EEDF;
   --orange:#B8612C; --orange-soft:#F6EAE1;
   --coral:#B8443C; --coral-soft:#F8E9E7;
@@ -34,27 +31,27 @@
   --u0:#1E6B57; --u0d:#1E6B57; --u1:#3D5A9E; --u1d:#3D5A9E; --u2:#9C6A2E; --u2d:#9C6A2E; --u3:#6E4F92; --u3d:#6E4F92;
   --scrim:rgba(10,12,14,.38);
   --shadow:0 1px 2px rgba(17,20,23,.04),0 8px 24px rgba(17,20,23,.06);
-  --f-display:"Geist",-apple-system,"SF Pro Display","Segoe UI",system-ui,sans-serif;
-  --f-body:"Geist",-apple-system,"SF Pro Text","Segoe UI",system-ui,sans-serif;
-  --f-mono:"Geist Mono",ui-monospace,"SF Mono",Consolas,monospace;
-  --r-sm:12px; --r:16px; --r-lg:22px; --tab-h:62px;
+  --f-display:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",system-ui,sans-serif;
+  --f-body:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",system-ui,sans-serif;
+  --f-mono:var(--f-body);
+  --r-sm:10px; --r:12px; --r-lg:16px; --tab-h:50px;
   color-scheme:light;
 }
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
-  --bg:#0D0E10; --surface:#16181B; --surface-2:#1E2125; --ink:#F1F2F4; --ink-2:#C3C7CD; --muted:#8B9199;
-  --line:#25292E; --line-2:#343940;
+  --bg:#000000; --surface:#1C1C1E; --surface-2:#2C2C2E; --ink:#FFFFFF; --ink-2:#D1D1D6; --muted:#8E8E93;
+  --line:#38383A; --line-2:#48484A;
   --accent:#5FBF9F; --accent-2:#46A384; --accent-soft:#15302A; --on-accent:#06150F;
-  --btn:#F1F2F4; --on-btn:#0D0E10;
+  --btn:#FFFFFF; --on-btn:#000000;
   --gold:#D6A74A; --gold-2:#B88A33; --gold-soft:#2C2416; --orange:#E08A55; --orange-soft:#2E2016;
   --coral:#E07A72; --coral-soft:#301A18; --good:#52C08F; --good-2:#3FA376; --good-soft:#12291E;
   --bad:#E5756C; --bad-2:#C85A51; --bad-soft:#311917; --blue:#8AA2E0; --blue-2:#6F88C8;
   --u0:#5FBF9F; --u0d:#5FBF9F; --u1:#8AA2E0; --u1d:#8AA2E0; --u2:#D19B5C; --u2d:#D19B5C; --u3:#B497DB; --u3d:#B497DB;
   --scrim:rgba(0,0,0,.55); --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.3); color-scheme:dark }}
 :root[data-theme="dark"]{
-  --bg:#0D0E10; --surface:#16181B; --surface-2:#1E2125; --ink:#F1F2F4; --ink-2:#C3C7CD; --muted:#8B9199;
-  --line:#25292E; --line-2:#343940;
+  --bg:#000000; --surface:#1C1C1E; --surface-2:#2C2C2E; --ink:#FFFFFF; --ink-2:#D1D1D6; --muted:#8E8E93;
+  --line:#38383A; --line-2:#48484A;
   --accent:#5FBF9F; --accent-2:#46A384; --accent-soft:#15302A; --on-accent:#06150F;
-  --btn:#F1F2F4; --on-btn:#0D0E10;
+  --btn:#FFFFFF; --on-btn:#000000;
   --gold:#D6A74A; --gold-2:#B88A33; --gold-soft:#2C2416; --orange:#E08A55; --orange-soft:#2E2016;
   --coral:#E07A72; --coral-soft:#301A18; --good:#52C08F; --good-2:#3FA376; --good-soft:#12291E;
   --bad:#E5756C; --bad-2:#C85A51; --bad-soft:#311917; --blue:#8AA2E0; --blue-2:#6F88C8;
@@ -395,6 +392,46 @@ button.it:active{background:var(--surface-2)}
 
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(var(--tab-h) + 18px + env(safe-area-inset-bottom,0px));background:var(--btn);color:var(--on-btn);padding:10px 18px;border-radius:14px;font-size:14px;font-weight:500;z-index:90;max-width:calc(100% - 40px);text-align:center;animation:fbUp .25s;box-shadow:var(--shadow)}
 #confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:85}
+
+/* Native layer: iOS behaviour and look */
+html{background:var(--bg);touch-action:manipulation;-webkit-text-size-adjust:100%}
+body{overscroll-behavior-y:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;min-height:100dvh;font-size:17px;letter-spacing:-.01em}
+input,textarea{-webkit-user-select:text;user-select:text}
+.lesson,.lbody,.onb,.sheet .pn{overscroll-behavior:contain}
+.lesson{height:100dvh;bottom:auto}
+.lfoot{max-height:60dvh;overflow-y:auto}
+.onb .center{min-height:calc(100dvh - env(safe-area-inset-top,0px))}
+.center{padding-bottom:calc(32px + env(safe-area-inset-bottom,0px))}
+.kicker,.etype,.gt,.st b,.sc .who{font-size:12.5px;letter-spacing:.01em;font-weight:500}
+.gt{font-size:13px;margin:24px 16px 6px;text-transform:uppercase;letter-spacing:.02em;font-weight:400}
+.page-h h1,.greet h1{font-size:34px;font-weight:700;letter-spacing:-.022em}
+h1,h2,h3{font-weight:700;letter-spacing:-.02em}
+.topin{height:44px}
+.logo{font-size:17px;font-weight:600}
+.btn,.btn.block{font-weight:600;font-size:17px}
+.btn.primary,.btn.white,.lbtn:not(.slow),.chip[aria-pressed="true"]{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.btn:active:not(:disabled),.qt:active:not(:disabled),.node:active,.tile:active,.opt:active:not(:disabled){transform:none;opacity:.55}
+.tb{font-size:10px}
+.tb .ic{height:28px}
+.tb svg{width:25px;height:25px}
+.tb[aria-current="page"]{color:var(--accent)}
+.it select{font-size:16px}
+.it .lb b{font-weight:400;font-size:17px}
+.it{padding:8px 16px;min-height:44px}
+.sw:checked{background:#34C759}
+.opt{font-size:17px}
+.lprog i{background:var(--accent)}
+.opt[aria-pressed="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.opt[aria-pressed="true"] .k{border-color:var(--accent);color:var(--accent)}
+.match .tile.sel{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+input.field:focus,textarea.field:focus{border-color:var(--accent)}
+.node.cur{border-color:var(--accent);color:var(--accent)}
+.sheet .pn{border-radius:14px 14px 0 0;touch-action:pan-y;will-change:transform}
+.sheet .pn.drag,.sheet .pn.back{animation:none}
+.sheet .pn.back{transition:transform .25s cubic-bezier(.2,.9,.25,1)}
+.sheet .grab{height:5px;margin-top:0}
+main.tabin{animation:tabIn .18s ease}
+@keyframes tabIn{from{opacity:.4}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -642,7 +679,7 @@ const canSpeak="speechSynthesis" in window;
 let voices=[],appReady=false;
 const IS_IOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
 const NOVELTY=/Albert|Bad News|Bahh|Bells|Boing|Bubbles|Cellos|Good News|Jester|Organ|Superstar|Trinoids|Whisper|Wobble|Zarvox|Fred|Junior|Kathy|Ralph|Grandma|Grandpa|Eddy|Flo|Reed|Rocko|Sandy|Shelley/i;
-function loadVoices(){if(!canSpeak)return;voices=speechSynthesis.getVoices().filter(v=>/^en([-_]|$)/i.test(v.lang));if(appReady&&current==="profil"&&$("#sheet").hidden&&!L)render();}
+function loadVoices(){if(!canSpeak)return;voices=speechSynthesis.getVoices().filter(v=>/^en([-_]|$)/i.test(v.lang));if(appReady&&current==="profil"&&$("#sheet").hidden&&!L&&document.activeElement?.tagName!=="SELECT")render();}
 if(canSpeak){loadVoices();speechSynthesis.onvoiceschanged=loadVoices;}
 function voiceScore(v){let s=0;const n=v.name;
   if(/premium/i.test(n))s+=75;if(/enhanced|erweitert/i.test(n))s+=60;if(/natural|neural/i.test(n))s+=60;if(/online/i.test(n))s+=15;if(/google/i.test(n))s+=20;
@@ -697,8 +734,12 @@ function confetti(){
 
 /* ================= Sheet ================= */
 function openSheet(html,mount){const s=$("#sheet");s.innerHTML=`<div class="bd"></div><div class="pn" role="dialog" aria-modal="true"><div class="grab"></div>${html}</div>`;s.hidden=false;
-  s.querySelector(".bd").onclick=closeSheet;s.querySelectorAll("[data-close]").forEach(b=>b.onclick=closeSheet);if(mount)mount(s);}
+  s.querySelector(".bd").onclick=closeSheet;sheetDrag(s.querySelector(".pn"));s.querySelectorAll("[data-close]").forEach(b=>b.onclick=closeSheet);if(mount)mount(s);}
 function closeSheet(){const s=$("#sheet");s.hidden=true;s.innerHTML="";}
+function sheetDrag(pn){let y0=null,dy=0;
+  pn.addEventListener("touchstart",e=>{if(pn.scrollTop>0||e.target.closest("input,textarea,select"))return;y0=e.touches[0].clientY;dy=0;},{passive:true});
+  pn.addEventListener("touchmove",e=>{if(y0===null)return;dy=e.touches[0].clientY-y0;if(dy>0){pn.classList.add("drag");pn.classList.remove("back");pn.style.transform=`translateY(${dy}px)`;}},{passive:true});
+  pn.addEventListener("touchend",()=>{if(y0===null)return;y0=null;if(dy>90)closeSheet();else if(dy>0){pn.classList.add("back");pn.classList.remove("drag");pn.style.transform="";}},{passive:true});}
 addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("#sheet").hidden)closeSheet();});
 function pillSheet(kind){
   if(kind==="streak"){const st=streak(),act=S.days.includes(today());
@@ -827,7 +868,7 @@ function exHtml(x){
   if(x.type==="fill")h+=`<div class="qtext"><span>${esc(x.text).replace(/_{2,}/,'<span class="gap"></span>')}</span></div>`+opts();
   if(x.type==="correct_sentence")h+=opts();
   if(x.type==="listen_choose")h+=listen(x.text)+opts();
-  if(x.type==="listen_type")h+=listen(x.text)+`<input class="field" type="text" id="typed" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Auf Englisch schreiben …" value="${esc(L.ans||"")}">`;
+  if(x.type==="listen_type")h+=listen(x.text)+`<input class="field" type="text" id="typed" enterkeyhint="go" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Auf Englisch schreiben …" value="${esc(L.ans||"")}">`;
   if(x.type==="build"){
     if(!L.tiles){const words=x.answer.split(/\s+/).map(w=>w.replace(/^[^\w']+|[^\w'%]+$/g,"")).filter(Boolean);L.tiles=shuffle(words.concat(x.options.map(o=>o.replace(/[^\w'%-]/g,"")).filter(Boolean)));L.sel=[];}
     if(x.say)h+=listen(x.say);if(x.text)h+=`<div class="qtext"><span>${esc(x.text)}</span></div>`;
@@ -859,14 +900,14 @@ function footHtml(x,st){
 function renderEx(){
   openLayer();
   if(L.idx>=L.queue.length){finishLesson();return;}
-  const x=curEx(),pct=L.idx/L.queue.length*100,st=L.state;
+  const x=curEx(),pct=L.idx/L.queue.length*100,st=L.state,keep=L.fresh?0:($(".lbody")?.scrollTop||0);
   LZ().innerHTML=`<div class="lhead"><button class="iconbtn" id="lx" aria-label="Lektion beenden">${IC.x}</button><div class="lprog" role="progressbar" aria-valuenow="${Math.round(pct)}" aria-valuemin="0" aria-valuemax="100"><i style="width:${Math.max(5,pct)}%"></i></div>
      ${heartsOn()&&L.mode!=="review"?`<span class="lhearts">${IC.heart}${S.hearts.n}</span>`:`<span class="lhearts xp">${IC.bolt}${L.correct}</span>`}</div>
    <div class="lbody"><div class="lwrap ${L.fresh?"enter":""}">${exHtml(x)}</div></div>
    <div class="lfoot ${st==="answer"?"":st}">${footHtml(x,st)}</div>`;
-  L.fresh=false;wireEx();
+  const lb=$(".lbody");if(lb&&keep)lb.scrollTop=keep;L.fresh=false;wireEx();
   if(st==="answer"&&!L.spoken&&(x.type==="listen_choose"||x.type==="listen_type"||(x.type==="build"&&x.say))){L.spoken=true;setTimeout(()=>speak(x.type==="build"?x.say:x.text),350);}
-  const t=$("#typed");if(t&&st==="answer"&&!IS_IOS)t.focus();
+  const t=$("#typed");if(t&&st==="answer"){if(!IS_IOS)t.focus();t.addEventListener("focus",()=>setTimeout(()=>t.scrollIntoView({block:"center",behavior:"smooth"}),300));}
 }
 function wireEx(){
   const x=curEx(),locked=L.state!=="answer";
@@ -1017,6 +1058,7 @@ function render(){
   $$("[data-tab]").forEach(b=>b.onclick=()=>go(b.dataset.tab));
   renderTop();
   ({lernen:vLearn,woerter:vWords,profil:vProfile})[current]($("#main"),lastView!==current);
+  if(lastView!==current){const mn=$("#main");mn.classList.remove("tabin");void mn.offsetWidth;mn.classList.add("tabin");}
   lastView=current;
 }
 
@@ -1093,6 +1135,8 @@ function allTerms(){return VOCAB.map(v=>({...v,ai:false})).concat(chapters().fla
 function vDeck(){return allTerms().filter(t=>(vUnit===null||String(t.u)===String(vUnit))&&(!vQ||(t.t+" "+t.de).toLowerCase().includes(vQ.toLowerCase())));}
 function nextCard(){const d=vDeck();if(!d.length){vCard=null;return;}const min=Math.min(...d.map(v=>S.box[v.t]||0));const pool=d.filter(v=>(S.box[v.t]||0)<=min+1&&(!vCard||v.t!==vCard.t));vCard=shuffle(pool.length?pool:d)[0];}
 const lvlHtml=b=>`<span class="lvl" aria-label="Stufe ${b} von 5">${[1,2,3,4,5].map(i=>`<i class="${i<=b?"on":""}"></i>`).join("")}</span>`;
+function wordList(d){return d.length?`<div class="list">${d.slice(0,200).map(v=>`<details><summary><div><b>${esc(v.t)}</b><span class="muted small">${esc(v.de)}</span></div>${lvlHtml(S.box[v.t]||0)}<span class="chv">${IC.chev}</span></summary>
+       <div class="body"><p>${esc(v.d)}</p><p class="ex">“${esc(v.ex)}”</p><div>${sayBtn(v.t+". "+v.ex)}</div></div></details>`).join("")}</div>`:`<p class="muted">Nichts gefunden.</p>`;}
 function vWords(m){
   if(!vCard||!vDeck().some(t=>t.t===vCard.t))nextCard();
   const all=allTerms(),d=vDeck(),mastered=all.filter(v=>(S.box[v.t]||0)>=3).length;
@@ -1111,8 +1155,7 @@ function vWords(m){
       <button class="btn primary block" id="turn">Umdrehen</button>`;}
   } else {
     body=`<div class="searchbox">${IC.search}<input class="field" type="search" id="vq" placeholder="Begriff suchen …" value="${esc(vQ)}"></div>
-     ${d.length?`<div class="list">${d.map(v=>`<details><summary><div><b>${esc(v.t)}${v.ai?' <span class="tag">KI</span>':""}</b><span class="muted small">${esc(v.de)}</span></div>${lvlHtml(S.box[v.t]||0)}<span class="chv">${IC.chev}</span></summary>
-       <div class="body"><p>${esc(v.d)}</p><p class="ex">“${esc(v.ex)}”</p><div>${sayBtn(v.t+". "+v.ex)}</div></div></details>`).join("")}</div>`:`<p class="muted">Nichts gefunden.</p>`}`;
+     <div id="vres">${wordList(d)}</div>`;
   }
   m.innerHTML=`<div class="page-h"><span class="muted">${mastered} von ${all.length} sicher</span><h1>Wortschatz</h1></div>
     <div class="bar" style="margin:12px 0 16px"><i style="width:${mastered/all.length*100}%"></i></div>
@@ -1124,7 +1167,7 @@ function vWords(m){
     </div>`;
   $$("[data-u]").forEach(b=>b.onclick=()=>{vUnit=b.dataset.u===""?null:idOf(b.dataset.u);nextCard();render();});
   $("#mC").onclick=()=>{vMode="cards";render();};$("#mL").onclick=()=>{vMode="list";render();};
-  const q=$("#vq");if(q)q.oninput=()=>{vQ=q.value;clearTimeout(q._t);q._t=setTimeout(()=>{render();const n=$("#vq");n.focus();n.setSelectionRange(n.value.length,n.value.length);},250);};
+  const q=$("#vq");if(q)q.oninput=()=>{vQ=q.value;clearTimeout(q._t);q._t=setTimeout(()=>{$("#vres").innerHTML=wordList(vDeck());},150);};
   if(vMode==="cards"&&vCard){
     const flip=()=>{const f=$("#flip");if(f.classList.contains("on"))return;f.classList.add("on");$("#turn").hidden=true;$("#cacts").hidden=false;SND.tap();};
     $("#flip").onclick=flip;$("#flip").onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();flip();}};$("#turn").onclick=flip;
@@ -1213,6 +1256,13 @@ appReady=true;
 render();
 if(!S.onboarded)showOnb();
 loadChapters();
+document.addEventListener("touchstart",()=>{},{passive:true});
+/* The iOS keyboard does not resize fixed layers: size the lesson to the visible area so the footer stays above it */
+if(window.visualViewport){const fit=()=>{const z=LZ(),vv=window.visualViewport;z.style.height=vv.height+"px";z.style.top=vv.offsetTop+"px";};
+  visualViewport.addEventListener("resize",fit);visualViewport.addEventListener("scroll",fit);}
+document.addEventListener("visibilitychange",()=>{
+  if(document.visibilityState==="hidden"){try{if(canSpeak)speechSynthesis.cancel();}catch(e){}return;}
+  try{refillHearts();if(!L&&$("#sheet").hidden&&$("#onb").hidden)render();else renderTop();loadChapters();}catch(e){reportErr(e);}});
 if("serviceWorker" in navigator&&/^https?:$/.test(location.protocol))navigator.serviceWorker.register("sw.js").catch(()=>{});
 </script>
 </body>
