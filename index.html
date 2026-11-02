@@ -688,14 +688,18 @@ function voiceScore(v){let s=0;const n=v.name;
 function bestVoice(){if(S.cfg.voice){const v=voices.find(v=>v.name===S.cfg.voice);if(v)return v;}return voices.slice().sort((a,b)=>voiceScore(b)-voiceScore(a))[0]||null;}
 /* iOS: only cancel when something is actually queued (cancel right before speak can swallow the next utterance),
    keep a reference so the utterance isn't garbage-collected, and fall back to the system voice if the chosen one fails. */
-let curUtt=null,unlockUtt=null,speechOk=false,hintShown=false;
+let curUtt=null,unlockUtt=null,speechOk=false,hintShown=false,speakGen=0,autoSpeakT=null;
+/* Silence everything at once: the current sentence, a pending auto-play and any fallback retry */
+function stopSpeech(){speakGen++;clearTimeout(autoSpeakT);clearTimeout(speak._t);
+  try{if(canSpeak&&(speechSynthesis.speaking||speechSynthesis.pending))speechSynthesis.cancel();}catch(e){}}
 function speak(text,slow,plain){if(!canSpeak||!text)return;try{
   const ss=speechSynthesis;if((ss.speaking||ss.pending)&&curUtt!==unlockUtt)ss.cancel();if(ss.paused)ss.resume();
   const u=new SpeechSynthesisUtterance(text);const v=plain?null:bestVoice();
   if(v){u.voice=v;u.lang=v.lang;}else u.lang="en-GB";
   u.rate=(S.cfg.rate||1)*(slow?.7:1);u.volume=1;
   let started=false;u.onstart=()=>{started=true;speechOk=true;};
-  u.onerror=e=>{if(!started&&v&&e&&e.error!=="interrupted"&&e.error!=="canceled")speak(text,slow,true);};
+  const gen=speakGen;
+  u.onerror=e=>{if(gen===speakGen&&!started&&v&&e&&e.error!=="interrupted"&&e.error!=="canceled")speak(text,slow,true);};
   curUtt=u;ss.speak(u);
   clearTimeout(speak._t);speak._t=setTimeout(()=>{if(!started&&!ss.speaking&&!hintShown){hintShown=true;
     toast(IS_IOS?"Kein Ton? Prüfe Stummschalter und Lautstärke oder tippe „Gerade kein Ton“.":"Kein Ton? Prüfe die Lautstärke oder tippe „Gerade kein Ton“.");}},2500);
@@ -848,8 +852,7 @@ async function startLesson(uid,mode){
   if(noAudio()||!canSpeak){const rest=lesson.exercises.filter(x=>!needsAudio(x));if(rest.length>=4)lesson={...lesson,exercises:rest};}
   L=makeL(uid,mode,lesson);openLayer();renderEx();
 }
-function closeLesson(){L=null;LZ().hidden=true;LZ().innerHTML="";document.body.classList.remove("lock");
-  try{if(canSpeak&&(speechSynthesis.speaking||speechSynthesis.pending))speechSynthesis.cancel();}catch(e){}
+function closeLesson(){stopSpeech();L=null;LZ().hidden=true;LZ().innerHTML="";document.body.classList.remove("lock");
   try{render();}catch(e){reportErr(e);}window.scrollTo(0,0);}
 function showNoHearts(){
   openLayer();const mins=Math.ceil((HEART_MS-(Date.now()-S.hearts.t))/60e3);
@@ -906,7 +909,7 @@ function renderEx(){
    <div class="lbody"><div class="lwrap ${L.fresh?"enter":""}">${exHtml(x)}</div></div>
    <div class="lfoot ${st==="answer"?"":st}">${footHtml(x,st)}</div>`;
   const lb=$(".lbody");if(lb&&keep)lb.scrollTop=keep;L.fresh=false;wireEx();
-  if(st==="answer"&&!L.spoken&&(x.type==="listen_choose"||x.type==="listen_type"||(x.type==="build"&&x.say))){L.spoken=true;setTimeout(()=>speak(x.type==="build"?x.say:x.text),350);}
+  if(st==="answer"&&!L.spoken&&(x.type==="listen_choose"||x.type==="listen_type"||(x.type==="build"&&x.say))){L.spoken=true;clearTimeout(autoSpeakT);autoSpeakT=setTimeout(()=>speak(x.type==="build"?x.say:x.text),350);}
   const t=$("#typed");if(t&&st==="answer"){if(!IS_IOS)t.focus();t.addEventListener("focus",()=>setTimeout(()=>t.scrollIntoView({block:"center",behavior:"smooth"}),300));}
 }
 function wireEx(){
@@ -921,7 +924,7 @@ function wireEx(){
     if(locked)return;const m=L.m;if(b.dataset.l!==undefined)m.a=+b.dataset.l;else m.b=+b.dataset.r;
     if(m.a!==null&&m.b!==null){
       if(m.a===m.b){m.done.add(m.a);SND.ok();speak(x.pairs[m.a].en);m.a=m.b=null;
-        if(m.done.size===x.pairs.length){L.fbTitle=m.miss?"Alle Paare gefunden!":"Alle Paare auf Anhieb!";grade(true);return;}}
+        if(m.done.size===x.pairs.length){L.fbTitle=m.miss?"Alle Paare gefunden!":"Alle Paare auf Anhieb!";grade(true,true);return;}}
       else{SND.no();m.miss++;const a=m.a,bb=m.b;m.a=m.b=null;renderEx();
         $(`[data-l="${a}"]`)?.classList.add("wrong");$(`[data-r="${bb}"]`)?.classList.add("wrong");return;}
     } else SND.tap();
@@ -937,6 +940,7 @@ function wireEx(){
   const nx=$("#nxt");if(nx){nx.onclick=next;nx.focus({preventScroll:true});}
 }
 function askQuit(){
+  stopSpeech();
   if(L.idx===0&&L.state==="answer"){closeLesson();return;}
   openSheet(`<h2>Lektion beenden?</h2><p class="muted">Du bist schon ${Math.round(L.idx/L.queue.length*100)} % weit. Wenn du jetzt aufhörst, bekommst du keine XP für diese Lektion.</p>
     <button class="btn primary block" data-close>Weiterlernen</button><button class="btn block" id="quitNow">Beenden</button>`,s=>s.querySelector("#quitNow").onclick=()=>{closeSheet();closeLesson();});
@@ -967,8 +971,8 @@ function check(){
   grade(ok);
 }
 const mkey=x=>JSON.stringify([x.type,x.answer,x.text]);
-function grade(ok){
-  const x=curEx();
+function grade(ok,fromMatch){
+  const x=curEx();if(!fromMatch)stopSpeech();
   if(ok){L.correct++;L.combo++;L.maxCombo=Math.max(L.maxCombo,L.combo);SND.ok();
     if(!L.fbTitle)L.fbTitle=L.combo>=5&&L.combo%5===0?`${L.combo} richtig in Folge!`:pick(["Richtig!","Super!","Stark!","Genau so!","Perfekt!","Sehr gut!"],1)[0];
     if(L.mode==="review"){const k=mkey(x);S.mistakes=S.mistakes.filter(m=>mkey(m)!==k);}
@@ -984,6 +988,7 @@ function grade(ok){
   renderEx();
 }
 function next(){
+  stopSpeech();
   if(L.state==="no"&&heartsOn()&&L.mode!=="review"&&S.hearts.n<=0){failLesson();return;}
   L.idx++;L.state="answer";L.ans=null;L.tiles=null;L.sel=null;L.m=null;L.spoken=false;L.fresh=true;L.fb={};L.fbTitle="";
   try{renderTop();}catch(e){}renderEx();
