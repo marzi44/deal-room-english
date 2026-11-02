@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-29",
+  "updated": "2026-11-02",
   "chapters": [
     {
       "id": "c01-finops", "added": "2026-10-28T01", "title": "Kosten im Griff",
@@ -388,6 +388,31 @@
         ["What's good here? I'll trust your recommendation.", "Im Restaurant"],
         ["If you're ever in Vienna, let me know and I'll show you around.", "Gegeneinladung"],
         ["Safe travels, and let's stay in touch!", "Verabschiedung"]
+      ]
+    },
+    {
+      "id": "c17-disaster-recovery", "added": "2026-11-02T11", "title": "Ausfallsicherheit & Notfallplanung",
+      "desc": "Wiederherstellungsziele, Failover, Notfalltests, Ausfälle",
+      "topic": "disaster recovery and business continuity conversations: recovery objectives, failover, high availability, testing recovery plans and talking about outages",
+      "terms": [
+        {"t": "business continuity", "de": "Geschäftskontinuität", "d": "An organisation's ability to keep critical operations running during and after a disruption.", "ex": "For the hospital, business continuity is not an IT topic, it's a patient safety topic."},
+        {"t": "disaster recovery", "de": "Notfallwiederherstellung", "d": "The process and tools for restoring IT systems after a major failure.", "ex": "Their current disaster recovery setup is a second data centre that nobody has tested in years."},
+        {"t": "recovery time objective", "de": "maximal tolerierbare Ausfallzeit (RTO)", "d": "The longest time a system may be down before the business impact becomes unacceptable.", "ex": "What recovery time objective has the business actually agreed for the ERP system?"},
+        {"t": "recovery point objective", "de": "maximal tolerierbarer Datenverlust (RPO)", "d": "The maximum amount of data, measured in time, that a business can afford to lose.", "ex": "A recovery point objective of fifteen minutes means nightly backups won't be enough."},
+        {"t": "failover", "de": "Umschalten auf ein Ersatzsystem", "d": "Automatically or manually switching to a standby system when the primary one fails.", "ex": "During the test, the failover to the secondary region took less time than expected."},
+        {"t": "high availability", "de": "Hochverfügbarkeit", "d": "Designing a system so that it stays available even if individual components fail.", "ex": "High availability within one region doesn't replace a proper disaster recovery plan."},
+        {"t": "single point of failure", "de": "kritische Schwachstelle ohne Redundanz", "d": "One component whose failure would bring down the whole system.", "ex": "The old on-premises firewall is still a single point of failure for the whole site."},
+        {"t": "runbook", "de": "Betriebshandbuch, Schritt-für-Schritt-Anleitung", "d": "A documented set of steps the team follows to carry out a task or handle an incident.", "ex": "Make sure the runbook is stored somewhere you can reach when the main systems are down."},
+        {"t": "DR drill", "de": "Notfallübung", "d": "A planned exercise to test whether systems and people can recover as expected.", "ex": "Let's schedule a DR drill with the partner before the auditors visit."},
+        {"t": "outage", "de": "Ausfall, Störung", "d": "A period when a service or system is unavailable.", "ex": "After last year's outage, the board wants to know exactly how long recovery would take."}
+      ],
+      "phrases": [
+        ["How long could the business cope if this system went down today?", "Ausfalltoleranz erfragen"],
+        ["A backup you have never restored is really just a hope.", "Notfalltests motivieren"],
+        ["Let's agree on recovery targets with the business, not just with IT.", "Fachbereich einbinden"],
+        ["Not every workload needs the same level of protection, so let's prioritise.", "Kosten und Schutz abwägen"],
+        ["When did you last run a full recovery test, end to end?", "Reifegrad prüfen"],
+        ["We can start with your most critical application and expand from there.", "Pragmatischer Einstieg"]
       ]
     }
   ]
