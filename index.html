@@ -279,6 +279,10 @@ textarea.field{resize:vertical;min-height:110px;line-height:1.45}
 .fbt mark{background:none;color:var(--ink);font-weight:650;text-decoration:underline;text-decoration-color:var(--good);text-decoration-thickness:2px;text-underline-offset:3px}
 .risk{display:flex;gap:8px;align-items:flex-start;margin-top:8px;font-size:14.5px;color:var(--ink-2)}
 .risk svg{width:16px;height:16px;color:var(--orange);margin-top:3px}
+.heard{min-height:48px;text-align:center;font-size:17px;line-height:1.45;color:var(--muted);padding:6px 4px}
+.heard.on{color:var(--accent)}
+.btn.rec{animation:recPulse 1.2s ease-in-out infinite}
+@keyframes recPulse{50%{opacity:.72}}
 .verdict{font-size:15.5px;color:var(--ink-2);max-width:36ch;text-wrap:pretty}
 .goalline{width:100%;display:grid;gap:8px;text-align:left;margin-top:4px}
 .goalline .bar{height:5px}
@@ -706,6 +710,11 @@ function speak(text,slow,plain){if(!canSpeak||!text)return;try{
 }catch(e){}}
 const noAudio=()=>Date.now()<(S.noAudioUntil||0);
 const needsAudio=x=>x&&(x.type==="listen_choose"||x.type==="listen_type"||(x.type==="build"&&!!x.say));
+/* Speaking: browser speech recognition. Off when unsupported, switched off, blocked earlier, or paused for an hour. */
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition||null;
+const noSpeak=()=>Date.now()<(S.noSpeakUntil||0);
+const speakOK=()=>!!SR&&S.cfg.speak!==false&&!S.speakBlocked&&!noSpeak();
+const needsMic=x=>x&&x.type==="speak";
 const sayBtn=t=>canSpeak?`<button class="say" data-say="${esc(t)}" aria-label="Anhören">${IC.sound}</button>`:"";
 document.addEventListener("click",e=>{const s=e.target.closest("[data-say]");if(s){e.stopPropagation();unlockAudio();speak(s.dataset.say,s.dataset.slow==="1");return;}const c=e.target.closest("[data-copy]");if(c)copy(c.dataset.copy);},true);
 
@@ -763,9 +772,9 @@ function pillSheet(kind){
 }
 
 /* ================= Exercises ================= */
-const EX_TYPES=["mc","fill","correct_sentence","listen_choose","listen_type","build","match"];
+const EX_TYPES=["mc","fill","correct_sentence","listen_choose","listen_type","build","match","speak"];
 const EX_META={mc:["Auswahl","var(--accent)",IC.target],fill:["Lückentext","var(--u2)",IC.pen],correct_sentence:["Fehler finden","var(--coral)",IC.search],
-  listen_choose:["Hören","var(--blue)",IC.wave],listen_type:["Diktat","var(--blue)",IC.wave],build:["Satz bauen","var(--u3)",IC.cards],match:["Paare finden","var(--gold-2)",IC.spark]};
+  listen_choose:["Hören","var(--blue)",IC.wave],listen_type:["Diktat","var(--blue)",IC.wave],build:["Satz bauen","var(--u3)",IC.cards],match:["Paare finden","var(--gold-2)",IC.spark],speak:["Sprechen","var(--accent)",IC.mic]};
 function cleanEx(e){
   if(!e||!EX_TYPES.includes(e.type))return null;
   const x={type:e.type,prompt:String(e.prompt||"").trim(),text:String(e.text||"").trim(),options:(e.options||[]).map(o=>String(o).trim()).filter(Boolean),
@@ -781,6 +790,7 @@ function cleanEx(e){
     if(x.type==="listen_choose"&&!x.text)x.text=x.answer;
   }
   if(x.type==="listen_type"){if(!x.answer)x.answer=x.text;if(!x.text)x.text=x.answer;if(!x.answer||x.answer.split(" ").length>16)return null;}
+  if(x.type==="speak"){if(!x.answer)x.answer=x.text;if(!x.text)x.text=x.answer;if(!x.answer||x.answer.split(" ").length>16)return null;}
   if(x.type==="build"){const w=x.answer.split(/\s+/).filter(Boolean);if(w.length<2||w.length>16)return null;
     const ans=new Set(w.map(norm));x.options=x.options.filter(o=>!ans.has(norm(o))&&o.split(" ").length===1).slice(0,4);}
   if(x.type==="match"){if(x.pairs.length<3)return null;x.pairs=x.pairs.slice(0,5);}
@@ -830,7 +840,11 @@ function localLesson(uid){
     pick(FALSE_FRIENDS,2).forEach(([w,r,de])=>ex.push({type:"listen_type",prompt:"Schreib, was du hörst.",text:r,answer:r,explanation:de}));
     ex.push({type:"match",prompt:"Deutsches Wort und richtige Übersetzung",pairs:shuffle([["aktuell","current"],["eventuell","perhaps"],["bekommen","get"],["sensibel","sensitive"],["kontrollieren","check"],["Chef","manager"],["konsequent","consistent"]]).slice(0,5).map(([de,en])=>({en,de})),explanation:""});
   }
-  return {title:u.title,exercises:shuffle(ex).map(cleanEx).filter(Boolean).slice(0,11),new_terms:[],source:"local"};
+  // Speaking: say a real sentence from this unit out loud
+  const spk=u.kind==="ff"?FALSE_FRIENDS.map(([w,r,de])=>({en:r,de})):unitPhrases(uid).length?unitPhrases(uid):unitTerms(uid).map(t=>({en:t.ex,de:`${t.t} = ${t.de}`}));
+  const sp=pick(spk.filter(p=>p.en&&p.en.split(" ").length<=14),u.kind==="phrase"?2:1).map(p=>({type:"speak",prompt:"Sprich diesen Satz laut.",text:p.en,answer:p.en,explanation:p.de}));
+  const rest=shuffle(ex).map(cleanEx).filter(Boolean).slice(0,11-sp.length);
+  return {title:u.title,exercises:shuffle(rest.concat(sp.map(cleanEx).filter(Boolean))),new_terms:[],source:"local"};
 }
 /* ================= Lesson engine ================= */
 let L=null;
@@ -850,9 +864,10 @@ async function startLesson(uid,mode){
     lesson={title:"Fehler wiederholen",exercises:pool.concat(fill).map(cleanEx).filter(Boolean),new_terms:[],source:"review"};
   } else lesson=localLesson(uid);
   if(noAudio()||!canSpeak){const rest=lesson.exercises.filter(x=>!needsAudio(x));if(rest.length>=4)lesson={...lesson,exercises:rest};}
+  if(!speakOK()){const rest=lesson.exercises.filter(x=>!needsMic(x));if(rest.length)lesson={...lesson,exercises:rest};}
   L=makeL(uid,mode,lesson);openLayer();renderEx();
 }
-function closeLesson(){stopSpeech();L=null;LZ().hidden=true;LZ().innerHTML="";document.body.classList.remove("lock");
+function closeLesson(){stopSpeech();stopRec(true);L=null;LZ().hidden=true;LZ().innerHTML="";document.body.classList.remove("lock");
   try{render();}catch(e){reportErr(e);}window.scrollTo(0,0);}
 function showNoHearts(){
   openLayer();const mins=Math.ceil((HEART_MS-(Date.now()-S.hearts.t))/60e3);
@@ -871,6 +886,8 @@ function exHtml(x){
   if(x.type==="fill")h+=`<div class="qtext"><span>${esc(x.text).replace(/_{2,}/,'<span class="gap"></span>')}</span></div>`+opts();
   if(x.type==="correct_sentence")h+=opts();
   if(x.type==="listen_choose")h+=listen(x.text)+opts();
+  if(x.type==="speak")h+=`<div class="qtext"><span>${esc(x.text)}</span>${sayBtn(x.text)}</div>
+    <p class="heard ${L.rec?"on":""}" id="heard" aria-live="polite">${L.ans?esc(L.ans):L.rec?"Ich höre zu …":esc(L.hint||"Tippe unten auf „Sprechen“ und lies den Satz vor.")}</p>`;
   if(x.type==="listen_type")h+=listen(x.text)+`<input class="field" type="text" id="typed" enterkeyhint="go" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Auf Englisch schreiben …" value="${esc(L.ans||"")}">`;
   if(x.type==="build"){
     if(!L.tiles){const words=x.answer.split(/\s+/).map(w=>w.replace(/^[^\w']+|[^\w'%]+$/g,"")).filter(Boolean);L.tiles=shuffle(words.concat(x.options.map(o=>o.replace(/[^\w'%-]/g,"")).filter(Boolean)));L.sel=[];}
@@ -888,12 +905,16 @@ function exHtml(x){
 }
 function canCheck(){const x=curEx();if(x.type==="listen_type")return !!(L.ans&&L.ans.trim());if(x.type==="build")return !!(L.sel&&L.sel.length);if(x.type==="match")return false;return L.ans!==null&&L.ans!==undefined;}
 function footHtml(x,st){
-  if(st==="answer")return `<div class="lfin">${x.type==="match"?`<p class="muted small grow" style="text-align:center">Tippe links und rechts auf zusammengehörige Begriffe.</p>`:`<button class="btn ghost" id="skip">Überspringen</button>${needsAudio(x)?`<button class="btn ghost" id="noaud" style="padding:0 8px">Kein Ton</button>`:""}<button class="btn primary grow" id="chk" ${canCheck()?"":"disabled"}>Prüfen</button>`}</div>`;
+  // Listening and speaking get a free "not now" instead of the costly skip
+  if(st==="answer")return `<div class="lfin">${x.type==="match"?`<p class="muted small grow" style="text-align:center">Tippe links und rechts auf zusammengehörige Begriffe.</p>`
+    :needsMic(x)?`<button class="btn ghost" id="nospk">Kann nicht sprechen</button><button class="btn primary grow ${L.rec?"rec":""}" id="mic">${IC.mic} ${L.rec?"Fertig":"Sprechen"}</button>`
+    :needsAudio(x)?`<button class="btn ghost" id="noaud">Kann nicht hören</button><button class="btn primary grow" id="chk" ${canCheck()?"":"disabled"}>Prüfen</button>`
+    :`<button class="btn ghost" id="skip">Überspringen</button><button class="btn primary grow" id="chk" ${canCheck()?"":"disabled"}>Prüfen</button>`}</div>`;
   const ok=st==="ok",f=L.fb||{};
   // Wrong: what you gave (with the differing words marked), the right answer (with what was missing marked), then why or a tip.
   const body=ok
-    ?`${f.diff?`<p>Richtig geschrieben: <span class="ans">${f.diff.c}</span></p>`:""}${x.explanation&&x.type!=="match"?`<p class="why">${esc(x.explanation)}</p>`:""}`
-    :`${f.given?`<p class="mine">Deine Antwort: ${f.diff?f.diff.g:esc(f.given)}</p>`:""}
+    ?`${f.diff?`<p>${x.type==="speak"?"Achte auf":"Richtig geschrieben"}: <span class="ans">${f.diff.c}</span></p>`:""}${x.explanation&&x.type!=="match"?`<p class="why">${esc(x.explanation)}</p>`:""}`
+    :`${f.given?`<p class="mine">${x.type==="speak"?"Erkannt":"Deine Antwort"}: ${f.diff?f.diff.g:esc(f.given)}</p>`:""}
       ${x.type!=="match"?`<p>Richtig: <span class="ans">${f.diff?f.diff.c:esc(x.answer)}</span></p>`:""}
       <p class="why">${esc(x.explanation||TIPS[x.type]||"")}</p>`;
   return `<div class="lfin fb"><div class="fbhead"><span class="fbi">${ok?IC.check:IC.x}</span><div class="fbt"><b>${esc(ok?(L.fbTitle||"Richtig"):(f.title||"Nicht ganz"))}</b>${body}</div>
@@ -932,15 +953,61 @@ function wireEx(){
   });
   const chk=$("#chk");if(chk)chk.onclick=check;
   const sk=$("#skip");if(sk)sk.onclick=()=>{L.ans=null;L.fb={title:"Übersprungen"};grade(false);};
-  const na=$("#noaud");if(na)na.onclick=()=>{
-    S.noAudioUntil=Date.now()+60*60e3;save();if(canSpeak)speechSynthesis.cancel();
-    L.queue=L.queue.filter((q,i)=>i<L.idx||!needsAudio(q));
-    L.state="answer";L.ans=null;L.tiles=null;L.sel=null;L.m=null;L.spoken=false;L.fresh=true;
-    toast("Hörübungen sind für eine Stunde pausiert, ohne Herzverlust.");renderEx();};
+  const na=$("#noaud");if(na)na.onclick=()=>pauseKind("audio");
+  const ns=$("#nospk");if(ns)ns.onclick=()=>pauseKind("speak");
+  const mic=$("#mic");if(mic)mic.onclick=()=>L.rec?stopRec(false):startRec();
   const nx=$("#nxt");if(nx){nx.onclick=next;nx.focus({preventScroll:true});}
 }
-function askQuit(){
+/* "Can't listen / can't speak right now": skip this and every such exercise for an hour, no heart lost */
+function pauseKind(kind){
+  stopRec(true);stopSpeech();
+  if(kind==="speak")S.noSpeakUntil=Date.now()+60*60e3;else S.noAudioUntil=Date.now()+60*60e3;save();
+  const test=kind==="speak"?needsMic:needsAudio;
+  L.queue=L.queue.filter((q,i)=>i<L.idx||!test(q));
+  L.state="answer";L.ans=null;L.tiles=null;L.sel=null;L.m=null;L.spoken=false;L.fresh=true;L.hint="";L.alts=null;
+  toast(kind==="speak"?"Sprechübungen sind für eine Stunde pausiert, ohne Herzverlust.":"Hörübungen sind für eine Stunde pausiert, ohne Herzverlust.");renderEx();
+}
+/* Speech recognition for speaking exercises */
+let rec=null,recAborted=false;
+function startRec(){
   stopSpeech();
+  if(!SR){micFail("unsupported");return;}
+  try{rec=new SR();}catch(e){micFail("unsupported");return;}
+  rec.lang="en-US";rec.interimResults=true;rec.maxAlternatives=3;rec.continuous=false;
+  recAborted=false;L.ans="";L.alts=null;L.hint="";L.recErr=null;
+  rec.onresult=ev=>{let txt="";for(let i=0;i<ev.results.length;i++)txt+=ev.results[i][0].transcript+" ";
+    L.ans=txt.trim();const last=ev.results[ev.results.length-1];if(last&&last.isFinal)L.alts=Array.from(last).map(a=>a.transcript);
+    const h=$("#heard");if(h)h.textContent=L.ans||"…";};
+  rec.onerror=ev=>{if(L)L.recErr=ev.error;};
+  rec.onend=()=>{rec=null;if(!L)return;const err=L.recErr;L.rec=false;L.recErr=null;
+    if(recAborted||L.state!=="answer")return;
+    if(err==="not-allowed"||err==="service-not-allowed"||err==="audio-capture"){micFail(err);return;}
+    if(L.ans&&L.ans.trim())checkSpeak();
+    else{L.hint=err==="network"?"Für die Spracherkennung braucht das Handy Internet. Versuch es nochmal oder tippe „Kann nicht sprechen“.":"Ich habe nichts gehört. Tippe auf „Sprechen“ und lies den Satz vor.";renderEx();}};
+  L.rec=true;renderEx();
+  try{rec.start();}catch(e){L.rec=false;rec=null;micFail("start");}
+}
+function stopRec(abort){if(!rec)return;recAborted=!!abort;try{abort?rec.abort():rec.stop();}catch(e){}if(abort){rec=null;if(L)L.rec=false;}}
+/* Recognition not available or microphone refused: switch speaking off, no heart lost, re-enable in the profile */
+function micFail(err){
+  if(!L)return;L.rec=false;
+  S.speakBlocked=true;save();
+  L.queue=L.queue.filter((q,i)=>i<L.idx||!needsMic(q));
+  L.state="answer";L.ans=null;L.hint="";L.fresh=true;
+  toast(err==="not-allowed"?"Das Mikrofon ist nicht erlaubt. Sprechübungen sind aus, du kannst sie im Profil wieder einschalten."
+    :"Spracherkennung ist hier nicht verfügbar. Sprechübungen sind aus, du kannst sie im Profil wieder einschalten.");
+  renderEx();
+}
+function checkSpeak(){
+  const x=curEx(),n=x.answer.split(/\s+/).filter(Boolean).length;let best=null,score=-1;
+  for(const c of [L.ans].concat(L.alts||[]).filter(Boolean)){const d=wordDiff(c,x.answer),miss=(d.c.match(/<mark>/g)||[]).length,sc=1-miss/n;if(sc>score){score=sc;best={c,d};}}
+  const ok=score>=.8;L.fb={given:best.c};if(!ok||score<1)L.fb.diff=best.d;
+  L.fbTitle=score>=1?"Sehr gut, alles verstanden":"Gut verständlich";
+  if(!ok)L.fb.title=score>=.5?"Fast verständlich":"Noch nicht verständlich";
+  grade(ok);
+}
+function askQuit(){
+  stopSpeech();stopRec(true);
   if(L.idx===0&&L.state==="answer"){closeLesson();return;}
   openSheet(`<h2>Lektion beenden?</h2><p class="muted">Du bist schon ${Math.round(L.idx/L.queue.length*100)} % weit. Wenn du jetzt aufhörst, bekommst du keine XP für diese Lektion.</p>
     <button class="btn primary block" data-close>Weiterlernen</button><button class="btn block" id="quitNow">Beenden</button>`,s=>s.querySelector("#quitNow").onclick=()=>{closeSheet();closeLesson();});
@@ -949,6 +1016,7 @@ function askQuit(){
 const TIPS={mc:"Lies alle Antworten einmal ganz, bevor du wählst.",fill:"Lies den ganzen Satz: Oft verrät der Rest, welches Wort passt.",
   correct_sentence:"Achte auf falsche Freunde, Präpositionen und die Zeitform.",listen_choose:"Hör dir den Satz mit „Langsam“ noch einmal an.",
   listen_type:"Mit „Langsam“ hörst du jedes Wort einzeln. Auf Groß- und Kleinschreibung kommt es nicht an.",
+  speak:"Hör dir den Satz zuerst an, dann sprich ruhig und deutlich in einem Zug. Die markierten Wörter hat das Handy nicht erkannt.",
   build:"Englisch folgt fast immer Subjekt, Verb, Objekt. Bau zuerst diesen Kern.",match:"Starte mit den Paaren, die du sicher weißt, dann bleiben weniger übrig."};
 /* Word-level diff: marks words in the given answer that are wrong and words in the correct answer that were missing */
 function wordDiff(given,correct){
@@ -988,7 +1056,7 @@ function grade(ok,fromMatch){
   renderEx();
 }
 function next(){
-  stopSpeech();
+  stopSpeech();stopRec(true);if(L){L.hint="";L.alts=null;L.rec=false;}
   if(L.state==="no"&&heartsOn()&&L.mode!=="review"&&S.hearts.n<=0){failLesson();return;}
   L.idx++;L.state="answer";L.ans=null;L.tiles=null;L.sel=null;L.m=null;L.spoken=false;L.fresh=true;L.fb={};L.fbTitle="";
   try{renderTop();}catch(e){}renderEx();
@@ -1198,6 +1266,7 @@ function vProfile(m){
      <div class="it"><span class="ii" style="background:var(--gold)">${IC.target}</span><span class="lb"><b>Tagesziel</b></span><select id="goal" aria-label="Tagesziel">${GOALS.map(([v,t])=>`<option value="${v}" ${S.cfg.goal==v?"selected":""}>${t} · ${v} XP</option>`).join("")}</select></div>
      <label class="it"><span class="ii" style="background:var(--coral)">${IC.heart}</span><span class="lb"><b>Herzen</b><span>Fehler kosten ein Herz</span></span><input type="checkbox" class="sw" id="hearts" ${S.cfg.hearts?"checked":""}></label>
      <label class="it"><span class="ii" style="background:var(--u3)">${IC.sound}</span><span class="lb"><b>Soundeffekte</b></span><input type="checkbox" class="sw" id="sound" ${S.cfg.sound?"checked":""}></label>
+     <label class="it"><span class="ii">${IC.mic}</span><span class="lb"><b>Sprechübungen</b><span>${!SR?"Auf diesem Gerät nicht verfügbar":S.cfg.speak===false?"Aus":S.speakBlocked?"Aus, weil Mikrofon oder Spracherkennung nicht verfügbar war":noSpeak()?"Für eine Stunde pausiert":"Sätze laut vorlesen, das Handy hört mit"}</span></span><input type="checkbox" class="sw" id="speakSw" ${speakOK()?"checked":""} ${SR?"":"disabled"}></label>
    </div>
    <div class="gt">Stimme</div><div class="group">
      ${canSpeak?`<div class="it"><span class="ii" style="background:var(--blue)">${IC.speaker}</span><span class="lb"><b>Stimme</b></span><select id="voice" aria-label="Stimme"><option value="">Automatisch${bv?" ("+esc(bv.name.replace(/^Microsoft |\s*\(.*$/g,"").slice(0,18))+")":""}</option>${sorted.filter(v=>!NOVELTY.test(v.name)).map(v=>`<option value="${esc(v.name)}" ${S.cfg.voice===v.name?"selected":""}>${esc(v.name)}</option>`).join("")}</select></div>
@@ -1221,6 +1290,7 @@ function vProfile(m){
     $("#rate").oninput=e=>{S.cfg.rate=+e.target.value;$("#rateV").textContent=S.cfg.rate.toFixed(2)+"×";save();};
     $("#rate").onchange=()=>speak("Could you walk me through your priorities?");
     $("#testVoice").onclick=()=>speak("Thanks for making the time today. Could you walk me through your priorities for the next twelve months?");
+    const sps=$("#speakSw");if(sps)sps.onchange=e=>{if(e.target.checked){S.cfg.speak=true;S.speakBlocked=false;S.noSpeakUntil=0;}else S.cfg.speak=false;save();render();};
     const ao=$("#audOn");if(ao)ao.onclick=()=>{S.noAudioUntil=0;save();toast("Hörübungen sind wieder an");render();};}
   $("#exp").onclick=exportBackup;
   $("#imp").onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const o=JSON.parse(r.result);if(!o||!o.cfg||!o.stats)throw 0;
@@ -1266,7 +1336,7 @@ document.addEventListener("touchstart",()=>{},{passive:true});
 if(window.visualViewport){const fit=()=>{const z=LZ(),vv=window.visualViewport;z.style.height=vv.height+"px";z.style.top=vv.offsetTop+"px";};
   visualViewport.addEventListener("resize",fit);visualViewport.addEventListener("scroll",fit);}
 document.addEventListener("visibilitychange",()=>{
-  if(document.visibilityState==="hidden"){try{if(canSpeak)speechSynthesis.cancel();}catch(e){}return;}
+  if(document.visibilityState==="hidden"){try{if(canSpeak)speechSynthesis.cancel();stopRec(true);if(L&&L.state==="answer"&&needsMic(curEx()))renderEx();}catch(e){}return;}
   try{refillHearts();if(!L&&$("#sheet").hidden&&$("#onb").hidden)render();else renderTop();loadChapters();}catch(e){reportErr(e);}});
 if("serviceWorker" in navigator&&/^https?:$/.test(location.protocol))navigator.serviceWorker.register("sw.js").catch(()=>{});
 </script>
