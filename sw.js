@@ -1,5 +1,5 @@
 // Keeps Talktrack usable offline once it has been opened.
-const CACHE = "dre-app-v14";
+const CACHE = "dre-app-v15";
 const CORE = ["./", "./index.html", "./chapters.json", "./manifest.webmanifest", "./icon-180.png", "./icon-192.png", "./icon-512.png"];
 
 self.addEventListener("install", e => {

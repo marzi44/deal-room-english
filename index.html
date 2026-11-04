@@ -704,11 +704,19 @@ const IS_IOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==
 const NOVELTY=/Albert|Bad News|Bahh|Bells|Boing|Bubbles|Cellos|Good News|Jester|Organ|Superstar|Trinoids|Whisper|Wobble|Zarvox|Fred|Junior|Kathy|Ralph|Grandma|Grandpa|Eddy|Flo|Reed|Rocko|Sandy|Shelley/i;
 function loadVoices(){if(!canSpeak)return;voices=speechSynthesis.getVoices().filter(v=>/^en([-_]|$)/i.test(v.lang));if(appReady&&current==="profil"&&$("#sheet").hidden&&!L&&document.activeElement?.tagName!=="SELECT")render();}
 if(canSpeak){loadVoices();speechSynthesis.onvoiceschanged=loadVoices;}
+/* Female English voices by name, across iOS/macOS, Edge (Windows) and Chrome/Android. Pleasant, calm ones first. */
+const FEMALE=/\b(Ava|Zoe|Serena|Allison|Samantha|Susan|Kate|Stephanie|Martha|Moira|Karen|Tessa|Fiona|Veena|Victoria|Nicky|Joelle|Catherine|Sonia|Libby|Maisie|Aria|Jenny|Emma|Michelle|Ana|Natasha|Hazel|Zira|Clara|Molly|Emily|Jane|Nancy|Sara|Amber|Ashley|Cora|Elizabeth|Monica|Female|Woman)\b/i;
+const MALE=/\b(Daniel|Arthur|Oliver|Alex|Aaron|Nathan|Gordon|Rishi|Ryan|Guy|Brian|Andrew|Christopher|Eric|Roger|Thomas|William|David|Mark|George|Tom|Evan|Lee|Male|Man)\b/i;
+const FAV=/\b(Ava|Serena|Sonia|Libby|Aria|Jenny|Emma|Zoe|Allison|Samantha|Kate|Stephanie)\b/i;
+const isFemale=v=>FEMALE.test(v.name)&&!MALE.test(v.name);
 function voiceScore(v){let s=0;const n=v.name;
-  if(/premium/i.test(n))s+=75;if(/enhanced|erweitert/i.test(n))s+=60;if(/natural|neural/i.test(n))s+=60;if(/online/i.test(n))s+=15;if(/google/i.test(n))s+=20;
-  if(/Sonia|Libby|Ryan|Maisie|Thomas|Aria|Jenny|Guy|Emma|Brian|Ava|Andrew|Natasha|William|Daniel|Arthur|Serena|Martha|Samantha|Karen|Moira|Kate|Oliver|Stephanie/i.test(n))s+=10;
-  if(/en-GB/i.test(v.lang))s+=4;if(/en-US/i.test(v.lang))s+=3;if(/desktop|zira|david|mark|hazel|george|susan/i.test(n))s-=10;if(NOVELTY.test(n))s-=200;return s;}
+  if(isFemale(v))s+=100;else if(MALE.test(n))s-=60;
+  if(/premium/i.test(n))s+=75;if(/enhanced|erweitert/i.test(n))s+=60;if(/natural|neural/i.test(n))s+=60;if(/online/i.test(n))s+=15;if(/google/i.test(n))s+=12;
+  if(FAV.test(n))s+=15;
+  if(/en-GB/i.test(v.lang))s+=4;if(/en-US/i.test(v.lang))s+=3;if(/desktop/i.test(n))s-=10;if(NOVELTY.test(n))s-=200;return s;}
 function bestVoice(){if(S.cfg.voice){const v=voices.find(v=>v.name===S.cfg.voice);if(v)return v;}return voices.slice().sort((a,b)=>voiceScore(b)-voiceScore(a))[0]||null;}
+/* One-time switch to a female voice: earlier versions may have auto-picked or stored a male one */
+if(S.cfg.voiceV!==2){S.cfg.voiceV=2;S.cfg.voice="";if(!S.cfg.rate||S.cfg.rate===1)S.cfg.rate=.95;try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
 /* iOS: only cancel when something is actually queued (cancel right before speak can swallow the next utterance),
    keep a reference so the utterance isn't garbage-collected, and fall back to the system voice if the chosen one fails. */
 let curUtt=null,unlockUtt=null,speechOk=false,hintShown=false,speakGen=0,autoSpeakT=null;
@@ -719,7 +727,7 @@ function speak(text,slow,plain){if(!canSpeak||!text)return;try{
   const ss=speechSynthesis;if((ss.speaking||ss.pending)&&curUtt!==unlockUtt)ss.cancel();if(ss.paused)ss.resume();
   const u=new SpeechSynthesisUtterance(text);const v=plain?null:bestVoice();
   if(v){u.voice=v;u.lang=v.lang;}else u.lang="en-GB";
-  u.rate=(S.cfg.rate||1)*(slow?.7:1);u.volume=1;
+  u.rate=(S.cfg.rate||.95)*(slow?.72:1);u.pitch=1.02;u.volume=1;
   let started=false;u.onstart=()=>{started=true;speechOk=true;};
   const gen=speakGen;
   u.onerror=e=>{if(gen===speakGen&&!started&&v&&e&&e.error!=="interrupted"&&e.error!=="canceled")speak(text,slow,true);};
@@ -1288,13 +1296,13 @@ function vProfile(m){
      <label class="it"><span class="ii">${IC.mic}</span><span class="lb"><b>Sprechübungen</b><span>${!SR?"Auf diesem Gerät nicht verfügbar":S.cfg.speak===false?"Aus":S.speakBlocked?"Aus, weil Mikrofon oder Spracherkennung nicht verfügbar war":noSpeak()?"Für eine Stunde pausiert":"Sätze laut vorlesen, das Handy hört mit"}</span></span><input type="checkbox" class="sw" id="speakSw" ${speakOK()?"checked":""} ${SR?"":"disabled"}></label>
    </div>
    <div class="gt">Stimme</div><div class="group">
-     ${canSpeak?`<div class="it"><span class="ii" style="background:var(--blue)">${IC.speaker}</span><span class="lb"><b>Stimme</b></span><select id="voice" aria-label="Stimme"><option value="">Automatisch${bv?" ("+esc(bv.name.replace(/^Microsoft |\s*\(.*$/g,"").slice(0,18))+")":""}</option>${sorted.filter(v=>!NOVELTY.test(v.name)).map(v=>`<option value="${esc(v.name)}" ${S.cfg.voice===v.name?"selected":""}>${esc(v.name)}</option>`).join("")}</select></div>
+     ${canSpeak?`<div class="it"><span class="ii" style="background:var(--blue)">${IC.speaker}</span><span class="lb"><b>Stimme</b></span><select id="voice" aria-label="Stimme"><option value="">Automatisch${bv?" ("+esc(bv.name.replace(/^Microsoft |\s*\(.*$/g,"").slice(0,18))+")":""}</option>${[["Weibliche Stimmen",sorted.filter(v=>!NOVELTY.test(v.name)&&isFemale(v))],["Weitere Stimmen",sorted.filter(v=>!NOVELTY.test(v.name)&&!isFemale(v))]].filter(([,l])=>l.length).map(([g,l])=>`<optgroup label="${g}">${l.map(v=>`<option value="${esc(v.name)}" ${S.cfg.voice===v.name?"selected":""}>${esc(v.name)}</option>`).join("")}</optgroup>`).join("")}</select></div>
      <div class="it"><span class="ii" style="background:var(--blue)">${IC.gauge}</span><span class="lb"><b>Tempo</b><span id="rateV">${(S.cfg.rate||1).toFixed(2)}×</span></span><input type="range" id="rate" min="0.6" max="1.3" step="0.05" value="${S.cfg.rate||1}" aria-label="Sprechtempo"></div>
      <button class="it" id="testVoice"><span class="ii" style="background:var(--blue)">${IC.play}</span><span class="lb"><b>Probe hören</b><span>Kein Ton? Stummschalter und Lautstärke prüfen.</span></span><span class="chv">${IC.chev}</span></button>
      ${noAudio()?`<button class="it" id="audOn"><span class="ii" style="background:var(--coral)">${IC.sound}</span><span class="lb"><b>Hörübungen pausiert</b><span>Tippen, um sie wieder einzuschalten</span></span><span class="chv">${IC.chev}</span></button>`:""}`
      :`<div class="it"><span class="lb"><b>Keine Sprachausgabe</b><span>Dieser Browser kann nicht vorlesen.</span></span></div>`}
    </div>
-   <p class="muted small" style="margin:8px 4px 0">${IS_IOS?"Natürlichere Stimmen: iPhone-Einstellungen → Bedienungshilfen → Gesprochene Inhalte → Stimmen → Englisch. Lade z. B. „Daniel“ oder „Serena“ als „Erweitert“ oder „Premium“ und wähle sie hier aus.":"Am natürlichsten klingen die kostenlosen „Natural“-Stimmen in Microsoft Edge."}</p>
+   <p class="muted small" style="margin:8px 4px 0">${IS_IOS?"Natürlichere Stimmen: iPhone-Einstellungen → Bedienungshilfen → Gesprochene Inhalte → Stimmen → Englisch. Am angenehmsten klingen „Ava (Premium)“ (amerikanisch) oder „Serena (Premium)“ (britisch). Einmal laden, dann wählt Talktrack sie automatisch.":"Am natürlichsten klingen die kostenlosen „Natural“-Stimmen in Microsoft Edge, zum Beispiel Sonia oder Aria."}${bv&&!isFemale(bv)?" Auf diesem Gerät wurde keine weibliche englische Stimme gefunden.":""}</p>
 <div class="gt">Daten</div><div class="group">
      <button class="it" id="exp"><span class="ii" style="background:var(--good)">${IC.share}</span><span class="lb"><b>Backup sichern</b><span>${bAge===null?"Noch nie gesichert":bAge===0?"Heute gesichert":`Zuletzt vor ${plural(bAge,"Tag","Tagen")}`}</span></span><span class="chv">${IC.chev}</span></button>
      <label class="it" for="imp" style="cursor:pointer"><span class="ii" style="background:var(--good)">${IC.download}</span><span class="lb"><b>Backup laden</b><span>Fortschritt von einem anderen Gerät übernehmen</span></span><span class="chv">${IC.chev}</span></label>
