@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-02",
+  "updated": "2026-11-04",
   "chapters": [
     {
       "id": "c01-finops", "added": "2026-10-28T01", "title": "Kosten im Griff",
@@ -413,6 +413,31 @@
         ["Not every workload needs the same level of protection, so let's prioritise.", "Kosten und Schutz abwägen"],
         ["When did you last run a full recovery test, end to end?", "Reifegrad prüfen"],
         ["We can start with your most critical application and expand from there.", "Pragmatischer Einstieg"]
+      ]
+    },
+    {
+      "id": "c18-trends", "added": "2026-11-04T11", "title": "Zahlen & Trends beschreiben",
+      "desc": "Diagramme erklären, Wachstum, Rückgänge, Vergleiche",
+      "topic": "describing numbers, graphs and trends: explaining consumption charts, growth and decline, comparisons over time and talking about percentages precisely",
+      "terms": [
+        {"t": "year-on-year", "de": "im Jahresvergleich", "d": "Compared with the same period in the previous year.", "ex": "Azure consumption in the public sector is up year-on-year, mainly thanks to two migrations."},
+        {"t": "quarter-on-quarter", "de": "im Quartalsvergleich", "d": "Compared with the previous quarter.", "ex": "The numbers look flat quarter-on-quarter, but the pipeline behind them is much stronger."},
+        {"t": "percentage point", "de": "Prozentpunkt", "d": "The simple difference between two percentages, not a relative change.", "ex": "Our share of the account grew by one percentage point, not one percent."},
+        {"t": "steady growth", "de": "stetiges Wachstum", "d": "An increase that continues at a regular, reliable pace.", "ex": "The customer prefers steady growth in usage to a big spike they can't plan for."},
+        {"t": "sharp increase", "de": "starker Anstieg", "d": "A sudden and large rise in a figure.", "ex": "The sharp increase in storage costs started right after the new archive went live."},
+        {"t": "dip", "de": "kurzer Rückgang, Delle", "d": "A small, usually temporary fall in a figure.", "ex": "The dip in August is just the summer holidays, it recovers in September."},
+        {"t": "peak", "de": "Höchststand, Spitze", "d": "The highest point a figure reaches before it falls again.", "ex": "Usage hits its peak at month-end when finance runs the closing reports."},
+        {"t": "level off", "de": "sich einpendeln, abflachen", "d": "To stop rising or falling and stay at about the same level.", "ex": "We expect consumption to level off once the migration wave is complete."},
+        {"t": "plateau", "de": "Plateau, Stillstand auf hohem Niveau", "d": "A period when a figure stays stable after a phase of growth.", "ex": "Copilot usage has reached a plateau, so it's time for another round of training."},
+        {"t": "fluctuate", "de": "schwanken", "d": "To go up and down irregularly.", "ex": "Their monthly spend will fluctuate until the workloads are rightsized."}
+      ],
+      "phrases": [
+        ["As you can see on the left, the trend is clearly upwards.", "Diagramm einleiten"],
+        ["The key point here is not the level, but the direction.", "Kernaussage eines Charts"],
+        ["Let me put that number into context before we draw conclusions.", "Zahl einordnen"],
+        ["This is a one-off effect, so I wouldn't read too much into it.", "Ausreißer erklären"],
+        ["Roughly speaking, we're about where we were this time last year.", "Grobe Vergleichsaussage"],
+        ["If this trend continues, we'll need to revisit the forecast next quarter.", "Konsequenz ableiten"]
       ]
     }
   ]
