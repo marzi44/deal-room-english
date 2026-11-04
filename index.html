@@ -168,7 +168,7 @@ main{padding-top:6px;padding-bottom:calc(var(--tab-h) + env(safe-area-inset-bott
 .notice div{flex:1;font-size:14.5px}
 .pathhead{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:40px 2px 12px}
 .pathhead h2{font-size:21px}
-.unit{background:var(--surface);border:.5px solid var(--line);border-radius:var(--r);padding:16px 16px 18px;margin-top:10px;scroll-margin-top:80px}
+.unit{background:var(--surface);border:.5px solid var(--line);border-radius:var(--r);padding:16px 16px 18px;margin-top:10px;scroll-margin-top:12px}
 .unit.current{box-shadow:var(--shadow);border-color:var(--line-2)}
 .unit.complete .uhead h2{color:var(--ink-2)}
 .uhead{display:flex;gap:12px;align-items:flex-start}
@@ -438,6 +438,19 @@ input.field:focus,textarea.field:focus{border-color:var(--accent)}
 .sheet .grab{height:5px;margin-top:0}
 main.tabin{animation:tabIn .18s ease}
 @keyframes tabIn{from{opacity:.4}}
+
+/* App shell: the document is pinned; only #scroller moves. Top bar and tab bar never shift or bounce. */
+html,body{height:100%;overflow:hidden;overscroll-behavior:none}
+body{position:fixed;inset:0;display:flex;flex-direction:column;min-height:0}
+.topbar{position:relative;flex:none}
+.scroller{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:none}
+main{padding-bottom:36px}
+.tabbar{position:relative;flex:none;left:auto;right:auto;bottom:auto}
+.lesson .lbody,.sheet .pn,.onb{overscroll-behavior:none}
+@media (min-width:900px){
+  .tabbar{position:fixed;left:50%;bottom:20px;transform:translateX(-50%)}
+  main{padding-bottom:120px}
+}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -446,7 +459,7 @@ main.tabin{animation:tabIn .18s ease}
   <div class="logo"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="var(--btn)"/><rect x="9" y="9" width="14" height="3" rx="1.5" fill="var(--on-btn)"/><rect x="14.5" y="9" width="3" height="14.5" rx="1.5" fill="var(--on-btn)"/><circle cx="22.3" cy="22" r="1.9" fill="var(--accent)"/></svg>Talktrack</div>
   <div class="pills" id="pills"></div>
 </div></div>
-<main class="wrap" id="main"></main>
+<div class="scroller" id="scroller"><main class="wrap" id="main"></main></div>
 <nav class="tabbar" aria-label="Hauptnavigation"><div class="in" id="tabs"></div></nav>
 <div class="lesson" id="lesson" hidden></div>
 <div class="sheet" id="sheet" hidden></div>
@@ -679,7 +692,10 @@ function renderTop(){
   $$("[data-pill]").forEach(b=>b.onclick=()=>pillSheet(b.dataset.pill));
 }
 setInterval(()=>{const n=S.hearts.n;refillHearts();if(n!==S.hearts.n){save();renderTop();}},60e3);
-addEventListener("scroll",()=>$("#topbar").classList.toggle("scrolled",scrollY>4),{passive:true});
+const SC=()=>document.getElementById("scroller");
+SC().addEventListener("scroll",()=>$("#topbar").classList.toggle("scrolled",SC().scrollTop>4),{passive:true});
+/* iOS shifts the whole page up for the keyboard and sometimes leaves it there: snap it back when typing ends */
+document.addEventListener("focusout",()=>setTimeout(()=>{if(!document.activeElement||!/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName))window.scrollTo(0,0);},60));
 
 /* ================= Voice ================= */
 const canSpeak="speechSynthesis" in window;
@@ -871,7 +887,7 @@ async function startLesson(uid,mode){
   L=makeL(uid,mode,lesson);openLayer();renderEx();
 }
 function closeLesson(){stopSpeech();stopRec(true);L=null;LZ().hidden=true;LZ().innerHTML="";document.body.classList.remove("lock");
-  try{render();}catch(e){reportErr(e);}window.scrollTo(0,0);}
+  try{render();}catch(e){reportErr(e);}SC().scrollTo(0,0);}
 function showNoHearts(){
   openLayer();const mins=Math.ceil((HEART_MS-(Date.now()-S.hearts.t))/60e3);
   LZ().innerHTML=`<div></div><div class="lbody"><div class="center"><div class="badge" style="background:var(--coral)">${IC.heart}</div>
@@ -1128,7 +1144,7 @@ document.addEventListener("keydown",e=>{
 /* ================= Shell & navigation ================= */
 const TABS=[["lernen","Lernen",IC.path],["woerter","Wörter",IC.cards],["profil","Profil",IC.user]];
 let current=TABS.some(t=>t[0]===location.hash.slice(1))?location.hash.slice(1):"lernen",lastView=null;
-function go(v){if(current===v){window.scrollTo({top:0,behavior:"smooth"});return;}current=v;try{history.replaceState(null,"","#"+v);}catch(e){}render();window.scrollTo(0,0);}
+function go(v){if(current===v){SC().scrollTo({top:0,behavior:"smooth"});return;}current=v;try{history.replaceState(null,"","#"+v);}catch(e){}render();SC().scrollTo(0,0);}
 function render(){
   $("#tabs").innerHTML=TABS.map(([id,l,ic])=>`<button class="tb" data-tab="${id}" ${current===id?'aria-current="page"':""}><span class="ic">${ic}</span>${l}</button>`).join("");
   $$("[data-tab]").forEach(b=>b.onclick=()=>go(b.dataset.tab));
