@@ -279,6 +279,8 @@ textarea.field{resize:vertical;min-height:110px;line-height:1.45}
 .fbt mark{background:none;color:var(--ink);font-weight:650;text-decoration:underline;text-decoration-color:var(--good);text-decoration-thickness:2px;text-underline-offset:3px}
 .risk{display:flex;gap:8px;align-items:flex-start;margin-top:8px;font-size:14.5px;color:var(--ink-2)}
 .risk svg{width:16px;height:16px;color:var(--orange);margin-top:3px}
+.gate{z-index:95}
+.gate .center{gap:16px}
 .heard{min-height:48px;text-align:center;font-size:17px;line-height:1.45;color:var(--muted);padding:6px 4px}
 .heard.on{color:var(--accent)}
 .btn.rec{animation:recPulse 1.2s ease-in-out infinite}
@@ -449,6 +451,7 @@ main.tabin{animation:tabIn .18s ease}
 <div class="lesson" id="lesson" hidden></div>
 <div class="sheet" id="sheet" hidden></div>
 <div class="onb" id="onb" hidden></div>
+<div class="onb gate" id="gate" hidden></div>
 <canvas id="confetti" hidden></canvas>
 <div class="toast" id="toast" role="status" hidden></div>
 
@@ -1329,7 +1332,23 @@ function showOnb(){
 /* ================= Start ================= */
 appReady=true;
 render();
-if(!S.onboarded)showOnb();
+/* Access code: keeps casual visitors out. Not real security, the code is only stored as a hash. */
+const GATE_HASH="96d9d30e1f5dcd47a70b5f629bf2c0d841b4f168a13f39ec94a7936de442f285",GATE_KEY="talktrack-gate";
+async function sha256(t){const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(t));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,"0")).join("");}
+function gateOpen(){try{return localStorage.getItem(GATE_KEY)===GATE_HASH;}catch(e){return false;}}
+function showGate(){
+  const g=$("#gate");g.hidden=false;document.body.classList.add("lock");
+  g.innerHTML=`<div class="center">${LOGO}<h1>Talktrack</h1><p class="lead">Bitte gib den Zugangscode ein.</p>
+    <form id="gform" class="stack" style="width:100%"><input class="field" id="gcode" type="password" autocomplete="current-password" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="go" placeholder="Zugangscode" aria-label="Zugangscode">
+    <p class="err" id="gerr" aria-live="polite"></p><button class="btn primary block" type="submit">Öffnen</button></form></div>`;
+  $("#gform").onsubmit=async e=>{e.preventDefault();const v=$("#gcode").value.trim().toLowerCase();if(!v)return;
+    let ok=false;try{ok=(await sha256("talktrack:"+v))===GATE_HASH;}catch(err){$("#gerr").textContent="Die Prüfung ist hier nicht möglich. Öffne die App über die Internetadresse.";return;}
+    if(!ok){$("#gerr").textContent="Der Code stimmt nicht.";$("#gcode").select();return;}
+    try{localStorage.setItem(GATE_KEY,GATE_HASH);}catch(err){}
+    g.hidden=true;g.innerHTML="";document.body.classList.remove("lock");if(!S.onboarded)showOnb();};
+}
+if(!gateOpen())showGate();
+else if(!S.onboarded)showOnb();
 loadChapters();
 document.addEventListener("touchstart",()=>{},{passive:true});
 /* The iOS keyboard does not resize fixed layers: size the lesson to the visible area so the footer stays above it */
