@@ -404,7 +404,9 @@ html{background:var(--bg);touch-action:manipulation;-webkit-text-size-adjust:100
 body{overscroll-behavior-y:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;min-height:100dvh;font-size:17px;letter-spacing:-.01em}
 input,textarea{-webkit-user-select:text;user-select:text}
 .lesson,.lbody,.onb,.sheet .pn{overscroll-behavior:contain}
-.lesson{height:100dvh;bottom:auto}
+.lesson{top:0;right:0;bottom:0;left:0;height:auto}
+/* While a lesson, sheet or start screen is open nothing of the app shell may show through */
+body.lock .tabbar,body.lock .topbar{visibility:hidden}
 .lfoot{max-height:60dvh;overflow-y:auto}
 .onb .center{min-height:calc(100dvh - env(safe-area-inset-top,0px))}
 .center{padding-bottom:calc(32px + env(safe-area-inset-bottom,0px))}
@@ -1380,7 +1382,9 @@ else if(!S.onboarded)showOnb();
 loadChapters();
 document.addEventListener("touchstart",()=>{},{passive:true});
 /* The iOS keyboard does not resize fixed layers: size the lesson to the visible area so the footer stays above it */
-if(window.visualViewport){const fit=()=>{const z=LZ(),vv=window.visualViewport;z.style.height=vv.height+"px";z.style.top=vv.offsetTop+"px";};
+/* Only while the keyboard is open, lift the lesson's bottom edge above it; otherwise it stays pinned to all four edges */
+if(window.visualViewport){const fit=()=>{const z=LZ(),vv=window.visualViewport,kb=window.innerHeight-vv.height-vv.offsetTop;
+  z.style.height="";z.style.top="";z.style.bottom=kb>80?kb+"px":"";};
   visualViewport.addEventListener("resize",fit);visualViewport.addEventListener("scroll",fit);}
 document.addEventListener("visibilitychange",()=>{
   if(document.visibilityState==="hidden"){try{if(canSpeak)speechSynthesis.cancel();stopRec(true);if(L&&L.state==="answer"&&needsMic(curEx()))renderEx();}catch(e){}return;}
