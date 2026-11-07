@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-04",
+  "updated": "2026-11-07",
   "chapters": [
     {
       "id": "c01-finops", "added": "2026-10-28T01", "title": "Kosten im Griff",
@@ -438,6 +438,31 @@
         ["This is a one-off effect, so I wouldn't read too much into it.", "Ausreißer erklären"],
         ["Roughly speaking, we're about where we were this time last year.", "Grobe Vergleichsaussage"],
         ["If this trend continues, we'll need to revisit the forecast next quarter.", "Konsequenz ableiten"]
+      ]
+    },
+    {
+      "id": "c19-feedback", "added": "2026-11-07T19", "title": "Feedback geben & annehmen",
+      "desc": "Einzelgespräche, konstruktive Kritik, Lob, Entwicklungsfelder",
+      "topic": "giving and receiving feedback internally: one-to-ones with your manager, constructive criticism of colleagues, praise, development areas and reacting well to critical comments",
+      "terms": [
+        {"t": "constructive feedback", "de": "konstruktive Rückmeldung", "d": "Feedback that points out a problem and helps the person improve.", "ex": "Thanks for the constructive feedback on my pitch, I'll restructure the opening slides."},
+        {"t": "one-to-one", "de": "Einzelgespräch, Mitarbeitergespräch", "d": "A regular private meeting between a manager and an employee.", "ex": "Let's discuss the forecast gaps in our one-to-one on Thursday."},
+        {"t": "blind spot", "de": "blinder Fleck", "d": "Something about yourself or your work that you don't notice but others do.", "ex": "My manager pointed out a blind spot: I rarely involve the partner early enough."},
+        {"t": "room for improvement", "de": "Verbesserungspotenzial", "d": "A polite way of saying something is good but could be better.", "ex": "The customer workshop went well, but there's room for improvement in how we closed it."},
+        {"t": "sugar-coat", "de": "beschönigen", "d": "To make bad news sound more pleasant than it really is.", "ex": "I won't sugar-coat it: the deal slipped because we qualified it too late."},
+        {"t": "take on board", "de": "annehmen, berücksichtigen", "d": "To accept a suggestion or criticism and act on it.", "ex": "I'll take on board what you said about keeping my status updates shorter."},
+        {"t": "come across as", "de": "wirken wie", "d": "To give a particular impression to other people.", "ex": "I don't want to come across as pushy, so I'll give the customer a week to decide."},
+        {"t": "development area", "de": "Entwicklungsfeld", "d": "A skill or behaviour someone has agreed to work on.", "ex": "Executive presence is my main development area for this year."},
+        {"t": "lessons learned", "de": "gewonnene Erkenntnisse", "d": "Insights gathered after a project or event to do better next time.", "ex": "Let's capture the lessons learned from the lost tender before the next bid."},
+        {"t": "give credit", "de": "Anerkennung aussprechen", "d": "To publicly recognise someone's contribution.", "ex": "I want to give credit to the partner team for turning the proposal around in two days."}
+      ],
+      "phrases": [
+        ["Can I share some feedback on yesterday's customer meeting?", "Feedback ankündigen, um Erlaubnis bitten"],
+        ["What worked really well was how you handled the pricing question.", "Mit konkretem Lob beginnen"],
+        ["One thing I'd do differently next time is send the agenda earlier.", "Kritik als Vorschlag formulieren"],
+        ["Thanks, that's fair. Could you give me a specific example?", "Kritik annehmen und nachfragen"],
+        ["How do you think it went from your side?", "Selbsteinschätzung einholen"],
+        ["I'd really value your honest view on my forecast calls.", "Aktiv um Feedback bitten"]
       ]
     }
   ]
