@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-07",
+  "updated": "2026-11-09",
   "chapters": [
     {
       "id": "c01-finops", "added": "2026-10-28T01", "title": "Kosten im Griff",
@@ -463,6 +463,31 @@
         ["Thanks, that's fair. Could you give me a specific example?", "Kritik annehmen und nachfragen"],
         ["How do you think it went from your side?", "Selbsteinschätzung einholen"],
         ["I'd really value your honest view on my forecast calls.", "Aktiv um Feedback bitten"]
+      ]
+    },
+    {
+      "id": "c20-green-it", "added": "2026-11-09T20", "title": "Nachhaltigkeit & Green IT",
+      "desc": "CO2-Bilanz, ESG-Berichte, Energieeffizienz, Greenwashing vermeiden",
+      "topic": "sustainability and green IT conversations: carbon footprint of IT, emissions reporting, energy efficiency, hardware lifecycle and talking about green claims credibly",
+      "terms": [
+        {"t": "carbon footprint", "de": "CO2-Fußabdruck", "d": "The total greenhouse gas emissions caused by an organisation, product or activity.", "ex": "The CIO wants to understand the carbon footprint of their IT before and after the migration."},
+        {"t": "Scope 3 emissions", "de": "indirekte Emissionen in der Lieferkette (Scope 3)", "d": "Indirect emissions that occur in a company's value chain, including purchased services such as cloud.", "ex": "Our cloud usage shows up in the customer's Scope 3 emissions, so their sustainability team wants the data."},
+        {"t": "ESG reporting", "de": "Nachhaltigkeitsberichterstattung (ESG)", "d": "Reporting on a company's environmental, social and governance performance.", "ex": "ESG reporting has become a board-level topic since the new EU rules came in."},
+        {"t": "net zero", "de": "Netto-Null-Emissionen", "d": "A state where the greenhouse gases an organisation emits are balanced by those it removes.", "ex": "The group has committed to net zero, and IT is expected to contribute its share."},
+        {"t": "decarbonisation", "de": "Dekarbonisierung", "d": "Reducing the carbon dioxide emissions caused by an activity or organisation.", "ex": "Consolidating old server rooms can be a practical first step in their decarbonisation plan."},
+        {"t": "renewable energy", "de": "erneuerbare Energie", "d": "Energy from sources that are naturally replenished, such as wind, solar or hydropower.", "ex": "Their procurement team asked how much renewable energy powers the data centre region."},
+        {"t": "energy efficiency", "de": "Energieeffizienz", "d": "Using less energy to deliver the same output or service.", "ex": "Energy efficiency is one reason shared cloud infrastructure can beat an ageing on-premises setup."},
+        {"t": "greenwashing", "de": "Greenwashing, Schönfärberei beim Umweltschutz", "d": "Making misleading claims that something is more environmentally friendly than it is.", "ex": "Let's only quote verified figures, because the customer is very sensitive to greenwashing."},
+        {"t": "e-waste", "de": "Elektroschrott", "d": "Discarded electronic devices and equipment, such as old servers and laptops.", "ex": "Retiring the old storage arrays raises the question of how they handle e-waste responsibly."},
+        {"t": "emissions baseline", "de": "Ausgangswert der Emissionen", "d": "The measured level of emissions at a starting point, used to track future reductions.", "ex": "Without an emissions baseline, we can't show the board what the migration actually changed."}
+      ],
+      "phrases": [
+        ["How is sustainability reflected in your IT decisions today?", "Thema behutsam eröffnen"],
+        ["Who in your organisation owns the sustainability reporting?", "Ansprechpartner finden"],
+        ["I'd rather give you verified data than an impressive headline number.", "Glaubwürdigkeit statt Greenwashing"],
+        ["Let's measure a baseline first, so we can show real progress later.", "Messbarkeit sicherstellen"],
+        ["Cost savings and lower emissions often go hand in hand here.", "Nachhaltigkeit mit Business verbinden"],
+        ["Shall I connect you with our sustainability specialist for the details?", "Experten einbinden"]
       ]
     }
   ]
