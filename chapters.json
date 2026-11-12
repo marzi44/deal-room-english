@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-09",
+  "updated": "2026-11-12",
   "chapters": [
     {
       "id": "c01-finops", "added": "2026-10-28T01", "title": "Kosten im Griff",
@@ -488,6 +488,31 @@
         ["Let's measure a baseline first, so we can show real progress later.", "Messbarkeit sicherstellen"],
         ["Cost savings and lower emissions often go hand in hand here.", "Nachhaltigkeit mit Business verbinden"],
         ["Shall I connect you with our sustainability specialist for the details?", "Experten einbinden"]
+      ]
+    },
+    {
+      "id": "c21-escalations", "added": "2026-11-12T19", "title": "Schwierige Gespräche & Eskalationen",
+      "desc": "verärgerte Kunden, Verantwortung übernehmen, Erwartungen steuern, Nachbereitung",
+      "topic": "handling difficult conversations and customer escalations: calming frustrated customers, taking ownership, managing expectations, explaining root causes and rebuilding trust afterwards",
+      "terms": [
+        {"t": "de-escalate", "de": "entschärfen, beruhigen", "d": "To reduce the tension or intensity of a conflict or difficult situation.", "ex": "Before we discuss any solution, let's de-escalate and give the CIO a chance to explain the impact."},
+        {"t": "root cause", "de": "eigentliche Ursache", "d": "The underlying reason a problem happened, not just its visible symptoms.", "ex": "We'll share the root cause as soon as the engineering team has confirmed it."},
+        {"t": "take ownership", "de": "Verantwortung übernehmen", "d": "To accept responsibility for a problem and for driving it to a solution.", "ex": "I'll take ownership of this internally, so you have one person to call."},
+        {"t": "manage expectations", "de": "Erwartungen steuern", "d": "To make sure people have a realistic view of what will happen and when.", "ex": "We need to manage expectations, because a full fix will take longer than a weekend."},
+        {"t": "workaround", "de": "Übergangslösung, Behelfslösung", "d": "A temporary way of getting around a problem until it is properly fixed.", "ex": "The partner has found a workaround, so the invoicing process can run again tonight."},
+        {"t": "goodwill gesture", "de": "Kulanzangebot, Entgegenkommen", "d": "Something offered voluntarily to show you value the relationship after a problem.", "ex": "Any goodwill gesture has to be approved internally, so I can't promise anything today."},
+        {"t": "point of contact", "de": "Ansprechperson", "d": "The person responsible for communication about a specific topic.", "ex": "Until this is resolved, I'll be your single point of contact for all updates."},
+        {"t": "clear the air", "de": "die Sache bereinigen, Spannungen ausräumen", "d": "To talk openly about a problem in order to remove tension or misunderstandings.", "ex": "After the tense steering committee, I suggested a short call to clear the air."},
+        {"t": "post-incident review", "de": "Nachbesprechung eines Vorfalls", "d": "A structured meeting after an incident to understand what happened and prevent it from recurring.", "ex": "We'll walk your team through the findings in a post-incident review next week."},
+        {"t": "sense of urgency", "de": "Dringlichkeit, Handlungsdruck", "d": "The feeling that something must be dealt with quickly.", "ex": "The customer needs to see a real sense of urgency from our side, not just another email."}
+      ],
+      "phrases": [
+        ["I completely understand why you're frustrated, and I'd feel the same.", "Ärger anerkennen"],
+        ["Let me make sure I've understood the business impact correctly.", "Zuhören und zusammenfassen"],
+        ["I don't have the full answer yet, but I'll update you by five today.", "Ehrlich bleiben, Zeitpunkt zusagen"],
+        ["What would a good outcome look like for you right now?", "Lösung gemeinsam definieren"],
+        ["I can't promise that today, but I'll push for it internally.", "Nichts Unrealistisches versprechen"],
+        ["Once things are stable, let's review what we can do better together.", "Vertrauen wieder aufbauen"]
       ]
     }
   ]
