@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-12",
+  "updated": "2026-11-13",
   "chapters": [
     {
       "id": "c01-finops", "added": "2026-10-28T01", "title": "Kosten im Griff",
@@ -513,6 +513,31 @@
         ["What would a good outcome look like for you right now?", "Lösung gemeinsam definieren"],
         ["I can't promise that today, but I'll push for it internally.", "Nichts Unrealistisches versprechen"],
         ["Once things are stable, let's review what we can do better together.", "Vertrauen wieder aufbauen"]
+      ]
+    },
+    {
+      "id": "c22-public-sector", "added": "2026-11-13T19", "title": "Digitale Verwaltung",
+      "desc": "Bürgerservices, Barrierefreiheit, Interoperabilität, öffentliche Mittel",
+      "topic": "public sector digitalisation conversations: modernising citizen services, replacing paper-based processes, interoperability between authorities, accessibility and spending public funds responsibly",
+      "terms": [
+        {"t": "citizen services", "de": "Bürgerservices", "d": "Services that a public authority provides directly to residents, such as applications and permits.", "ex": "The city wants to move more citizen services online so people don't have to queue at the office."},
+        {"t": "digital by default", "de": "standardmäßig digital", "d": "A principle that public services are designed to be used online first, with other channels as backup.", "ex": "The new strategy is digital by default, but nobody should be left behind who can't use it."},
+        {"t": "once-only principle", "de": "Once-Only-Prinzip", "d": "The idea that citizens and businesses should provide the same information to authorities only once.", "ex": "The once-only principle only works if the authorities can actually share data with each other."},
+        {"t": "interoperability", "de": "Interoperabilität, Zusammenarbeit von Systemen", "d": "The ability of different systems and organisations to exchange and use information.", "ex": "Interoperability between the federal and regional systems is still the biggest technical hurdle."},
+        {"t": "electronic identity", "de": "elektronische Identität", "d": "A secure digital way for a person to prove who they are online.", "ex": "Citizens sign in with their electronic identity, so the portal never has to store passwords."},
+        {"t": "paper-based process", "de": "papierbasierter Prozess", "d": "A workflow that still relies on printed forms, signatures and physical files.", "ex": "Every paper-based process we digitise frees up time for the staff at the counter."},
+        {"t": "accessibility", "de": "Barrierefreiheit", "d": "Designing services so that people with disabilities can use them without barriers.", "ex": "Accessibility is a legal requirement for the portal, not a nice-to-have."},
+        {"t": "public funds", "de": "öffentliche Mittel, Steuergeld", "d": "Money that comes from taxpayers and is managed by public authorities.", "ex": "Because this is public funds, the department has to justify every euro to the court of audit."},
+        {"t": "shared services", "de": "gemeinsam genutzte Dienste", "d": "Functions or IT services that several departments or authorities use together instead of running their own.", "ex": "Moving to shared services would let the smaller municipalities benefit from the same platform."},
+        {"t": "call-off", "de": "Abruf aus einem Rahmenvertrag", "d": "An individual order placed under an existing framework contract without a new tender.", "ex": "They can buy the workshop as a call-off from the federal framework, so no new tender is needed."}
+      ],
+      "phrases": [
+        ["Which service causes the most phone calls and visits to your offices today?", "Schmerzpunkt im Bürgerkontakt finden"],
+        ["How do you make sure nobody is left behind when services move online?", "Inklusion ansprechen"],
+        ["Let's check which procurement route you can use before we plan the pilot.", "Beschaffungsweg früh klären"],
+        ["We'd keep the data in the region and document that clearly for your auditors.", "Bedenken zu Datenstandort aufgreifen"],
+        ["Could another authority reuse this solution once it's live?", "Skalierung im öffentlichen Sektor denken"],
+        ["I understand decisions take time here; let's plan around your budget cycle.", "Geduld zeigen, Zeitplan realistisch halten"]
       ]
     }
   ]
