@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-13",
+  "updated": "2026-11-16",
   "chapters": [
     {
       "id": "c01-finops", "added": "2026-10-28T01", "title": "Kosten im Griff",
@@ -538,6 +538,31 @@
         ["We'd keep the data in the region and document that clearly for your auditors.", "Bedenken zu Datenstandort aufgreifen"],
         ["Could another authority reuse this solution once it's live?", "Skalierung im öffentlichen Sektor denken"],
         ["I understand decisions take time here; let's plan around your budget cycle.", "Geduld zeigen, Zeitplan realistisch halten"]
+      ]
+    },
+    {
+      "id": "c23-qbr", "added": "2026-11-16T19", "title": "Quartalsgespräche mit Kunden",
+      "desc": "Rückblick und Nutzen, Kundenzufriedenheit, Ausbaupotenzial, gemeinsamer Maßnahmenplan",
+      "topic": "running quarterly business reviews with existing customers: reviewing results and value delivered, spotting risks to the relationship, identifying expansion opportunities and agreeing on a joint plan for the next quarter",
+      "terms": [
+        {"t": "quarterly business review", "de": "Quartalsgespräch mit dem Kunden (QBR)", "d": "A structured meeting every three months to review results, value and plans with a customer.", "ex": "In the quarterly business review, the CIO wanted to see what the migration had actually delivered."},
+        {"t": "account plan", "de": "Kundenplan, Account-Plan", "d": "A document that sets out goals, stakeholders, opportunities and actions for one customer.", "ex": "I've updated the account plan with the three priorities we heard from the board."},
+        {"t": "value realisation", "de": "tatsächlich erzielter Nutzen", "d": "The point at which a customer actually achieves the benefits promised in the business case.", "ex": "Let's start with value realisation, because that's what their CFO will ask about first."},
+        {"t": "renewal", "de": "Vertragsverlängerung", "d": "The extension of an existing contract or subscription for a further period.", "ex": "The renewal is still eight months away, but the conversation should start now."},
+        {"t": "churn risk", "de": "Abwanderungsrisiko", "d": "The likelihood that a customer will reduce usage or move to a competitor.", "ex": "Low adoption in two business units is a clear churn risk we need to address."},
+        {"t": "customer health", "de": "Zustand der Kundenbeziehung", "d": "An overall view of how satisfied, engaged and successful a customer is.", "ex": "Customer health looks good on paper, but the new IT director hasn't met us yet."},
+        {"t": "expansion opportunity", "de": "Ausbaupotenzial", "d": "A chance to sell additional solutions or more usage to an existing customer.", "ex": "The success in finance opens an expansion opportunity in the other subsidiaries."},
+        {"t": "whitespace", "de": "noch unerschlossenes Potenzial beim Kunden", "d": "Areas of a customer's business where you are not yet selling any solutions.", "ex": "Our biggest whitespace in this account is data and analytics."},
+        {"t": "mutual action plan", "de": "gemeinsamer Maßnahmenplan", "d": "A shared list of steps, owners and dates agreed by both the customer and the vendor.", "ex": "Let's capture today's decisions in a mutual action plan and review it in four weeks."},
+        {"t": "look back, look ahead", "de": "Rückblick und Ausblick", "d": "A common structure for a review meeting: first past results, then future plans.", "ex": "I'd keep the agenda simple: look back, look ahead, then agree on next steps."}
+      ],
+      "phrases": [
+        ["Let's start with what we set out to achieve last quarter.", "Rückblick einleiten"],
+        ["Which of these results matters most to your leadership team?", "Nutzen priorisieren lassen"],
+        ["Is there anything we should be doing differently as a partner?", "Ehrliches Feedback einholen"],
+        ["I've noticed usage has slowed in one area; can we talk about why?", "Risiko offen ansprechen"],
+        ["Based on what we've heard, here are two areas worth exploring next.", "Ausbaupotenzial vorschlagen"],
+        ["Shall we agree on owners and dates before we close today?", "Gemeinsamen Plan festhalten"]
       ]
     }
   ]
