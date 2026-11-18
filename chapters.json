@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-16",
+  "updated": "2026-11-18",
   "chapters": [
     {
       "id": "c01-finops", "added": "2026-10-28T01", "title": "Kosten im Griff",
@@ -563,6 +563,31 @@
         ["I've noticed usage has slowed in one area; can we talk about why?", "Risiko offen ansprechen"],
         ["Based on what we've heard, here are two areas worth exploring next.", "Ausbaupotenzial vorschlagen"],
         ["Shall we agree on owners and dates before we close today?", "Gemeinsamen Plan festhalten"]
+      ]
+    },
+    {
+      "id": "c24-manufacturing-iot", "added": "2026-11-18T17", "title": "Industrie & IoT",
+      "desc": "vorausschauende Wartung, Maschinendaten, Edge Computing, IT/OT-Zusammenarbeit",
+      "topic": "manufacturing and IoT conversations: connecting machines on the shop floor, predictive maintenance, edge computing, bringing IT and OT teams together and turning sensor data into business value",
+      "terms": [
+        {"t": "shop floor", "de": "Produktionshalle, Fertigung", "d": "The area of a factory where the actual production takes place.", "ex": "The plant manager invited us to walk the shop floor before the workshop."},
+        {"t": "predictive maintenance", "de": "vorausschauende Wartung", "d": "Using data to predict when equipment will fail so it can be serviced beforehand.", "ex": "Predictive maintenance is the use case their board understands immediately."},
+        {"t": "unplanned downtime", "de": "ungeplanter Stillstand", "d": "Time when machines or production lines stop unexpectedly.", "ex": "Every hour of unplanned downtime on that line costs them real money, so they want to know before a bearing fails."},
+        {"t": "digital twin", "de": "digitaler Zwilling", "d": "A virtual model of a physical asset or process that is updated with real data.", "ex": "They want to build a digital twin of the plant before deciding on the new layout."},
+        {"t": "edge computing", "de": "Datenverarbeitung direkt vor Ort (Edge)", "d": "Processing data close to where it is created instead of sending everything to a central cloud.", "ex": "Edge computing lets the quality checks run even if the internet connection drops."},
+        {"t": "operational technology", "de": "Betriebstechnik (OT)", "d": "Hardware and software that monitor and control physical machines and industrial processes.", "ex": "The operational technology team is cautious, because a mistake can stop the whole line."},
+        {"t": "IT/OT convergence", "de": "Zusammenwachsen von IT und Betriebstechnik", "d": "Bringing office IT systems and factory control systems closer together to share data.", "ex": "IT/OT convergence is as much about trust between two teams as about technology."},
+        {"t": "sensor data", "de": "Sensordaten", "d": "Measurements such as temperature, vibration or pressure collected by sensors on equipment.", "ex": "They already collect sensor data from every press, but nobody analyses it."},
+        {"t": "overall equipment effectiveness", "de": "Gesamtanlageneffektivität (OEE)", "d": "A standard measure of how well a machine is used, combining availability, performance and quality.", "ex": "If we can show a better overall equipment effectiveness in one pilot line, the other plants will follow."},
+        {"t": "brownfield", "de": "Bestandsumgebung, bestehende Anlage", "d": "An existing site or system with older equipment that a new solution must work with.", "ex": "Most Austrian plants are brownfield, so the solution has to connect machines that are twenty years old."}
+      ],
+      "phrases": [
+        ["Which machine or line keeps your production manager awake at night?", "Schmerzpunkt in der Fertigung finden"],
+        ["Could we walk the shop floor together before we talk about architecture?", "Vor Ort verstehen"],
+        ["Let's bring the OT team in early, because they'll have to live with it.", "OT-Team einbinden"],
+        ["What data do you already collect, and what happens to it today?", "Datenlage klären"],
+        ["I'd start with one line and one clear metric before scaling to other plants.", "Kleiner Pilot statt Großprojekt"],
+        ["Production comes first, so nothing we do should put uptime at risk.", "Bedenken der Produktion ernst nehmen"]
       ]
     }
   ]
