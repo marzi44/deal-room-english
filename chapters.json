@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-18",
+  "updated": "2026-11-21",
   "chapters": [
     {
       "id": "c01-finops", "added": "2026-10-28T01", "title": "Kosten im Griff",
@@ -588,6 +588,31 @@
         ["What data do you already collect, and what happens to it today?", "Datenlage klären"],
         ["I'd start with one line and one clear metric before scaling to other plants.", "Kleiner Pilot statt Großprojekt"],
         ["Production comes first, so nothing we do should put uptime at risk.", "Bedenken der Produktion ernst nehmen"]
+      ]
+    },
+    {
+      "id": "c25-healthcare-it", "added": "2026-11-21T17", "title": "IT im Gesundheitswesen",
+      "desc": "Patientendaten, klinische Abläufe, Telemedizin, Entlastung des Personals",
+      "topic": "healthcare IT conversations with hospitals and care providers: protecting patient data, supporting clinical workflows, telemedicine, medical imaging and reducing the documentation burden on clinical staff",
+      "terms": [
+        {"t": "electronic health record", "de": "elektronische Gesundheitsakte", "d": "A digital record of a patient's medical history, diagnoses and treatments that authorised staff can access.", "ex": "Any new solution has to integrate with the electronic health record, otherwise the doctors won't use it."},
+        {"t": "hospital information system", "de": "Krankenhausinformationssystem (KIS)", "d": "The central software a hospital uses to manage patients, treatments, administration and billing.", "ex": "Their hospital information system is fifteen years old and every change needs the vendor's approval."},
+        {"t": "clinical workflow", "de": "klinischer Arbeitsablauf", "d": "The sequence of steps doctors and nurses follow when caring for a patient.", "ex": "Before we propose anything, we need to understand the clinical workflow on the ward."},
+        {"t": "clinical staff", "de": "medizinisches Personal", "d": "Doctors, nurses and other professionals who treat and care for patients directly.", "ex": "The clinical staff already work long shifts, so the tool must save time from the very first day."},
+        {"t": "documentation burden", "de": "Dokumentationsaufwand", "d": "The amount of time healthcare professionals spend on paperwork and data entry instead of patient care.", "ex": "Reducing the documentation burden is the main reason the medical director agreed to the AI pilot."},
+        {"t": "patient consent", "de": "Einwilligung der Patientin bzw. des Patienten", "d": "A patient's permission for their data to be used or shared for a specific purpose.", "ex": "Legal wants to know how patient consent is recorded before any data leaves the clinic."},
+        {"t": "pseudonymisation", "de": "Pseudonymisierung", "d": "Replacing names and other direct identifiers in data so that individuals cannot be identified without extra information.", "ex": "For the research project, pseudonymisation has to happen before the data reaches the analytics platform."},
+        {"t": "telemedicine", "de": "Telemedizin", "d": "Providing medical advice or care remotely using video, phone or digital tools.", "ex": "Telemedicine became essential for their patients in rural areas who live far from the next specialist."},
+        {"t": "medical imaging", "de": "medizinische Bildgebung", "d": "Techniques such as X-ray, CT and MRI that create pictures of the inside of the body, and the files they produce.", "ex": "Medical imaging produces huge amounts of data, so storage costs are a big topic for the radiology department."},
+        {"t": "care pathway", "de": "Behandlungspfad", "d": "A structured plan describing the steps of care for patients with a particular condition.", "ex": "If we digitise one care pathway end to end, the other departments will see what's possible."}
+      ],
+      "phrases": [
+        ["Where do your doctors and nurses lose the most time during a shift?", "Schmerzpunkt im Klinikalltag finden"],
+        ["Patient safety comes first, so we'd test this outside live care.", "Sicherheitsbedenken aufgreifen"],
+        ["Could we involve a doctor from the ward in the next workshop?", "Anwender früh einbinden"],
+        ["Let's clarify with your data protection officer which data we may use.", "Datenschutz früh klären"],
+        ["The goal is more time with patients, not more screens for staff.", "Nutzen menschlich formulieren"],
+        ["We'd integrate with your existing systems rather than add another one.", "Systemlandschaft respektieren"]
       ]
     }
   ]
